@@ -15,7 +15,7 @@ namespace GrpcClient
 
             var channel = new Channel($"localhost:{PORT}",
 #if TLS
-                new SslCredentials(File.ReadAllText(@"Certs\certificate.crt"))
+                new SslCredentials(File.ReadAllText(@"..\..\..\Certs\certificate.crt"))
 #else
                 ChannelCredentials.Insecure
 #endif
