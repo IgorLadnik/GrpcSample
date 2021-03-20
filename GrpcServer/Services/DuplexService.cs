@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using Grpc.Core;
 using Communication;
 using GrpcHelperLib;
-using GrpcHelperLib.CommunicationServer;
 
 namespace GrpcServer.Services
 {
