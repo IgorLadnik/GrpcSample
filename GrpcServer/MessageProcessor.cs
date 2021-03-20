@@ -1,7 +1,8 @@
 ﻿using System;
 using Microsoft.Extensions.Logging;
-using GrpcServerHelper;
 using Communication;
+using GrpcHelperLib;
+using System.Text;
 
 namespace GrpcServer
 {
@@ -16,10 +17,11 @@ namespace GrpcServer
 
         public override ResponseMessage Process(RequestMessage message)
         {
-            if (string.IsNullOrEmpty(message.Payload))
+            var strPayload = Encoding.UTF8.GetString(message.Payload.ToByteArray());
+            if (string.IsNullOrEmpty(strPayload))
                 return null;
 
-            Logger.LogInformation($"To be processed: {message}");
+            Logger.LogInformation($"To be processed: {strPayload}");
 
             //
             // Request message processing should be placed here
@@ -38,7 +40,7 @@ namespace GrpcServer
                     MessageId = message.MessageId,
                     Type = message.Type,
                     Time = timestamp,
-                    Payload = $"Response to \"{message.Payload}\"",
+                    Payload = $"Response to \"{strPayload}\"",
                     Status = MessageStatus.Processed,
                 };
             }

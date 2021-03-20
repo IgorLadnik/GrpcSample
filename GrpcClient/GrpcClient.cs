@@ -1,7 +1,11 @@
 ﻿using System;
 using Grpc.Core;
-using GrpcClientHelper;
+using GrpcHelperLib;
+using Google.Protobuf.WellKnownTypes;
+using System.Text;
+using Google.Protobuf;
 using Communication;
+using C = CommunicationClient;
 
 namespace GrpcClient
 {
@@ -15,7 +19,7 @@ namespace GrpcClient
         }
 
         public override AsyncDuplexStreamingCall<RequestMessage, ResponseMessage> CreateDuplexClient(Channel channel) =>
-            new Messaging.MessagingClient(channel).CreateStreaming();
+            new C.Messaging.MessagingClient(channel).CreateStreaming();
 
         public override RequestMessage CreateMessage(object ob)
         {
@@ -26,9 +30,9 @@ namespace GrpcClient
                 ClientId = ClientId,
                 MessageId = $"{Guid.NewGuid()}",
                 Type = MessageType.Ordinary,
-                Time = DateTime.UtcNow.Ticks,
+                Time = Timestamp.FromDateTime(DateTime.UtcNow),
                 Response = payload.Contains('?') ? ResponseType.Required : ResponseType.NotRequired,
-                Payload = payload
+                Payload = ByteString.CopyFromUtf8(payload)
             };
         }
 

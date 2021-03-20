@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace GrpcServerHelper
+namespace GrpcHelperLib
 {
     public abstract class MessageProcessorBase<TRequest, TResponse>
     {

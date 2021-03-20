@@ -1,6 +1,6 @@
 ﻿using Grpc.Core;
 
-namespace GrpcServerHelper
+namespace GrpcHelperLib
 {
     public class SubscribersModel<TResponse>
     {

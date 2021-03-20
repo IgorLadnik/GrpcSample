@@ -2,8 +2,9 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Grpc.Core;
+using System.Threading;
 
-namespace GrpcServerHelper
+namespace GrpcHelperLib
 {
     public class GeneralGrpcService<TRequest, TResponse>
     {
@@ -30,7 +31,9 @@ namespace GrpcServerHelper
             var httpContext = context.GetHttpContext();
             Logger.LogInformation($"Connection id: {httpContext.Connection.Id}");
 
-            if (!await requestStream.MoveNext())
+            CancellationTokenSource cancellationTokenSource = new(); //??
+
+            if (!await requestStream.MoveNext(cancellationTokenSource.Token))
                 return;
 
             var clientId = _messageProcessor.GetClientId(requestStream.Current);
@@ -53,7 +56,7 @@ namespace GrpcServerHelper
                     continue;
 
                 await _serverGrpcSubscribers.BroadcastMessageAsync(resultMessage);
-            } while (await requestStream.MoveNext());
+            } while (await requestStream.MoveNext(cancellationTokenSource.Token));
 
             _serverGrpcSubscribers.RemoveSubscriber(subscriber);
             Logger.LogInformation($"{clientId} disconnected");

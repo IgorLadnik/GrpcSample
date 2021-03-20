@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 
-namespace GrpcClientHelper
+namespace GrpcHelperLib
 {
     public abstract class GrpcClientBase<TRequest, TResponse>
     {

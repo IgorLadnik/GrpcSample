@@ -1,5 +1,7 @@
 ﻿syntax = "proto3";
 
+import "google/protobuf/timestamp.proto";
+
 package Communication;
 
 service Messaging 
@@ -12,9 +14,9 @@ message RequestMessage
   string clientId = 1;
   string messageId = 2;
   MessageType type = 3;
-  int64 time = 4;
+  google.protobuf.Timestamp time = 4;
   ResponseType response = 5;
-  string payload = 6;
+  bytes payload = 6;
 }
 
 message ResponseMessage 

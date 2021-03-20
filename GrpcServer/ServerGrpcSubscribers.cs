@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
-using GrpcServerHelper;
 using Communication;
+using GrpcHelperLib;
 
 namespace GrpcServer
 {
