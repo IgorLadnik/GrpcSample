@@ -13,10 +13,6 @@
   <!-- PROTO: The following section was added manually -->
   <ItemGroup>
 	<Protobuf Include="..\Protos\*.proto" GrpcServices="GrpcHelperLib" />
-	<Content Include="..\Protos\communication.proto">
-	  <GrpcServices>GrpcHelperLib</GrpcServices>
-	  <LinkBase></LinkBase>
-	</Content>
   </ItemGroup>
 
 </Project>

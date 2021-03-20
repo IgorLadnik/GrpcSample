@@ -6,94 +6,95 @@
 
 using grpc = global::Grpc.Core;
 
-namespace CommunicationClient {
-  public static partial class Messaging
-  {
-    static readonly string __ServiceName = "Communication.Messaging";
-
-    static void __Helper_SerializeMessage(global::Google.Protobuf.IMessage message, grpc::SerializationContext context)
+namespace GrpcHelperLib.CommunicationClient
+{
+    public static partial class Messaging
     {
-      #if !GRPC_DISABLE_PROTOBUF_BUFFER_SERIALIZATION
-      if (message is global::Google.Protobuf.IBufferMessage)
-      {
-        context.SetPayloadLength(message.CalculateSize());
-        global::Google.Protobuf.MessageExtensions.WriteTo(message, context.GetBufferWriter());
-        context.Complete();
-        return;
-      }
-      #endif
-      context.Complete(global::Google.Protobuf.MessageExtensions.ToByteArray(message));
+        static readonly string __ServiceName = "Communication.Messaging";
+
+        static void __Helper_SerializeMessage(global::Google.Protobuf.IMessage message, grpc::SerializationContext context)
+        {
+#if !GRPC_DISABLE_PROTOBUF_BUFFER_SERIALIZATION
+            if (message is global::Google.Protobuf.IBufferMessage)
+            {
+                context.SetPayloadLength(message.CalculateSize());
+                global::Google.Protobuf.MessageExtensions.WriteTo(message, context.GetBufferWriter());
+                context.Complete();
+                return;
+            }
+#endif
+            context.Complete(global::Google.Protobuf.MessageExtensions.ToByteArray(message));
+        }
+
+        static class __Helper_MessageCache<T>
+        {
+            public static readonly bool IsBufferMessage = global::System.Reflection.IntrospectionExtensions.GetTypeInfo(typeof(global::Google.Protobuf.IBufferMessage)).IsAssignableFrom(typeof(T));
+        }
+
+        static T __Helper_DeserializeMessage<T>(grpc::DeserializationContext context, global::Google.Protobuf.MessageParser<T> parser) where T : global::Google.Protobuf.IMessage<T>
+        {
+#if !GRPC_DISABLE_PROTOBUF_BUFFER_SERIALIZATION
+            if (__Helper_MessageCache<T>.IsBufferMessage)
+            {
+                return parser.ParseFrom(context.PayloadAsReadOnlySequence());
+            }
+#endif
+            return parser.ParseFrom(context.PayloadAsNewBuffer());
+        }
+
+        static readonly grpc::Marshaller<global::Communication.RequestMessage> __Marshaller_Communication_RequestMessage = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Communication.RequestMessage.Parser));
+        static readonly grpc::Marshaller<global::Communication.ResponseMessage> __Marshaller_Communication_ResponseMessage = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Communication.ResponseMessage.Parser));
+
+        static readonly grpc::Method<global::Communication.RequestMessage, global::Communication.ResponseMessage> __Method_CreateStreaming = new grpc::Method<global::Communication.RequestMessage, global::Communication.ResponseMessage>(
+            grpc::MethodType.DuplexStreaming,
+            __ServiceName,
+            "CreateStreaming",
+            __Marshaller_Communication_RequestMessage,
+            __Marshaller_Communication_ResponseMessage);
+
+        /// <summary>Service descriptor</summary>
+        public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
+        {
+            get { return global::Communication.CommunicationReflection.Descriptor.Services[0]; }
+        }
+
+        /// <summary>Client for Messaging</summary>
+        public partial class MessagingClient : grpc::ClientBase<MessagingClient>
+        {
+            /// <summary>Creates a new client for Messaging</summary>
+            /// <param name="channel">The channel to use to make remote calls.</param>
+            public MessagingClient(grpc::ChannelBase channel) : base(channel)
+            {
+            }
+            /// <summary>Creates a new client for Messaging that uses a custom <c>CallInvoker</c>.</summary>
+            /// <param name="callInvoker">The callInvoker to use to make remote calls.</param>
+            public MessagingClient(grpc::CallInvoker callInvoker) : base(callInvoker)
+            {
+            }
+            /// <summary>Protected parameterless constructor to allow creation of test doubles.</summary>
+            protected MessagingClient() : base()
+            {
+            }
+            /// <summary>Protected constructor to allow creation of configured clients.</summary>
+            /// <param name="configuration">The client configuration.</param>
+            protected MessagingClient(ClientBaseConfiguration configuration) : base(configuration)
+            {
+            }
+
+            public virtual grpc::AsyncDuplexStreamingCall<global::Communication.RequestMessage, global::Communication.ResponseMessage> CreateStreaming(grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+            {
+                return CreateStreaming(new grpc::CallOptions(headers, deadline, cancellationToken));
+            }
+            public virtual grpc::AsyncDuplexStreamingCall<global::Communication.RequestMessage, global::Communication.ResponseMessage> CreateStreaming(grpc::CallOptions options)
+            {
+                return CallInvoker.AsyncDuplexStreamingCall(__Method_CreateStreaming, null, options);
+            }
+            /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
+            protected override MessagingClient NewInstance(ClientBaseConfiguration configuration)
+            {
+                return new MessagingClient(configuration);
+            }
+        }
+
     }
-
-    static class __Helper_MessageCache<T>
-    {
-      public static readonly bool IsBufferMessage = global::System.Reflection.IntrospectionExtensions.GetTypeInfo(typeof(global::Google.Protobuf.IBufferMessage)).IsAssignableFrom(typeof(T));
-    }
-
-    static T __Helper_DeserializeMessage<T>(grpc::DeserializationContext context, global::Google.Protobuf.MessageParser<T> parser) where T : global::Google.Protobuf.IMessage<T>
-    {
-      #if !GRPC_DISABLE_PROTOBUF_BUFFER_SERIALIZATION
-      if (__Helper_MessageCache<T>.IsBufferMessage)
-      {
-        return parser.ParseFrom(context.PayloadAsReadOnlySequence());
-      }
-      #endif
-      return parser.ParseFrom(context.PayloadAsNewBuffer());
-    }
-
-    static readonly grpc::Marshaller<global::Communication.RequestMessage> __Marshaller_Communication_RequestMessage = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Communication.RequestMessage.Parser));
-    static readonly grpc::Marshaller<global::Communication.ResponseMessage> __Marshaller_Communication_ResponseMessage = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Communication.ResponseMessage.Parser));
-
-    static readonly grpc::Method<global::Communication.RequestMessage, global::Communication.ResponseMessage> __Method_CreateStreaming = new grpc::Method<global::Communication.RequestMessage, global::Communication.ResponseMessage>(
-        grpc::MethodType.DuplexStreaming,
-        __ServiceName,
-        "CreateStreaming",
-        __Marshaller_Communication_RequestMessage,
-        __Marshaller_Communication_ResponseMessage);
-
-    /// <summary>Service descriptor</summary>
-    public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
-    {
-      get { return global::Communication.CommunicationReflection.Descriptor.Services[0]; }
-    }
-
-    /// <summary>Client for Messaging</summary>
-    public partial class MessagingClient : grpc::ClientBase<MessagingClient>
-    {
-      /// <summary>Creates a new client for Messaging</summary>
-      /// <param name="channel">The channel to use to make remote calls.</param>
-      public MessagingClient(grpc::ChannelBase channel) : base(channel)
-      {
-      }
-      /// <summary>Creates a new client for Messaging that uses a custom <c>CallInvoker</c>.</summary>
-      /// <param name="callInvoker">The callInvoker to use to make remote calls.</param>
-      public MessagingClient(grpc::CallInvoker callInvoker) : base(callInvoker)
-      {
-      }
-      /// <summary>Protected parameterless constructor to allow creation of test doubles.</summary>
-      protected MessagingClient() : base()
-      {
-      }
-      /// <summary>Protected constructor to allow creation of configured clients.</summary>
-      /// <param name="configuration">The client configuration.</param>
-      protected MessagingClient(ClientBaseConfiguration configuration) : base(configuration)
-      {
-      }
-
-      public virtual grpc::AsyncDuplexStreamingCall<global::Communication.RequestMessage, global::Communication.ResponseMessage> CreateStreaming(grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
-      {
-        return CreateStreaming(new grpc::CallOptions(headers, deadline, cancellationToken));
-      }
-      public virtual grpc::AsyncDuplexStreamingCall<global::Communication.RequestMessage, global::Communication.ResponseMessage> CreateStreaming(grpc::CallOptions options)
-      {
-        return CallInvoker.AsyncDuplexStreamingCall(__Method_CreateStreaming, null, options);
-      }
-      /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
-      protected override MessagingClient NewInstance(ClientBaseConfiguration configuration)
-      {
-        return new MessagingClient(configuration);
-      }
-    }
-
-  }
 }

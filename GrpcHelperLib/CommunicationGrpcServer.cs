@@ -3,13 +3,12 @@
 //     source: communication.proto
 // </auto-generated>
 #pragma warning disable 0414, 1591
-#region Designer generated code
 
 using grpc = global::Grpc.Core;
 
-namespace CommunicationServer
+namespace GrpcHelperLib.CommunicationServer
 {
-    public static partial class MessagingServer
+    public static partial class Messaging
     {
         static readonly string __ServiceName = "Communication.Messaging";
 
@@ -60,7 +59,7 @@ namespace CommunicationServer
         }
 
         /// <summary>Base class for server-side implementations of Messaging</summary>
-        [grpc::BindServiceMethod(typeof(MessagingServer), "BindService")]
+        [grpc::BindServiceMethod(typeof(Messaging), "BindService")]
         public abstract partial class MessagingBase
         {
             public virtual global::System.Threading.Tasks.Task CreateStreaming(grpc::IAsyncStreamReader<global::Communication.RequestMessage> requestStream, grpc::IServerStreamWriter<global::Communication.ResponseMessage> responseStream, grpc::ServerCallContext context)
@@ -89,4 +88,3 @@ namespace CommunicationServer
 
     }
 }
-#endregion

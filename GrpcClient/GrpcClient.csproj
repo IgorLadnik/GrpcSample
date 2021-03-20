@@ -13,9 +13,7 @@
   <ItemGroup>
 	<Protobuf Include="..\Protos\*.proto" GrpcServices="Client" />
   </ItemGroup>
-  <ItemGroup>
-    <Protobuf Remove="..\Protos\communication.proto" />
-  </ItemGroup>
+  
   
   <ItemGroup>
 	<PackageReference Include="Google.Protobuf" Version="3.15.6" />

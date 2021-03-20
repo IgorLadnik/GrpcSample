@@ -2,10 +2,8 @@
 using Grpc.Core;
 using GrpcHelperLib;
 using Google.Protobuf.WellKnownTypes;
-using System.Text;
 using Google.Protobuf;
 using Communication;
-using C = CommunicationClient;
 
 namespace GrpcClient
 {
@@ -19,7 +17,7 @@ namespace GrpcClient
         }
 
         public override AsyncDuplexStreamingCall<RequestMessage, ResponseMessage> CreateDuplexClient(Channel channel) =>
-            new C.Messaging.MessagingClient(channel).CreateStreaming();
+            new Communication.Messaging.MessagingClient(channel).CreateStreaming();
 
         public override RequestMessage CreateMessage(object ob)
         {
