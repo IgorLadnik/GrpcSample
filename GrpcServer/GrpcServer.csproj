@@ -18,6 +18,20 @@
 	</PackageReference>
   </ItemGroup>
   
+  <!-- PROTO: The following section was added manually 
+  <ItemGroup>
+	<Protobuf Include="..\Protos\*.proto" GrpcServices="Server" />
+	<Content Include="..\Protos\communication.proto">
+	  <GrpcServices>GrpcServer</GrpcServices>
+	  <LinkBase></LinkBase>
+	</Content>
+  </ItemGroup>
+  -->
+  
+  <ItemGroup>
+	<Protobuf Include="..\Protos\*.proto" GrpcServices="Server" />
+  </ItemGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\GrpcHelperLib\GrpcHelperLib.csproj" />
   </ItemGroup>

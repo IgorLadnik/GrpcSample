@@ -6,27 +6,28 @@ package Communication;
 
 service Messaging 
 {
-  rpc CreateStreaming (stream RequestMessage) returns (stream ResponseMessage);
+    rpc CreateStreaming (stream RequestMessage) returns (stream ResponseMessage);
 }
 
-message RequestMessage 
+message RequestMessage
 {
-  string clientId = 1;
-  string messageId = 2;
-  MessageType type = 3;
-  google.protobuf.Timestamp time = 4;
-  ResponseType response = 5;
-  bytes payload = 6;
+    string clientId = 1;
+    string messageId = 2;
+    MessageType type = 3;
+    google.protobuf.Timestamp time = 4;
+    MessageStatus status = 5;
+    bytes payload = 6;
+    ResponseType response = 7;
 }
 
-message ResponseMessage 
+message ResponseMessage
 {
-  string clientId = 1;
-  string messageId = 2;
-  MessageType type = 3;
-  int64 time = 4;
-  MessageStatus status = 5;
-  string payload = 6;
+    string clientId = 1;
+    string messageId = 2;
+    MessageType type = 3;
+    google.protobuf.Timestamp time = 4;
+    MessageStatus status = 5;
+    string payload = 6;
 }
 
 enum MessageType
@@ -40,8 +41,10 @@ enum MessageStatus
 {
     MESSAGESTATUS_UNDEFINED = 0;
     MESSAGESTATUS_CREATED = 1;
-    MESSAGESTATUS_PROCESSED = 2; 
-    MESSAGESTATUS_ERROR = 3;
+    MESSAGESTATUS_SENT = 2;
+    MESSAGESTATUS_RECEIVED = 3;
+    MESSAGESTATUS_PROCESSED = 4; 
+    MESSAGESTATUS_ERROR = 5;
 }
 
 enum ResponseType

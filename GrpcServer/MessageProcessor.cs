@@ -39,7 +39,7 @@ namespace GrpcServer
                     ClientId = message.ClientId,
                     MessageId = message.MessageId,
                     Type = message.Type,
-                    Time = timestamp,
+                    //Time = timestamp,
                     Payload = $"Response to \"{strPayload}\"",
                     Status = MessageStatus.Processed,
                 };
@@ -51,7 +51,7 @@ namespace GrpcServer
                     ClientId = message.ClientId,
                     MessageId = message.MessageId,
                     Type = message.Type,
-                    Time = timestamp,
+                    //Time = timestamp,
                     Payload = e.Message,
                     Status = MessageStatus.Error,
                 };
