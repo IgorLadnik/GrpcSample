@@ -1,9 +1,7 @@
 #pragma warning disable 1591, 0612, 3021
 
 using pb = Google.Protobuf;
-using pbc = Google.Protobuf.Collections;
 using pbr = Google.Protobuf.Reflection;
-using scg = System.Collections.Generic;
 
 namespace Communication
 {
@@ -14,11 +12,11 @@ namespace Communication
 
         #region Descriptor
         /// <summary>File descriptor for communication.proto</summary>
-        public static pbr::FileDescriptor Descriptor
+        public static pbr.FileDescriptor Descriptor
         {
             get { return descriptor; }
         }
-        private static pbr::FileDescriptor descriptor;
+        private static pbr.FileDescriptor descriptor;
 
         static CommunicationReflection()
         {
@@ -44,60 +42,62 @@ namespace Communication
                   "UVVJUkVEEAIyYQoJTWVzc2FnaW5nElQKD0NyZWF0ZVN0cmVhbWluZxIdLkNv",
                   "bW11bmljYXRpb24uUmVxdWVzdE1lc3NhZ2UaHi5Db21tdW5pY2F0aW9uLlJl",
                   "c3BvbnNlTWVzc2FnZSgBMAFiBnByb3RvMw=="));
-            descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-                new pbr::FileDescriptor[] { Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, },
-                new pbr::GeneratedClrTypeInfo(new[] { typeof(Communication.MessageType), typeof(Communication.MessageStatus), typeof(Communication.ResponseType), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(Communication.RequestMessage), Communication.RequestMessage.Parser, new[]{ "ClientId", "MessageId", "Type", "Time", "Response", "Payload" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(Communication.ResponseMessage), Communication.ResponseMessage.Parser, new[]{ "ClientId", "MessageId", "Type", "Time", "Status", "Payload" }, null, null, null, null)
+            descriptor = pbr.FileDescriptor.FromGeneratedCode(descriptorData,
+                new pbr.FileDescriptor[] { Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, },
+                new pbr.GeneratedClrTypeInfo(new[] { typeof(Communication.MessageType), typeof(Communication.MessageStatus), typeof(Communication.ResponseType), }, null, new pbr.GeneratedClrTypeInfo[] {
+            new pbr.GeneratedClrTypeInfo(typeof(Communication.RequestMessage), Communication.RequestMessage.Parser, new[]{ "ClientId", "MessageId", "Type", "Time", "Response", "Payload" }, null, null, null, null),
+            new pbr.GeneratedClrTypeInfo(typeof(Communication.ResponseMessage), Communication.ResponseMessage.Parser, new[]{ "ClientId", "MessageId", "Type", "Time", "Status", "Payload" }, null, null, null, null)
                 }));
         }
         #endregion
 
     }
+
     #region Enums
+    
     public enum MessageType
     {
-        [pbr::OriginalName("MESSAGETYPE_UNDEFINED")] Undefined = 0,
-        [pbr::OriginalName("MESSAGETYPE_ORDINARY")] Ordinary = 1,
-        [pbr::OriginalName("MESSAGETYPE_IMPORTANT")] Important = 2,
+        [pbr.OriginalName("MESSAGETYPE_UNDEFINED")] Undefined = 0,
+        [pbr.OriginalName("MESSAGETYPE_ORDINARY")] Ordinary = 1,
+        [pbr.OriginalName("MESSAGETYPE_IMPORTANT")] Important = 2,
     }
 
     public enum MessageStatus
     {
-        [pbr::OriginalName("MESSAGESTATUS_UNDEFINED")] Undefined = 0,
-        [pbr::OriginalName("MESSAGESTATUS_CREATED")] Created = 1,
-        [pbr::OriginalName("MESSAGESTATUS_PROCESSED")] Processed = 2,
-        [pbr::OriginalName("MESSAGESTATUS_ERROR")] Error = 3,
+        [pbr.OriginalName("MESSAGESTATUS_UNDEFINED")] Undefined = 0,
+        [pbr.OriginalName("MESSAGESTATUS_CREATED")] Created = 1,
+        [pbr.OriginalName("MESSAGESTATUS_PROCESSED")] Processed = 2,
+        [pbr.OriginalName("MESSAGESTATUS_ERROR")] Error = 3,
     }
 
     public enum ResponseType
     {
-        [pbr::OriginalName("RESPONSETYPE_UNDEFINED")] Undefined = 0,
-        [pbr::OriginalName("RESPONSETYPE_REQUIRED")] Required = 1,
-        [pbr::OriginalName("RESPONSETYPE_NOT_REQUIRED")] NotRequired = 2,
+        [pbr.OriginalName("RESPONSETYPE_UNDEFINED")] Undefined = 0,
+        [pbr.OriginalName("RESPONSETYPE_REQUIRED")] Required = 1,
+        [pbr.OriginalName("RESPONSETYPE_NOT_REQUIRED")] NotRequired = 2,
     }
 
     #endregion
 
     #region Messages
-    public sealed partial class RequestMessage : pb::IMessage<RequestMessage>
+    public sealed partial class RequestMessage : pb.IMessage<RequestMessage>
 #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
+      , pb.IBufferMessage
 #endif
     {
-        private static readonly pb::MessageParser<RequestMessage> _parser = new pb::MessageParser<RequestMessage>(() => new RequestMessage());
-        private pb::UnknownFieldSet _unknownFields;
+        private static readonly pb.MessageParser<RequestMessage> _parser = new pb.MessageParser<RequestMessage>(() => new RequestMessage());
+        private pb.UnknownFieldSet _unknownFields;
         [System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public static pb::MessageParser<RequestMessage> Parser { get { return _parser; } }
+        public static pb.MessageParser<RequestMessage> Parser { get { return _parser; } }
 
         [System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public static pbr::MessageDescriptor Descriptor
+        public static pbr.MessageDescriptor Descriptor
         {
             get { return Communication.CommunicationReflection.Descriptor.MessageTypes[0]; }
         }
 
         [System.Diagnostics.DebuggerNonUserCodeAttribute]
-        pbr::MessageDescriptor pb::IMessage.Descriptor
+        pbr.MessageDescriptor pb.IMessage.Descriptor
         {
             get { return Descriptor; }
         }
@@ -119,7 +119,7 @@ namespace Communication
             time_ = other.time_ != null ? other.time_.Clone() : null;
             response_ = other.response_;
             payload_ = other.payload_;
-            _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+            _unknownFields = pb.UnknownFieldSet.Clone(other._unknownFields);
         }
 
         [System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -137,7 +137,7 @@ namespace Communication
             get { return clientId_; }
             set
             {
-                clientId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+                clientId_ = pb.ProtoPreconditions.CheckNotNull(value, "value");
             }
         }
 
@@ -150,7 +150,7 @@ namespace Communication
             get { return messageId_; }
             set
             {
-                messageId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+                messageId_ = pb.ProtoPreconditions.CheckNotNull(value, "value");
             }
         }
 
@@ -195,14 +195,14 @@ namespace Communication
 
         /// <summary>Field number for the "payload" field.</summary>
         public const int PayloadFieldNumber = 6;
-        private pb::ByteString payload_ = pb::ByteString.Empty;
+        private pb.ByteString payload_ = pb.ByteString.Empty;
         [System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public pb::ByteString Payload
+        public pb.ByteString Payload
         {
             get { return payload_; }
             set
             {
-                payload_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+                payload_ = pb.ProtoPreconditions.CheckNotNull(value, "value");
             }
         }
 
@@ -252,11 +252,11 @@ namespace Communication
         [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override string ToString()
         {
-            return pb::JsonFormatter.ToDiagnosticString(this);
+            return pb.JsonFormatter.ToDiagnosticString(this);
         }
 
         [System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public void WriteTo(pb::CodedOutputStream output)
+        public void WriteTo(pb.CodedOutputStream output)
         {
 #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
             output.WriteRawMessage(this);
@@ -293,7 +293,7 @@ namespace Communication
 
 #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
         [System.Diagnostics.DebuggerNonUserCodeAttribute]
-        void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output)
+        void pb.IBufferMessage.InternalWriteTo(ref pb.WriteContext output)
         {
             if (ClientId.Length != 0)
             {
@@ -338,27 +338,27 @@ namespace Communication
             int size = 0;
             if (ClientId.Length != 0)
             {
-                size += 1 + pb::CodedOutputStream.ComputeStringSize(ClientId);
+                size += 1 + pb.CodedOutputStream.ComputeStringSize(ClientId);
             }
             if (MessageId.Length != 0)
             {
-                size += 1 + pb::CodedOutputStream.ComputeStringSize(MessageId);
+                size += 1 + pb.CodedOutputStream.ComputeStringSize(MessageId);
             }
             if (Type != Communication.MessageType.Undefined)
             {
-                size += 1 + pb::CodedOutputStream.ComputeEnumSize((int)Type);
+                size += 1 + pb.CodedOutputStream.ComputeEnumSize((int)Type);
             }
             if (time_ != null)
             {
-                size += 1 + pb::CodedOutputStream.ComputeMessageSize(Time);
+                size += 1 + pb.CodedOutputStream.ComputeMessageSize(Time);
             }
             if (Response != Communication.ResponseType.Undefined)
             {
-                size += 1 + pb::CodedOutputStream.ComputeEnumSize((int)Response);
+                size += 1 + pb.CodedOutputStream.ComputeEnumSize((int)Response);
             }
             if (Payload.Length != 0)
             {
-                size += 1 + pb::CodedOutputStream.ComputeBytesSize(Payload);
+                size += 1 + pb.CodedOutputStream.ComputeBytesSize(Payload);
             }
             if (_unknownFields != null)
             {
@@ -402,11 +402,11 @@ namespace Communication
             {
                 Payload = other.Payload;
             }
-            _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+            _unknownFields = pb.UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
         }
 
         [System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public void MergeFrom(pb::CodedInputStream input)
+        public void MergeFrom(pb.CodedInputStream input)
         {
 #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
             input.ReadRawMessage(this);
@@ -415,7 +415,7 @@ namespace Communication
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
           default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            _unknownFields = pb.UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
             ClientId = input.ReadString();
@@ -451,7 +451,7 @@ namespace Communication
 
 #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
         [System.Diagnostics.DebuggerNonUserCodeAttribute]
-        void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input)
+        void pb.IBufferMessage.InternalMergeFrom(ref pb.ParseContext input)
         {
             uint tag;
             while ((tag = input.ReadTag()) != 0)
@@ -459,7 +459,7 @@ namespace Communication
                 switch (tag)
                 {
                     default:
-                        _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+                        _unknownFields = pb.UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
                         break;
                     case 10:
                         {
@@ -502,24 +502,24 @@ namespace Communication
 
     }
 
-    public sealed partial class ResponseMessage : pb::IMessage<ResponseMessage>
+    public sealed partial class ResponseMessage : pb.IMessage<ResponseMessage>
 #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
+      , pb.IBufferMessage
 #endif
     {
-        private static readonly pb::MessageParser<ResponseMessage> _parser = new pb::MessageParser<ResponseMessage>(() => new ResponseMessage());
-        private pb::UnknownFieldSet _unknownFields;
+        private static readonly pb.MessageParser<ResponseMessage> _parser = new pb.MessageParser<ResponseMessage>(() => new ResponseMessage());
+        private pb.UnknownFieldSet _unknownFields;
         [System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public static pb::MessageParser<ResponseMessage> Parser { get { return _parser; } }
+        public static pb.MessageParser<ResponseMessage> Parser { get { return _parser; } }
 
         [System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public static pbr::MessageDescriptor Descriptor
+        public static pbr.MessageDescriptor Descriptor
         {
             get { return Communication.CommunicationReflection.Descriptor.MessageTypes[1]; }
         }
 
         [System.Diagnostics.DebuggerNonUserCodeAttribute]
-        pbr::MessageDescriptor pb::IMessage.Descriptor
+        pbr.MessageDescriptor pb.IMessage.Descriptor
         {
             get { return Descriptor; }
         }
@@ -541,7 +541,7 @@ namespace Communication
             time_ = other.time_;
             status_ = other.status_;
             payload_ = other.payload_;
-            _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+            _unknownFields = pb.UnknownFieldSet.Clone(other._unknownFields);
         }
 
         [System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -559,7 +559,7 @@ namespace Communication
             get { return clientId_; }
             set
             {
-                clientId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+                clientId_ = pb.ProtoPreconditions.CheckNotNull(value, "value");
             }
         }
 
@@ -572,7 +572,7 @@ namespace Communication
             get { return messageId_; }
             set
             {
-                messageId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+                messageId_ = pb.ProtoPreconditions.CheckNotNull(value, "value");
             }
         }
 
@@ -624,7 +624,7 @@ namespace Communication
             get { return payload_; }
             set
             {
-                payload_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+                payload_ = pb.ProtoPreconditions.CheckNotNull(value, "value");
             }
         }
 
@@ -674,11 +674,11 @@ namespace Communication
         [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override string ToString()
         {
-            return pb::JsonFormatter.ToDiagnosticString(this);
+            return pb.JsonFormatter.ToDiagnosticString(this);
         }
 
         [System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public void WriteTo(pb::CodedOutputStream output)
+        public void WriteTo(pb.CodedOutputStream output)
         {
 #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
             output.WriteRawMessage(this);
@@ -715,7 +715,7 @@ namespace Communication
 
 #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
         [System.Diagnostics.DebuggerNonUserCodeAttribute]
-        void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output)
+        void pb.IBufferMessage.InternalWriteTo(ref pb.WriteContext output)
         {
             if (ClientId.Length != 0)
             {
@@ -760,27 +760,27 @@ namespace Communication
             int size = 0;
             if (ClientId.Length != 0)
             {
-                size += 1 + pb::CodedOutputStream.ComputeStringSize(ClientId);
+                size += 1 + pb.CodedOutputStream.ComputeStringSize(ClientId);
             }
             if (MessageId.Length != 0)
             {
-                size += 1 + pb::CodedOutputStream.ComputeStringSize(MessageId);
+                size += 1 + pb.CodedOutputStream.ComputeStringSize(MessageId);
             }
             if (Type != Communication.MessageType.Undefined)
             {
-                size += 1 + pb::CodedOutputStream.ComputeEnumSize((int)Type);
+                size += 1 + pb.CodedOutputStream.ComputeEnumSize((int)Type);
             }
             if (Time != 0L)
             {
-                size += 1 + pb::CodedOutputStream.ComputeInt64Size(Time);
+                size += 1 + pb.CodedOutputStream.ComputeInt64Size(Time);
             }
             if (Status != Communication.MessageStatus.Undefined)
             {
-                size += 1 + pb::CodedOutputStream.ComputeEnumSize((int)Status);
+                size += 1 + pb.CodedOutputStream.ComputeEnumSize((int)Status);
             }
             if (Payload.Length != 0)
             {
-                size += 1 + pb::CodedOutputStream.ComputeStringSize(Payload);
+                size += 1 + pb.CodedOutputStream.ComputeStringSize(Payload);
             }
             if (_unknownFields != null)
             {
@@ -820,11 +820,11 @@ namespace Communication
             {
                 Payload = other.Payload;
             }
-            _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+            _unknownFields = pb.UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
         }
 
         [System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public void MergeFrom(pb::CodedInputStream input)
+        public void MergeFrom(pb.CodedInputStream input)
         {
 #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
             input.ReadRawMessage(this);
@@ -833,7 +833,7 @@ namespace Communication
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
           default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            _unknownFields = pb.UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
             ClientId = input.ReadString();
@@ -866,7 +866,7 @@ namespace Communication
 
 #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
         [System.Diagnostics.DebuggerNonUserCodeAttribute]
-        void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input)
+        void pb.IBufferMessage.InternalMergeFrom(ref pb.ParseContext input)
         {
             uint tag;
             while ((tag = input.ReadTag()) != 0)
@@ -874,7 +874,7 @@ namespace Communication
                 switch (tag)
                 {
                     default:
-                        _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+                        _unknownFields = pb.UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
                         break;
                     case 10:
                         {
