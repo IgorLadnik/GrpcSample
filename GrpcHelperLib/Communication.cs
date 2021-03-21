@@ -1,9 +1,9 @@
 #pragma warning disable 1591, 0612, 3021
 
-using pb = global::Google.Protobuf;
-using pbc = global::Google.Protobuf.Collections;
-using pbr = global::Google.Protobuf.Reflection;
-using scg = global::System.Collections.Generic;
+using pb = Google.Protobuf;
+using pbc = Google.Protobuf.Collections;
+using pbr = Google.Protobuf.Reflection;
+using scg = System.Collections.Generic;
 
 namespace Communication
 {
@@ -22,7 +22,7 @@ namespace Communication
 
         static CommunicationReflection()
         {
-            byte[] descriptorData = global::System.Convert.FromBase64String(
+            byte[] descriptorData = System.Convert.FromBase64String(
                 string.Concat(
                   "ChNjb21tdW5pY2F0aW9uLnByb3RvEg1Db21tdW5pY2F0aW9uGh9nb29nbGUv",
                   "cHJvdG9idWYvdGltZXN0YW1wLnByb3RvIskBCg5SZXF1ZXN0TWVzc2FnZRIQ",
@@ -45,10 +45,10 @@ namespace Communication
                   "bW11bmljYXRpb24uUmVxdWVzdE1lc3NhZ2UaHi5Db21tdW5pY2F0aW9uLlJl",
                   "c3BvbnNlTWVzc2FnZSgBMAFiBnByb3RvMw=="));
             descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-                new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, },
-                new pbr::GeneratedClrTypeInfo(new[] { typeof(global::Communication.MessageType), typeof(global::Communication.MessageStatus), typeof(global::Communication.ResponseType), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Communication.RequestMessage), global::Communication.RequestMessage.Parser, new[]{ "ClientId", "MessageId", "Type", "Time", "Response", "Payload" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Communication.ResponseMessage), global::Communication.ResponseMessage.Parser, new[]{ "ClientId", "MessageId", "Type", "Time", "Status", "Payload" }, null, null, null, null)
+                new pbr::FileDescriptor[] { Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, },
+                new pbr::GeneratedClrTypeInfo(new[] { typeof(Communication.MessageType), typeof(Communication.MessageStatus), typeof(Communication.ResponseType), }, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(Communication.RequestMessage), Communication.RequestMessage.Parser, new[]{ "ClientId", "MessageId", "Type", "Time", "Response", "Payload" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(Communication.ResponseMessage), Communication.ResponseMessage.Parser, new[]{ "ClientId", "MessageId", "Type", "Time", "Status", "Payload" }, null, null, null, null)
                 }));
         }
         #endregion
@@ -87,22 +87,22 @@ namespace Communication
     {
         private static readonly pb::MessageParser<RequestMessage> _parser = new pb::MessageParser<RequestMessage>(() => new RequestMessage());
         private pb::UnknownFieldSet _unknownFields;
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public static pb::MessageParser<RequestMessage> Parser { get { return _parser; } }
 
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public static pbr::MessageDescriptor Descriptor
         {
-            get { return global::Communication.CommunicationReflection.Descriptor.MessageTypes[0]; }
+            get { return Communication.CommunicationReflection.Descriptor.MessageTypes[0]; }
         }
 
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         pbr::MessageDescriptor pb::IMessage.Descriptor
         {
             get { return Descriptor; }
         }
 
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public RequestMessage()
         {
             OnConstruction();
@@ -110,7 +110,7 @@ namespace Communication
 
         partial void OnConstruction();
 
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public RequestMessage(RequestMessage other) : this()
         {
             clientId_ = other.clientId_;
@@ -122,7 +122,7 @@ namespace Communication
             _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
         }
 
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public RequestMessage Clone()
         {
             return new RequestMessage(this);
@@ -131,7 +131,7 @@ namespace Communication
         /// <summary>Field number for the "clientId" field.</summary>
         public const int ClientIdFieldNumber = 1;
         private string clientId_ = "";
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public string ClientId
         {
             get { return clientId_; }
@@ -144,7 +144,7 @@ namespace Communication
         /// <summary>Field number for the "messageId" field.</summary>
         public const int MessageIdFieldNumber = 2;
         private string messageId_ = "";
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public string MessageId
         {
             get { return messageId_; }
@@ -156,9 +156,9 @@ namespace Communication
 
         /// <summary>Field number for the "type" field.</summary>
         public const int TypeFieldNumber = 3;
-        private global::Communication.MessageType type_ = global::Communication.MessageType.Undefined;
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public global::Communication.MessageType Type
+        private Communication.MessageType type_ = Communication.MessageType.Undefined;
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Communication.MessageType Type
         {
             get { return type_; }
             set
@@ -169,9 +169,9 @@ namespace Communication
 
         /// <summary>Field number for the "time" field.</summary>
         public const int TimeFieldNumber = 4;
-        private global::Google.Protobuf.WellKnownTypes.Timestamp time_;
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public global::Google.Protobuf.WellKnownTypes.Timestamp Time
+        private Google.Protobuf.WellKnownTypes.Timestamp time_;
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Google.Protobuf.WellKnownTypes.Timestamp Time
         {
             get { return time_; }
             set
@@ -182,9 +182,9 @@ namespace Communication
 
         /// <summary>Field number for the "response" field.</summary>
         public const int ResponseFieldNumber = 5;
-        private global::Communication.ResponseType response_ = global::Communication.ResponseType.Undefined;
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public global::Communication.ResponseType Response
+        private Communication.ResponseType response_ = Communication.ResponseType.Undefined;
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Communication.ResponseType Response
         {
             get { return response_; }
             set
@@ -196,7 +196,7 @@ namespace Communication
         /// <summary>Field number for the "payload" field.</summary>
         public const int PayloadFieldNumber = 6;
         private pb::ByteString payload_ = pb::ByteString.Empty;
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public pb::ByteString Payload
         {
             get { return payload_; }
@@ -206,13 +206,13 @@ namespace Communication
             }
         }
 
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override bool Equals(object other)
         {
             return Equals(other as RequestMessage);
         }
 
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public bool Equals(RequestMessage other)
         {
             if (ReferenceEquals(other, null))
@@ -232,15 +232,15 @@ namespace Communication
             return Equals(_unknownFields, other._unknownFields);
         }
 
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override int GetHashCode()
         {
             int hash = 1;
             if (ClientId.Length != 0) hash ^= ClientId.GetHashCode();
             if (MessageId.Length != 0) hash ^= MessageId.GetHashCode();
-            if (Type != global::Communication.MessageType.Undefined) hash ^= Type.GetHashCode();
+            if (Type != Communication.MessageType.Undefined) hash ^= Type.GetHashCode();
             if (time_ != null) hash ^= Time.GetHashCode();
-            if (Response != global::Communication.ResponseType.Undefined) hash ^= Response.GetHashCode();
+            if (Response != Communication.ResponseType.Undefined) hash ^= Response.GetHashCode();
             if (Payload.Length != 0) hash ^= Payload.GetHashCode();
             if (_unknownFields != null)
             {
@@ -249,13 +249,13 @@ namespace Communication
             return hash;
         }
 
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override string ToString()
         {
             return pb::JsonFormatter.ToDiagnosticString(this);
         }
 
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void WriteTo(pb::CodedOutputStream output)
         {
 #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
@@ -269,7 +269,7 @@ namespace Communication
         output.WriteRawTag(18);
         output.WriteString(MessageId);
       }
-      if (Type != global::Communication.MessageType.Undefined) {
+      if (Type != Communication.MessageType.Undefined) {
         output.WriteRawTag(24);
         output.WriteEnum((int) Type);
       }
@@ -277,7 +277,7 @@ namespace Communication
         output.WriteRawTag(34);
         output.WriteMessage(Time);
       }
-      if (Response != global::Communication.ResponseType.Undefined) {
+      if (Response != Communication.ResponseType.Undefined) {
         output.WriteRawTag(40);
         output.WriteEnum((int) Response);
       }
@@ -292,7 +292,7 @@ namespace Communication
         }
 
 #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output)
         {
             if (ClientId.Length != 0)
@@ -305,7 +305,7 @@ namespace Communication
                 output.WriteRawTag(18);
                 output.WriteString(MessageId);
             }
-            if (Type != global::Communication.MessageType.Undefined)
+            if (Type != Communication.MessageType.Undefined)
             {
                 output.WriteRawTag(24);
                 output.WriteEnum((int)Type);
@@ -315,7 +315,7 @@ namespace Communication
                 output.WriteRawTag(34);
                 output.WriteMessage(Time);
             }
-            if (Response != global::Communication.ResponseType.Undefined)
+            if (Response != Communication.ResponseType.Undefined)
             {
                 output.WriteRawTag(40);
                 output.WriteEnum((int)Response);
@@ -332,7 +332,7 @@ namespace Communication
         }
 #endif
 
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public int CalculateSize()
         {
             int size = 0;
@@ -344,7 +344,7 @@ namespace Communication
             {
                 size += 1 + pb::CodedOutputStream.ComputeStringSize(MessageId);
             }
-            if (Type != global::Communication.MessageType.Undefined)
+            if (Type != Communication.MessageType.Undefined)
             {
                 size += 1 + pb::CodedOutputStream.ComputeEnumSize((int)Type);
             }
@@ -352,7 +352,7 @@ namespace Communication
             {
                 size += 1 + pb::CodedOutputStream.ComputeMessageSize(Time);
             }
-            if (Response != global::Communication.ResponseType.Undefined)
+            if (Response != Communication.ResponseType.Undefined)
             {
                 size += 1 + pb::CodedOutputStream.ComputeEnumSize((int)Response);
             }
@@ -367,7 +367,7 @@ namespace Communication
             return size;
         }
 
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void MergeFrom(RequestMessage other)
         {
             if (other == null)
@@ -382,7 +382,7 @@ namespace Communication
             {
                 MessageId = other.MessageId;
             }
-            if (other.Type != global::Communication.MessageType.Undefined)
+            if (other.Type != Communication.MessageType.Undefined)
             {
                 Type = other.Type;
             }
@@ -390,11 +390,11 @@ namespace Communication
             {
                 if (time_ == null)
                 {
-                    Time = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+                    Time = new Google.Protobuf.WellKnownTypes.Timestamp();
                 }
                 Time.MergeFrom(other.Time);
             }
-            if (other.Response != global::Communication.ResponseType.Undefined)
+            if (other.Response != Communication.ResponseType.Undefined)
             {
                 Response = other.Response;
             }
@@ -405,7 +405,7 @@ namespace Communication
             _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
         }
 
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void MergeFrom(pb::CodedInputStream input)
         {
 #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
@@ -426,18 +426,18 @@ namespace Communication
             break;
           }
           case 24: {
-            Type = (global::Communication.MessageType) input.ReadEnum();
+            Type = (Communication.MessageType) input.ReadEnum();
             break;
           }
           case 34: {
             if (time_ == null) {
-              Time = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+              Time = new Google.Protobuf.WellKnownTypes.Timestamp();
             }
             input.ReadMessage(Time);
             break;
           }
           case 40: {
-            Response = (global::Communication.ResponseType) input.ReadEnum();
+            Response = (Communication.ResponseType) input.ReadEnum();
             break;
           }
           case 50: {
@@ -450,7 +450,7 @@ namespace Communication
         }
 
 #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input)
         {
             uint tag;
@@ -473,21 +473,21 @@ namespace Communication
                         }
                     case 24:
                         {
-                            Type = (global::Communication.MessageType)input.ReadEnum();
+                            Type = (Communication.MessageType)input.ReadEnum();
                             break;
                         }
                     case 34:
                         {
                             if (time_ == null)
                             {
-                                Time = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+                                Time = new Google.Protobuf.WellKnownTypes.Timestamp();
                             }
                             input.ReadMessage(Time);
                             break;
                         }
                     case 40:
                         {
-                            Response = (global::Communication.ResponseType)input.ReadEnum();
+                            Response = (Communication.ResponseType)input.ReadEnum();
                             break;
                         }
                     case 50:
@@ -509,22 +509,22 @@ namespace Communication
     {
         private static readonly pb::MessageParser<ResponseMessage> _parser = new pb::MessageParser<ResponseMessage>(() => new ResponseMessage());
         private pb::UnknownFieldSet _unknownFields;
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public static pb::MessageParser<ResponseMessage> Parser { get { return _parser; } }
 
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public static pbr::MessageDescriptor Descriptor
         {
-            get { return global::Communication.CommunicationReflection.Descriptor.MessageTypes[1]; }
+            get { return Communication.CommunicationReflection.Descriptor.MessageTypes[1]; }
         }
 
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         pbr::MessageDescriptor pb::IMessage.Descriptor
         {
             get { return Descriptor; }
         }
 
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public ResponseMessage()
         {
             OnConstruction();
@@ -532,7 +532,7 @@ namespace Communication
 
         partial void OnConstruction();
 
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public ResponseMessage(ResponseMessage other) : this()
         {
             clientId_ = other.clientId_;
@@ -544,7 +544,7 @@ namespace Communication
             _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
         }
 
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public ResponseMessage Clone()
         {
             return new ResponseMessage(this);
@@ -553,7 +553,7 @@ namespace Communication
         /// <summary>Field number for the "clientId" field.</summary>
         public const int ClientIdFieldNumber = 1;
         private string clientId_ = "";
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public string ClientId
         {
             get { return clientId_; }
@@ -566,7 +566,7 @@ namespace Communication
         /// <summary>Field number for the "messageId" field.</summary>
         public const int MessageIdFieldNumber = 2;
         private string messageId_ = "";
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public string MessageId
         {
             get { return messageId_; }
@@ -578,9 +578,9 @@ namespace Communication
 
         /// <summary>Field number for the "type" field.</summary>
         public const int TypeFieldNumber = 3;
-        private global::Communication.MessageType type_ = global::Communication.MessageType.Undefined;
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public global::Communication.MessageType Type
+        private Communication.MessageType type_ = Communication.MessageType.Undefined;
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Communication.MessageType Type
         {
             get { return type_; }
             set
@@ -592,7 +592,7 @@ namespace Communication
         /// <summary>Field number for the "time" field.</summary>
         public const int TimeFieldNumber = 4;
         private long time_;
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public long Time
         {
             get { return time_; }
@@ -604,9 +604,9 @@ namespace Communication
 
         /// <summary>Field number for the "status" field.</summary>
         public const int StatusFieldNumber = 5;
-        private global::Communication.MessageStatus status_ = global::Communication.MessageStatus.Undefined;
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public global::Communication.MessageStatus Status
+        private Communication.MessageStatus status_ = Communication.MessageStatus.Undefined;
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
+        public Communication.MessageStatus Status
         {
             get { return status_; }
             set
@@ -618,7 +618,7 @@ namespace Communication
         /// <summary>Field number for the "payload" field.</summary>
         public const int PayloadFieldNumber = 6;
         private string payload_ = "";
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public string Payload
         {
             get { return payload_; }
@@ -628,13 +628,13 @@ namespace Communication
             }
         }
 
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override bool Equals(object other)
         {
             return Equals(other as ResponseMessage);
         }
 
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public bool Equals(ResponseMessage other)
         {
             if (ReferenceEquals(other, null))
@@ -654,15 +654,15 @@ namespace Communication
             return Equals(_unknownFields, other._unknownFields);
         }
 
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override int GetHashCode()
         {
             int hash = 1;
             if (ClientId.Length != 0) hash ^= ClientId.GetHashCode();
             if (MessageId.Length != 0) hash ^= MessageId.GetHashCode();
-            if (Type != global::Communication.MessageType.Undefined) hash ^= Type.GetHashCode();
+            if (Type != Communication.MessageType.Undefined) hash ^= Type.GetHashCode();
             if (Time != 0L) hash ^= Time.GetHashCode();
-            if (Status != global::Communication.MessageStatus.Undefined) hash ^= Status.GetHashCode();
+            if (Status != Communication.MessageStatus.Undefined) hash ^= Status.GetHashCode();
             if (Payload.Length != 0) hash ^= Payload.GetHashCode();
             if (_unknownFields != null)
             {
@@ -671,13 +671,13 @@ namespace Communication
             return hash;
         }
 
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public override string ToString()
         {
             return pb::JsonFormatter.ToDiagnosticString(this);
         }
 
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void WriteTo(pb::CodedOutputStream output)
         {
 #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
@@ -691,7 +691,7 @@ namespace Communication
         output.WriteRawTag(18);
         output.WriteString(MessageId);
       }
-      if (Type != global::Communication.MessageType.Undefined) {
+      if (Type != Communication.MessageType.Undefined) {
         output.WriteRawTag(24);
         output.WriteEnum((int) Type);
       }
@@ -699,7 +699,7 @@ namespace Communication
         output.WriteRawTag(32);
         output.WriteInt64(Time);
       }
-      if (Status != global::Communication.MessageStatus.Undefined) {
+      if (Status != Communication.MessageStatus.Undefined) {
         output.WriteRawTag(40);
         output.WriteEnum((int) Status);
       }
@@ -714,7 +714,7 @@ namespace Communication
         }
 
 #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output)
         {
             if (ClientId.Length != 0)
@@ -727,7 +727,7 @@ namespace Communication
                 output.WriteRawTag(18);
                 output.WriteString(MessageId);
             }
-            if (Type != global::Communication.MessageType.Undefined)
+            if (Type != Communication.MessageType.Undefined)
             {
                 output.WriteRawTag(24);
                 output.WriteEnum((int)Type);
@@ -737,7 +737,7 @@ namespace Communication
                 output.WriteRawTag(32);
                 output.WriteInt64(Time);
             }
-            if (Status != global::Communication.MessageStatus.Undefined)
+            if (Status != Communication.MessageStatus.Undefined)
             {
                 output.WriteRawTag(40);
                 output.WriteEnum((int)Status);
@@ -754,7 +754,7 @@ namespace Communication
         }
 #endif
 
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public int CalculateSize()
         {
             int size = 0;
@@ -766,7 +766,7 @@ namespace Communication
             {
                 size += 1 + pb::CodedOutputStream.ComputeStringSize(MessageId);
             }
-            if (Type != global::Communication.MessageType.Undefined)
+            if (Type != Communication.MessageType.Undefined)
             {
                 size += 1 + pb::CodedOutputStream.ComputeEnumSize((int)Type);
             }
@@ -774,7 +774,7 @@ namespace Communication
             {
                 size += 1 + pb::CodedOutputStream.ComputeInt64Size(Time);
             }
-            if (Status != global::Communication.MessageStatus.Undefined)
+            if (Status != Communication.MessageStatus.Undefined)
             {
                 size += 1 + pb::CodedOutputStream.ComputeEnumSize((int)Status);
             }
@@ -789,7 +789,7 @@ namespace Communication
             return size;
         }
 
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void MergeFrom(ResponseMessage other)
         {
             if (other == null)
@@ -804,7 +804,7 @@ namespace Communication
             {
                 MessageId = other.MessageId;
             }
-            if (other.Type != global::Communication.MessageType.Undefined)
+            if (other.Type != Communication.MessageType.Undefined)
             {
                 Type = other.Type;
             }
@@ -812,7 +812,7 @@ namespace Communication
             {
                 Time = other.Time;
             }
-            if (other.Status != global::Communication.MessageStatus.Undefined)
+            if (other.Status != Communication.MessageStatus.Undefined)
             {
                 Status = other.Status;
             }
@@ -823,7 +823,7 @@ namespace Communication
             _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
         }
 
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         public void MergeFrom(pb::CodedInputStream input)
         {
 #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
@@ -844,7 +844,7 @@ namespace Communication
             break;
           }
           case 24: {
-            Type = (global::Communication.MessageType) input.ReadEnum();
+            Type = (Communication.MessageType) input.ReadEnum();
             break;
           }
           case 32: {
@@ -852,7 +852,7 @@ namespace Communication
             break;
           }
           case 40: {
-            Status = (global::Communication.MessageStatus) input.ReadEnum();
+            Status = (Communication.MessageStatus) input.ReadEnum();
             break;
           }
           case 50: {
@@ -865,7 +865,7 @@ namespace Communication
         }
 
 #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [System.Diagnostics.DebuggerNonUserCodeAttribute]
         void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input)
         {
             uint tag;
@@ -888,7 +888,7 @@ namespace Communication
                         }
                     case 24:
                         {
-                            Type = (global::Communication.MessageType)input.ReadEnum();
+                            Type = (Communication.MessageType)input.ReadEnum();
                             break;
                         }
                     case 32:
@@ -898,7 +898,7 @@ namespace Communication
                         }
                     case 40:
                         {
-                            Status = (global::Communication.MessageStatus)input.ReadEnum();
+                            Status = (Communication.MessageStatus)input.ReadEnum();
                             break;
                         }
                     case 50:
