@@ -30,7 +30,7 @@ namespace GrpcServer
             if (message.Response != ResponseType.Required)
                 return null;
             
-            var timestamp = DateTime.UtcNow.Ticks;
+            var timestamp = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(DateTime.UtcNow);
 
             try
             {
@@ -39,7 +39,7 @@ namespace GrpcServer
                     ClientId = message.ClientId,
                     MessageId = message.MessageId,
                     Type = message.Type,
-                    //Time = timestamp,
+                    Time = timestamp,
                     Payload = $"Response to \"{strPayload}\"",
                     Status = MessageStatus.Processed,
                 };
@@ -51,7 +51,7 @@ namespace GrpcServer
                     ClientId = message.ClientId,
                     MessageId = message.MessageId,
                     Type = message.Type,
-                    //Time = timestamp,
+                    Time = timestamp,
                     Payload = e.Message,
                     Status = MessageStatus.Error,
                 };
