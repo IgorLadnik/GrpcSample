@@ -10,10 +10,10 @@ namespace GrpcServer.Services
 {
     public class DuplexService : Messaging.MessagingBase, IDisposable
     {
-        private GeneralGrpcService<RequestMessage, ResponseMessage> _gs;
+        private GeneralGrpcService _gs;
 
         public DuplexService(ILoggerFactory loggerFactory, ServerGrpcSubscribers serverGrpcSubscribers, MessageProcessor messageProcessor) =>        
-            _gs = new GeneralGrpcService<RequestMessage, ResponseMessage>(loggerFactory, serverGrpcSubscribers, messageProcessor);
+            _gs = new GeneralGrpcService(loggerFactory, serverGrpcSubscribers, messageProcessor);
         
         public override async Task CreateStreaming(IAsyncStreamReader<RequestMessage> requestStream, IServerStreamWriter<ResponseMessage> responseStream, ServerCallContext context) =>
             await _gs.CreateDuplexStreaming(requestStream, responseStream, context);

@@ -1,31 +1,31 @@
-﻿using System.Collections.Generic;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Grpc.Core;
-using System.Threading;
+using GrpcHelperLib.Communication;
 
 namespace GrpcHelperLib
 {
-    public class GeneralGrpcService<TRequest, TResponse>
+    public class GeneralGrpcService
     {
-        private readonly ServerGrpcSubscribersBase<TResponse> _serverGrpcSubscribers;
-        private readonly MessageProcessorBase<TRequest, TResponse> _messageProcessor;
+        private readonly ServerGrpcSubscribersBase _serverGrpcSubscribers;
+        private readonly MessageProcessorBase _messageProcessor;
 
         protected ILogger Logger { get; set; }
 
         public GeneralGrpcService(
             ILoggerFactory loggerFactory, 
-            ServerGrpcSubscribersBase<TResponse> serverGrpcSubscribers, 
-            MessageProcessorBase<TRequest, TResponse> messageProcessor)
+            ServerGrpcSubscribersBase serverGrpcSubscribers, 
+            MessageProcessorBase messageProcessor)
         {
             _serverGrpcSubscribers = serverGrpcSubscribers;
             _messageProcessor = messageProcessor;
-            Logger = loggerFactory.CreateLogger<GeneralGrpcService<TRequest, TResponse>>();
+            Logger = loggerFactory.CreateLogger<GeneralGrpcService>();
         }
 
         public async Task CreateDuplexStreaming(
-            IAsyncStreamReader<TRequest> requestStream, 
-            IServerStreamWriter<TResponse> responseStream, 
+            IAsyncStreamReader<RequestMessage> requestStream, 
+            IServerStreamWriter<ResponseMessage> responseStream, 
             ServerCallContext context)
         {
             var httpContext = context.GetHttpContext();
@@ -38,7 +38,7 @@ namespace GrpcHelperLib
 
             var clientId = _messageProcessor.GetClientId(requestStream.Current);
             Logger.LogInformation($"{clientId} connected");
-            var subscriber = new SubscribersModel<TResponse>
+            var subscriber = new SubscribersModel
             {
                 Subscriber = responseStream,
                 Id = $"{clientId}"

@@ -4,13 +4,13 @@ using GrpcHelperLib.Communication;
 
 namespace GrpcServer
 {
-    public class ServerGrpcSubscribers : ServerGrpcSubscribersBase<ResponseMessage>
+    public class ServerGrpcSubscribers : ServerGrpcSubscribersBase
     {
         public ServerGrpcSubscribers(ILoggerFactory loggerFactory) 
             : base(loggerFactory)
         {
         }
 
-        public override bool Filter(SubscribersModel<ResponseMessage> subscriber, ResponseMessage message) => true;
+        public override bool Filter(SubscribersModel subscriber, ResponseMessage message) => true;
     }
 }
