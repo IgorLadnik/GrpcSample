@@ -6,7 +6,7 @@ namespace GrpcServer
 {
     public class ServerGrpcSubscribers : ServerGrpcSubscribersBase
     {
-        public ServerGrpcSubscribers(ILoggerFactory loggerFactory) 
+        public ServerGrpcSubscribers(ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
         }

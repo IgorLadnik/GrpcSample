@@ -2,6 +2,7 @@
 using System.Text;
 using Microsoft.Extensions.Logging;
 using GrpcHelperLib.Communication;
+using Google.Protobuf.WellKnownTypes;
 
 namespace GrpcHelperLib
 {
@@ -14,7 +15,17 @@ namespace GrpcHelperLib
 
         public string GetClientId(RequestMessage message) => message.ClientId;
 
-        public virtual ResponseMessage Process(RequestMessage message)
+        public virtual ResponseMessage ProcessRequest(RequestMessage message) =>
+            new ResponseMessage
+            {
+                ClientId = message.ClientId,
+                MessageId = message.MessageId,
+                Type = message.Type,
+                Time = Timestamp.FromDateTime(DateTime.UtcNow),
+                Status = MessageStatus.Processed,
+            };
+
+        public ResponseMessage Process(RequestMessage message)
         {
             var strPayload = Encoding.UTF8.GetString(message.Payload.ToByteArray());
             if (string.IsNullOrEmpty(strPayload))
@@ -22,39 +33,35 @@ namespace GrpcHelperLib
 
             Logger.LogInformation($"To be processed: {strPayload}");
 
-            //
             // Request message processing should be placed here
-            //
 
-            if (message.Response != ResponseType.Required)
-                return null;
-
-            var timestamp = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(DateTime.UtcNow);
+            ResponseMessage responseMessage;
 
             try
             {
-                return new ResponseMessage
-                {
-                    ClientId = message.ClientId,
-                    MessageId = message.MessageId,
-                    Type = message.Type,
-                    Time = timestamp,
-                    Payload = $"Response to \"{strPayload}\"",
-                    Status = MessageStatus.Processed,
-                };
+                responseMessage = ProcessRequest(message);
             }
-            catch (Exception e)
+            catch (Exception e) 
             {
                 return new ResponseMessage
                 {
                     ClientId = message.ClientId,
                     MessageId = message.MessageId,
                     Type = message.Type,
-                    Time = timestamp,
+                    Time = Timestamp.FromDateTime(DateTime.UtcNow),
                     Payload = e.Message,
                     Status = MessageStatus.Error,
                 };
             }
+
+            if (message.Response == ResponseType.Required && responseMessage != null) 
+            {
+                responseMessage.Status = MessageStatus.Processed;
+                responseMessage.Time = Timestamp.FromDateTime(DateTime.UtcNow);
+                return responseMessage;
+            }
+
+            return null;
         }
     }
 }
