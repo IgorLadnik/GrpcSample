@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Microsoft.Extensions.Logging;
+using Google.Protobuf;
 using GrpcHelperLib;
 using GrpcHelperLib.Communication;
 
@@ -15,7 +16,7 @@ namespace GrpcServer
         public override ResponseMessage ProcessRequest(RequestMessage message) 
         {
             var response = base.ProcessRequest(message);
-            response.Payload = $"Response to \"{Encoding.UTF8.GetString(message.Payload.ToByteArray())}\"";
+            response.Payload = message.Payload;
             return response;
         }
     }

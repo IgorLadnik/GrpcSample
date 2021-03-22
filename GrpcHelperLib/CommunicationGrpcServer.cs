@@ -1,33 +1,35 @@
+
 #pragma warning disable 0414, 1591
 
-using grpc = Grpc.Core;
-using Google.Protobuf;
+using grpc = global::Grpc.Core;
 using GrpcHelperLib.Communication;
 
 namespace GrpcHelperLib.CommunicationServer
 {
   public static partial class Messaging
   {
-    static void __Helper_SerializeMessage(IMessage message, grpc.SerializationContext context)
+    static readonly string __ServiceName = "GrpchelperLib.Communication.Messaging";
+
+    static void __Helper_SerializeMessage(global::Google.Protobuf.IMessage message, grpc::SerializationContext context)
     {
       #if !GRPC_DISABLE_PROTOBUF_BUFFER_SERIALIZATION
-      if (message is IBufferMessage)
+      if (message is global::Google.Protobuf.IBufferMessage)
       {
         context.SetPayloadLength(message.CalculateSize());
-        MessageExtensions.WriteTo(message, context.GetBufferWriter());
+        global::Google.Protobuf.MessageExtensions.WriteTo(message, context.GetBufferWriter());
         context.Complete();
         return;
       }
       #endif
-      context.Complete(MessageExtensions.ToByteArray(message));
+      context.Complete(global::Google.Protobuf.MessageExtensions.ToByteArray(message));
     }
 
     static class __Helper_MessageCache<T>
     {
-      public static readonly bool IsBufferMessage = System.Reflection.IntrospectionExtensions.GetTypeInfo(typeof(IBufferMessage)).IsAssignableFrom(typeof(T));
+      public static readonly bool IsBufferMessage = global::System.Reflection.IntrospectionExtensions.GetTypeInfo(typeof(global::Google.Protobuf.IBufferMessage)).IsAssignableFrom(typeof(T));
     }
 
-    static T __Helper_DeserializeMessage<T>(grpc.DeserializationContext context, MessageParser<T> parser) where T : IMessage<T>
+    static T __Helper_DeserializeMessage<T>(grpc::DeserializationContext context, global::Google.Protobuf.MessageParser<T> parser) where T : global::Google.Protobuf.IMessage<T>
     {
       #if !GRPC_DISABLE_PROTOBUF_BUFFER_SERIALIZATION
       if (__Helper_MessageCache<T>.IsBufferMessage)
@@ -38,38 +40,38 @@ namespace GrpcHelperLib.CommunicationServer
       return parser.ParseFrom(context.PayloadAsNewBuffer());
     }
 
-    static readonly grpc.Marshaller<RequestMessage> __Marshaller_Communication_RequestMessage = grpc.Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, RequestMessage.Parser));
-    static readonly grpc.Marshaller<ResponseMessage> __Marshaller_Communication_ResponseMessage = grpc.Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, ResponseMessage.Parser));
+    static readonly grpc::Marshaller<RequestMessage> __Marshaller_Communication_RequestMessage = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, RequestMessage.Parser));
+    static readonly grpc::Marshaller<ResponseMessage> __Marshaller_Communication_ResponseMessage = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, ResponseMessage.Parser));
 
-    static readonly grpc.Method<RequestMessage, ResponseMessage> __Method_CreateStreaming = new grpc.Method<RequestMessage, ResponseMessage>(
-        grpc.MethodType.DuplexStreaming,
-        Communication.Communication.ServiceName,
+    static readonly grpc::Method<RequestMessage, ResponseMessage> __Method_CreateStreaming = new grpc::Method<RequestMessage, ResponseMessage>(
+        grpc::MethodType.DuplexStreaming,
+        __ServiceName,
         "CreateStreaming",
         __Marshaller_Communication_RequestMessage,
         __Marshaller_Communication_ResponseMessage);
 
     /// <summary>Service descriptor</summary>
-    public static Google.Protobuf.Reflection.ServiceDescriptor Descriptor
+    public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
     {
       get { return CommunicationReflection.Descriptor.Services[0]; }
     }
 
     /// <summary>Base class for server-side implementations of Messaging</summary>
-    [grpc.BindServiceMethod(typeof(Messaging), "BindService")]
+    [grpc::BindServiceMethod(typeof(Messaging), "BindService")]
     public abstract partial class MessagingBase
     {
-      public virtual System.Threading.Tasks.Task CreateStreaming(grpc.IAsyncStreamReader<RequestMessage> requestStream, grpc.IServerStreamWriter<ResponseMessage> responseStream, grpc.ServerCallContext context)
+      public virtual global::System.Threading.Tasks.Task CreateStreaming(grpc::IAsyncStreamReader<RequestMessage> requestStream, grpc::IServerStreamWriter<ResponseMessage> responseStream, grpc::ServerCallContext context)
       {
-        throw new grpc.RpcException(new grpc.Status(grpc.StatusCode.Unimplemented, ""));
+        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
 
     }
 
     /// <summary>Creates service definition that can be registered with a server</summary>
     /// <param name="serviceImpl">An object implementing the server-side handling logic.</param>
-    public static grpc.ServerServiceDefinition BindService(MessagingBase serviceImpl)
+    public static grpc::ServerServiceDefinition BindService(MessagingBase serviceImpl)
     {
-      return grpc.ServerServiceDefinition.CreateBuilder()
+      return grpc::ServerServiceDefinition.CreateBuilder()
           .AddMethod(__Method_CreateStreaming, serviceImpl.CreateStreaming).Build();
     }
 
@@ -77,9 +79,9 @@ namespace GrpcHelperLib.CommunicationServer
     /// Note: this method is part of an experimental API that can change or be removed without any prior notice.</summary>
     /// <param name="serviceBinder">Service methods will be bound by calling <c>AddMethod</c> on this object.</param>
     /// <param name="serviceImpl">An object implementing the server-side handling logic.</param>
-    public static void BindService(grpc.ServiceBinderBase serviceBinder, MessagingBase serviceImpl)
+    public static void BindService(grpc::ServiceBinderBase serviceBinder, MessagingBase serviceImpl)
     {
-      serviceBinder.AddMethod(__Method_CreateStreaming, serviceImpl == null ? null : new grpc.DuplexStreamingServerMethod<RequestMessage, ResponseMessage>(serviceImpl.CreateStreaming));
+      serviceBinder.AddMethod(__Method_CreateStreaming, serviceImpl == null ? null : new grpc::DuplexStreamingServerMethod<RequestMessage, ResponseMessage>(serviceImpl.CreateStreaming));
     }
 
   }

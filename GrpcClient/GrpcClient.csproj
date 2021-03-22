@@ -9,11 +9,11 @@
     <DefineConstants>TRACE;TLS</DefineConstants>
   </PropertyGroup>
   
-  <!-- PROTO: The following section was added manually 
+  <!-- PROTO: The following section was added manually -->
   <ItemGroup>
 	<Protobuf Include="..\Protos\*.proto" GrpcServices="Client" />
   </ItemGroup>
-  -->
+  
   
   <ItemGroup>
 	<PackageReference Include="Google.Protobuf" Version="3.15.6" />

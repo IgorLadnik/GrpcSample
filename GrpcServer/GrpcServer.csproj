@@ -26,12 +26,12 @@
 	  <LinkBase></LinkBase>
 	</Content>
   </ItemGroup>
-  
+  -->
   
   <ItemGroup>
 	<Protobuf Include="..\Protos\*.proto" GrpcServices="Server" />
   </ItemGroup>
-  -->
+  
   
   <ItemGroup>
     <ProjectReference Include="..\GrpcHelperLib\GrpcHelperLib.csproj" />

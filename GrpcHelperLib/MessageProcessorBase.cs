@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Text;
 using Microsoft.Extensions.Logging;
-using GrpcHelperLib.Communication;
+using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
+using GrpcHelperLib.Communication;
 
 namespace GrpcHelperLib
 {
@@ -49,7 +50,7 @@ namespace GrpcHelperLib
                     MessageId = message.MessageId,
                     Type = message.Type,
                     Time = Timestamp.FromDateTime(DateTime.UtcNow),
-                    Payload = e.Message,
+                    Payload = ByteString.CopyFromUtf8(e.Message),
                     Status = MessageStatus.Error,
                 };
             }

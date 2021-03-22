@@ -1,17 +1,20 @@
 ﻿using System;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Google.Protobuf;
 using Grpc.Core;
+using GrpcHelperLib.Communication;
 
 namespace GrpcHelperLib
 {
-    public abstract class GrpcClientBase<TRequest, TResponse>
+    public abstract class GrpcClientBase
     {
-        public abstract AsyncDuplexStreamingCall<TRequest, TResponse> CreateDuplexClient(Channel channel);
+        public abstract AsyncDuplexStreamingCall<RequestMessage, ResponseMessage> CreateDuplexClient(Channel channel);
 
-        public abstract TRequest CreateMessage(object ob);
+        public abstract RequestMessage CreateMessage(ByteString ob);
 
-        public abstract string MessagePayload { get; }
+        public abstract ByteString MessagePayload { get; }
 
         public async Task Do(Channel channel, Action onConnection = null, Action onShuttingDown = null)
         {
@@ -21,12 +24,12 @@ namespace GrpcHelperLib
             var responseTask = Task.Run(async () =>
             {
                 while (await duplex.ResponseStream.MoveNext(CancellationToken.None))
-                    Console.WriteLine($"{duplex.ResponseStream.Current}");
+                    Console.WriteLine(Encoding.UTF8.GetString(duplex.ResponseStream.Current.Payload.ToByteArray())); //??
             });
 
-            string payload;
-            while (!string.IsNullOrEmpty(payload = MessagePayload))
-                await duplex.RequestStream.WriteAsync(CreateMessage(payload));
+            ByteString ob;
+            while ((ob = MessagePayload) != null)
+                await duplex.RequestStream.WriteAsync(CreateMessage(ob));
 
             await duplex.RequestStream.CompleteAsync();
 

@@ -27,7 +27,7 @@ message ResponseMessage
     MessageType type = 3;
     google.protobuf.Timestamp time = 4;
     MessageStatus status = 5;
-    string payload = 6;
+    bytes payload = 6;
 }
 
 enum MessageType
