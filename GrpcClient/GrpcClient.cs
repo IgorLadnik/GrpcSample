@@ -3,6 +3,7 @@ using Grpc.Core;
 using GrpcHelperLib;
 using Google.Protobuf.WellKnownTypes;
 using Google.Protobuf;
+using Communication;
 using CommunicationClient;
 
 namespace GrpcClient

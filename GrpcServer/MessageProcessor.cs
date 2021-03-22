@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using GrpcHelperLib;
 using System.Text;
-using CommunicationServer;
+using Communication;
 
 namespace GrpcServer
 {

@@ -2,6 +2,7 @@
 
 using grpc = Grpc.Core;
 using Google.Protobuf;
+using Communication;
 
 namespace CommunicationClient 
 {

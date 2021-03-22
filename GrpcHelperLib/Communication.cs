@@ -3,7 +3,7 @@
 using pb = Google.Protobuf;
 using pbr = Google.Protobuf.Reflection;
 
-namespace CommunicationServer 
+namespace Communication 
 {
 
   /// <summary>Holder for reflection information generated from proto</summary>
