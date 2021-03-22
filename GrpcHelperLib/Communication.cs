@@ -1,12 +1,15 @@
 #pragma warning disable 1591, 0612, 3021
 
 using pb = global::Google.Protobuf;
-using pbc = global::Google.Protobuf.Collections;
 using pbr = global::Google.Protobuf.Reflection;
-using scg = global::System.Collections.Generic;
 
 namespace GrpcHelperLib.Communication 
 {
+  public static class Communication 
+  {
+    public const string ServiceName = "GrpchelperLib.Communication.Messaging";
+  }
+
   /// <summary>Holder for reflection information generated from communication.proto</summary>
   public static partial class CommunicationReflection {
 
