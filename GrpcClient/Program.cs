@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using Grpc.Core;
 
@@ -26,6 +27,7 @@ namespace GrpcClient
             var client = new Client();
             await client.Do(
                 channel, 
+                response => Console.WriteLine(Encoding.UTF8.GetString(response.Payload.ToByteArray())), //onReceive
                 () =>
                 {
                     Console.Write($"Connected to server.{nl}ClientId = ");

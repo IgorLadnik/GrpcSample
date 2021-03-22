@@ -16,7 +16,7 @@ namespace GrpcHelperLib
 
         public abstract ByteString MessagePayload { get; }
 
-        public async Task Do(Channel channel, Action onConnection = null, Action onShuttingDown = null)
+        public async Task<GrpcClientBase> Do(Channel channel, Action<ResponseMessage> onReceive, Action onConnection = null, Action onShuttingDown = null)
         {
             using var duplex = CreateDuplexClient(channel);
             onConnection?.Invoke();
@@ -24,7 +24,7 @@ namespace GrpcHelperLib
             var responseTask = Task.Run(async () =>
             {
                 while (await duplex.ResponseStream.MoveNext(CancellationToken.None))
-                    Console.WriteLine(Encoding.UTF8.GetString(duplex.ResponseStream.Current.Payload.ToByteArray())); //??
+                    onReceive(duplex.ResponseStream.Current);
             });
 
             ByteString ob;
@@ -35,6 +35,8 @@ namespace GrpcHelperLib
 
             onShuttingDown?.Invoke();
             await channel.ShutdownAsync();
+            
+            return this;
         }
     }
 }
