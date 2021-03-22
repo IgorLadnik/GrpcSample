@@ -3,9 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Console;
-using GrpcServer.Services;
-using Microsoft.Extensions.Options;
+using GrpcHelperLib;
 
 namespace GrpcServer
 {
@@ -18,7 +16,7 @@ namespace GrpcServer
             services.AddSingleton<ServerGrpcSubscribers>();
             services.AddSingleton<MessageProcessor>();
 
-            services.AddGrpc();
+            services.AddGrpcHelper();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
