@@ -3,11 +3,11 @@
 using grpc = Grpc.Core;
 using Google.Protobuf;
 
-namespace Communication 
+namespace CommunicationServer
 {
   public static partial class Messaging
   {
-    static readonly string __ServiceName = "Messaging";
+    static readonly string __ServiceName = "CommunicationService.Messaging";
 
     static void __Helper_SerializeMessage(IMessage message, grpc.SerializationContext context)
     {

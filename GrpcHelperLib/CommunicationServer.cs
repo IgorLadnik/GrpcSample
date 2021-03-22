@@ -3,14 +3,14 @@
 using pb = Google.Protobuf;
 using pbr = Google.Protobuf.Reflection;
 
-namespace Communication 
+namespace CommunicationServer 
 {
 
-  /// <summary>Holder for reflection information generated from communication.proto</summary>
+  /// <summary>Holder for reflection information generated from proto</summary>
   public static partial class CommunicationReflection {
 
     #region Descriptor
-    /// <summary>File descriptor for communication.proto</summary>
+    /// <summary>File descriptor for proto</summary>
     public static pbr.FileDescriptor Descriptor 
     {
       get { return descriptor; }
@@ -45,9 +45,9 @@ namespace Communication
             "c3NhZ2UoATABYgZwcm90bzM="));
       descriptor = pbr.FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr.FileDescriptor[] { Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, },
-          new pbr.GeneratedClrTypeInfo(new[] {typeof(Communication.MessageType), typeof(Communication.MessageStatus), typeof(Communication.ResponseType), }, null, new pbr.GeneratedClrTypeInfo[] {
-            new pbr.GeneratedClrTypeInfo(typeof(Communication.RequestMessage), Communication.RequestMessage.Parser, new[]{ "ClientId", "MessageId", "Type", "Time", "Status", "Payload", "Response" }, null, null, null, null),
-            new pbr.GeneratedClrTypeInfo(typeof(Communication.ResponseMessage), Communication.ResponseMessage.Parser, new[]{ "ClientId", "MessageId", "Type", "Time", "Status", "Payload" }, null, null, null, null)
+          new pbr.GeneratedClrTypeInfo(new[] {typeof(MessageType), typeof(MessageStatus), typeof(ResponseType), }, null, new pbr.GeneratedClrTypeInfo[] {
+            new pbr.GeneratedClrTypeInfo(typeof(RequestMessage), RequestMessage.Parser, new[]{ "ClientId", "MessageId", "Type", "Time", "Status", "Payload", "Response" }, null, null, null, null),
+            new pbr.GeneratedClrTypeInfo(typeof(ResponseMessage), ResponseMessage.Parser, new[]{ "ClientId", "MessageId", "Type", "Time", "Status", "Payload" }, null, null, null, null)
           }));
     }
     #endregion
@@ -93,7 +93,7 @@ namespace Communication
 
     [System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr.MessageDescriptor Descriptor {
-      get { return Communication.CommunicationReflection.Descriptor.MessageTypes[0]; }
+      get { return CommunicationReflection.Descriptor.MessageTypes[0]; }
     }
 
     [System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -149,9 +149,9 @@ namespace Communication
 
     /// <summary>Field number for the "type" field.</summary>
     public const int TypeFieldNumber = 3;
-    private Communication.MessageType type_ = Communication.MessageType.Undefined;
+    private MessageType type_ = MessageType.Undefined;
     [System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Communication.MessageType Type {
+    public MessageType Type {
       get { return type_; }
       set {
         type_ = value;
@@ -171,9 +171,9 @@ namespace Communication
 
     /// <summary>Field number for the "status" field.</summary>
     public const int StatusFieldNumber = 5;
-    private Communication.MessageStatus status_ = Communication.MessageStatus.Undefined;
+    private MessageStatus status_ = MessageStatus.Undefined;
     [System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Communication.MessageStatus Status {
+    public MessageStatus Status {
       get { return status_; }
       set {
         status_ = value;
@@ -193,9 +193,9 @@ namespace Communication
 
     /// <summary>Field number for the "response" field.</summary>
     public const int ResponseFieldNumber = 7;
-    private Communication.ResponseType response_ = Communication.ResponseType.Undefined;
+    private ResponseType response_ = ResponseType.Undefined;
     [System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Communication.ResponseType Response {
+    public ResponseType Response {
       get { return response_; }
       set {
         response_ = value;
@@ -230,11 +230,11 @@ namespace Communication
       int hash = 1;
       if (ClientId.Length != 0) hash ^= ClientId.GetHashCode();
       if (MessageId.Length != 0) hash ^= MessageId.GetHashCode();
-      if (Type != Communication.MessageType.Undefined) hash ^= Type.GetHashCode();
+      if (Type != MessageType.Undefined) hash ^= Type.GetHashCode();
       if (time_ != null) hash ^= Time.GetHashCode();
-      if (Status != Communication.MessageStatus.Undefined) hash ^= Status.GetHashCode();
+      if (Status != MessageStatus.Undefined) hash ^= Status.GetHashCode();
       if (Payload.Length != 0) hash ^= Payload.GetHashCode();
-      if (Response != Communication.ResponseType.Undefined) hash ^= Response.GetHashCode();
+      if (Response != ResponseType.Undefined) hash ^= Response.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -259,7 +259,7 @@ namespace Communication
         output.WriteRawTag(18);
         output.WriteString(MessageId);
       }
-      if (Type != Communication.MessageType.Undefined) {
+      if (Type != MessageType.Undefined) {
         output.WriteRawTag(24);
         output.WriteEnum((int) Type);
       }
@@ -267,7 +267,7 @@ namespace Communication
         output.WriteRawTag(34);
         output.WriteMessage(Time);
       }
-      if (Status != Communication.MessageStatus.Undefined) {
+      if (Status != MessageStatus.Undefined) {
         output.WriteRawTag(40);
         output.WriteEnum((int) Status);
       }
@@ -275,7 +275,7 @@ namespace Communication
         output.WriteRawTag(50);
         output.WriteBytes(Payload);
       }
-      if (Response != Communication.ResponseType.Undefined) {
+      if (Response != ResponseType.Undefined) {
         output.WriteRawTag(56);
         output.WriteEnum((int) Response);
       }
@@ -296,7 +296,7 @@ namespace Communication
         output.WriteRawTag(18);
         output.WriteString(MessageId);
       }
-      if (Type != Communication.MessageType.Undefined) {
+      if (Type != MessageType.Undefined) {
         output.WriteRawTag(24);
         output.WriteEnum((int) Type);
       }
@@ -304,7 +304,7 @@ namespace Communication
         output.WriteRawTag(34);
         output.WriteMessage(Time);
       }
-      if (Status != Communication.MessageStatus.Undefined) {
+      if (Status != MessageStatus.Undefined) {
         output.WriteRawTag(40);
         output.WriteEnum((int) Status);
       }
@@ -312,7 +312,7 @@ namespace Communication
         output.WriteRawTag(50);
         output.WriteBytes(Payload);
       }
-      if (Response != Communication.ResponseType.Undefined) {
+      if (Response != ResponseType.Undefined) {
         output.WriteRawTag(56);
         output.WriteEnum((int) Response);
       }
@@ -331,19 +331,19 @@ namespace Communication
       if (MessageId.Length != 0) {
         size += 1 + pb.CodedOutputStream.ComputeStringSize(MessageId);
       }
-      if (Type != Communication.MessageType.Undefined) {
+      if (Type != MessageType.Undefined) {
         size += 1 + pb.CodedOutputStream.ComputeEnumSize((int) Type);
       }
       if (time_ != null) {
         size += 1 + pb.CodedOutputStream.ComputeMessageSize(Time);
       }
-      if (Status != Communication.MessageStatus.Undefined) {
+      if (Status != MessageStatus.Undefined) {
         size += 1 + pb.CodedOutputStream.ComputeEnumSize((int) Status);
       }
       if (Payload.Length != 0) {
         size += 1 + pb.CodedOutputStream.ComputeBytesSize(Payload);
       }
-      if (Response != Communication.ResponseType.Undefined) {
+      if (Response != ResponseType.Undefined) {
         size += 1 + pb.CodedOutputStream.ComputeEnumSize((int) Response);
       }
       if (_unknownFields != null) {
@@ -363,7 +363,7 @@ namespace Communication
       if (other.MessageId.Length != 0) {
         MessageId = other.MessageId;
       }
-      if (other.Type != Communication.MessageType.Undefined) {
+      if (other.Type != MessageType.Undefined) {
         Type = other.Type;
       }
       if (other.time_ != null) {
@@ -372,13 +372,13 @@ namespace Communication
         }
         Time.MergeFrom(other.Time);
       }
-      if (other.Status != Communication.MessageStatus.Undefined) {
+      if (other.Status != MessageStatus.Undefined) {
         Status = other.Status;
       }
       if (other.Payload.Length != 0) {
         Payload = other.Payload;
       }
-      if (other.Response != Communication.ResponseType.Undefined) {
+      if (other.Response != ResponseType.Undefined) {
         Response = other.Response;
       }
       _unknownFields = pb.UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -404,7 +404,7 @@ namespace Communication
             break;
           }
           case 24: {
-            Type = (Communication.MessageType) input.ReadEnum();
+            Type = (MessageType) input.ReadEnum();
             break;
           }
           case 34: {
@@ -415,7 +415,7 @@ namespace Communication
             break;
           }
           case 40: {
-            Status = (Communication.MessageStatus) input.ReadEnum();
+            Status = (MessageStatus) input.ReadEnum();
             break;
           }
           case 50: {
@@ -423,7 +423,7 @@ namespace Communication
             break;
           }
           case 56: {
-            Response = (Communication.ResponseType) input.ReadEnum();
+            Response = (ResponseType) input.ReadEnum();
             break;
           }
         }
@@ -449,7 +449,7 @@ namespace Communication
             break;
           }
           case 24: {
-            Type = (Communication.MessageType) input.ReadEnum();
+            Type = (MessageType) input.ReadEnum();
             break;
           }
           case 34: {
@@ -460,7 +460,7 @@ namespace Communication
             break;
           }
           case 40: {
-            Status = (Communication.MessageStatus) input.ReadEnum();
+            Status = (MessageStatus) input.ReadEnum();
             break;
           }
           case 50: {
@@ -468,7 +468,7 @@ namespace Communication
             break;
           }
           case 56: {
-            Response = (Communication.ResponseType) input.ReadEnum();
+            Response = (ResponseType) input.ReadEnum();
             break;
           }
         }
@@ -490,7 +490,7 @@ namespace Communication
 
     [System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr.MessageDescriptor Descriptor {
-      get { return Communication.CommunicationReflection.Descriptor.MessageTypes[1]; }
+      get { return CommunicationReflection.Descriptor.MessageTypes[1]; }
     }
 
     [System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -545,9 +545,9 @@ namespace Communication
 
     /// <summary>Field number for the "type" field.</summary>
     public const int TypeFieldNumber = 3;
-    private Communication.MessageType type_ = Communication.MessageType.Undefined;
+    private MessageType type_ = MessageType.Undefined;
     [System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Communication.MessageType Type {
+    public MessageType Type {
       get { return type_; }
       set {
         type_ = value;
@@ -567,9 +567,9 @@ namespace Communication
 
     /// <summary>Field number for the "status" field.</summary>
     public const int StatusFieldNumber = 5;
-    private Communication.MessageStatus status_ = Communication.MessageStatus.Undefined;
+    private MessageStatus status_ = MessageStatus.Undefined;
     [System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Communication.MessageStatus Status {
+    public MessageStatus Status {
       get { return status_; }
       set {
         status_ = value;
@@ -614,9 +614,9 @@ namespace Communication
       int hash = 1;
       if (ClientId.Length != 0) hash ^= ClientId.GetHashCode();
       if (MessageId.Length != 0) hash ^= MessageId.GetHashCode();
-      if (Type != Communication.MessageType.Undefined) hash ^= Type.GetHashCode();
+      if (Type != MessageType.Undefined) hash ^= Type.GetHashCode();
       if (time_ != null) hash ^= Time.GetHashCode();
-      if (Status != Communication.MessageStatus.Undefined) hash ^= Status.GetHashCode();
+      if (Status != MessageStatus.Undefined) hash ^= Status.GetHashCode();
       if (Payload.Length != 0) hash ^= Payload.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -642,7 +642,7 @@ namespace Communication
         output.WriteRawTag(18);
         output.WriteString(MessageId);
       }
-      if (Type != Communication.MessageType.Undefined) {
+      if (Type != MessageType.Undefined) {
         output.WriteRawTag(24);
         output.WriteEnum((int) Type);
       }
@@ -650,7 +650,7 @@ namespace Communication
         output.WriteRawTag(34);
         output.WriteMessage(Time);
       }
-      if (Status != Communication.MessageStatus.Undefined) {
+      if (Status != MessageStatus.Undefined) {
         output.WriteRawTag(40);
         output.WriteEnum((int) Status);
       }
@@ -675,7 +675,7 @@ namespace Communication
         output.WriteRawTag(18);
         output.WriteString(MessageId);
       }
-      if (Type != Communication.MessageType.Undefined) {
+      if (Type != MessageType.Undefined) {
         output.WriteRawTag(24);
         output.WriteEnum((int) Type);
       }
@@ -683,7 +683,7 @@ namespace Communication
         output.WriteRawTag(34);
         output.WriteMessage(Time);
       }
-      if (Status != Communication.MessageStatus.Undefined) {
+      if (Status != MessageStatus.Undefined) {
         output.WriteRawTag(40);
         output.WriteEnum((int) Status);
       }
@@ -706,13 +706,13 @@ namespace Communication
       if (MessageId.Length != 0) {
         size += 1 + pb.CodedOutputStream.ComputeStringSize(MessageId);
       }
-      if (Type != Communication.MessageType.Undefined) {
+      if (Type != MessageType.Undefined) {
         size += 1 + pb.CodedOutputStream.ComputeEnumSize((int) Type);
       }
       if (time_ != null) {
         size += 1 + pb.CodedOutputStream.ComputeMessageSize(Time);
       }
-      if (Status != Communication.MessageStatus.Undefined) {
+      if (Status != MessageStatus.Undefined) {
         size += 1 + pb.CodedOutputStream.ComputeEnumSize((int) Status);
       }
       if (Payload.Length != 0) {
@@ -735,7 +735,7 @@ namespace Communication
       if (other.MessageId.Length != 0) {
         MessageId = other.MessageId;
       }
-      if (other.Type != Communication.MessageType.Undefined) {
+      if (other.Type != MessageType.Undefined) {
         Type = other.Type;
       }
       if (other.time_ != null) {
@@ -744,7 +744,7 @@ namespace Communication
         }
         Time.MergeFrom(other.Time);
       }
-      if (other.Status != Communication.MessageStatus.Undefined) {
+      if (other.Status != MessageStatus.Undefined) {
         Status = other.Status;
       }
       if (other.Payload.Length != 0) {
@@ -773,7 +773,7 @@ namespace Communication
             break;
           }
           case 24: {
-            Type = (Communication.MessageType) input.ReadEnum();
+            Type = (MessageType) input.ReadEnum();
             break;
           }
           case 34: {
@@ -784,7 +784,7 @@ namespace Communication
             break;
           }
           case 40: {
-            Status = (Communication.MessageStatus) input.ReadEnum();
+            Status = (MessageStatus) input.ReadEnum();
             break;
           }
           case 50: {
@@ -814,7 +814,7 @@ namespace Communication
             break;
           }
           case 24: {
-            Type = (Communication.MessageType) input.ReadEnum();
+            Type = (MessageType) input.ReadEnum();
             break;
           }
           case 34: {
@@ -825,7 +825,7 @@ namespace Communication
             break;
           }
           case 40: {
-            Status = (Communication.MessageStatus) input.ReadEnum();
+            Status = (MessageStatus) input.ReadEnum();
             break;
           }
           case 50: {
@@ -840,5 +840,4 @@ namespace Communication
   }
 
   #endregion
-
 }

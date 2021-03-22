@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Grpc.Core;
-using Communication;
 using GrpcHelperLib;
+using CommunicationServer;
 
 namespace GrpcServer.Services
 {
