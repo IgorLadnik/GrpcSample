@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Text;
 using Microsoft.Extensions.Logging;
 using GrpcHelperLib;
-using System.Text;
-using Communication;
+using GrpcHelperLib.Communication;
 
 namespace GrpcServer
 {

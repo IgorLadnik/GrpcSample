@@ -1,10 +1,10 @@
 ﻿using System;
 using Grpc.Core;
-using GrpcHelperLib;
 using Google.Protobuf.WellKnownTypes;
 using Google.Protobuf;
-using Communication;
-using CommunicationClient;
+using GrpcHelperLib;
+using GrpcHelperLib.Communication;
+using GrpcHelperLib.CommunicationClient;
 
 namespace GrpcClient
 {

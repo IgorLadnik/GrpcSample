@@ -2,13 +2,13 @@
 
 using grpc = Grpc.Core;
 using Google.Protobuf;
-using Communication;
+using GrpcHelperLib.Communication;
 
-namespace CommunicationServer
+namespace GrpcHelperLib.CommunicationServer
 {
   public static partial class Messaging
   {
-    static readonly string __ServiceName = "CommunicationService.Messaging";
+    static readonly string __ServiceName = "GrpcHelperLib.CommunicationService.Messaging";
 
     static void __Helper_SerializeMessage(IMessage message, grpc.SerializationContext context)
     {

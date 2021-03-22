@@ -1,14 +1,13 @@
 #pragma warning disable 0414, 1591
 
 using grpc = Grpc.Core;
-using Google.Protobuf;
-using Communication;
+using GrpcHelperLib.Communication;
 
-namespace CommunicationClient 
+namespace GrpcHelperLib.CommunicationClient 
 {
   public static partial class Messaging
   {
-    static readonly string __ServiceName = "CommunicationService.Messaging";
+    static readonly string __ServiceName = "GrpcHelperLib.CommunicationService.Messaging";
 
     static void __Helper_SerializeMessage(global::Google.Protobuf.IMessage message, grpc::SerializationContext context)
     {
