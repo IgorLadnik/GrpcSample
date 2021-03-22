@@ -14,7 +14,7 @@ namespace GrpcHelperLib
         private ILogger Logger { get; set; }
 
         public ServerGrpcSubscribersBase(ILoggerFactory loggerFactory) =>
-            Logger = loggerFactory.CreateLogger<ServerGrpcSubscribersBase> ();
+            Logger = loggerFactory.CreateLogger<ServerGrpcSubscribersBase>();
 
         public async Task BroadcastMessageAsync(ResponseMessage message) =>
             await BroadcastMessages(message);
@@ -40,7 +40,7 @@ namespace GrpcHelperLib
             }
         }
 
-        public virtual bool Filter(SubscribersModel subscriber, ResponseMessage message) => true;
+        public virtual bool SubscribersFilter(SubscribersModel subscriber, ResponseMessage message) => true;
         
         private async Task BroadcastMessages(ResponseMessage message)
         {
@@ -56,7 +56,7 @@ namespace GrpcHelperLib
         {
             try
             {
-                if (Filter(subscriber, message))
+                if (SubscribersFilter(subscriber, message))
                 {
                     Logger.LogInformation($"Sending: {message}");
                     await subscriber.Subscriber.WriteAsync(message);
