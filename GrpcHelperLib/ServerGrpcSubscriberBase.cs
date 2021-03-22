@@ -12,15 +12,11 @@ namespace GrpcHelperLib
 
         private ILogger Logger { get; set; }
 
-        public ServerGrpcSubscribersBase(ILoggerFactory loggerFactory)
-        {
+        public ServerGrpcSubscribersBase(ILoggerFactory loggerFactory) =>
             Logger = loggerFactory.CreateLogger<ServerGrpcSubscribersBase<TResponse>> ();
-        }
 
-        public async Task BroadcastMessageAsync(TResponse message)
-        {
+        public async Task BroadcastMessageAsync(TResponse message) =>
             await BroadcastMessages(message);
-        }
 
         public void AddSubscriber(SubscribersModel<TResponse> subscriber)
         {

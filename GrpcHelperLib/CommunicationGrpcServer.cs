@@ -8,8 +8,6 @@ namespace GrpcHelperLib.CommunicationServer
 {
   public static partial class Messaging
   {
-    static readonly string __ServiceName = "GrpcHelperLib.CommunicationService.Messaging";
-
     static void __Helper_SerializeMessage(IMessage message, grpc.SerializationContext context)
     {
       #if !GRPC_DISABLE_PROTOBUF_BUFFER_SERIALIZATION
@@ -45,7 +43,7 @@ namespace GrpcHelperLib.CommunicationServer
 
     static readonly grpc.Method<RequestMessage, ResponseMessage> __Method_CreateStreaming = new grpc.Method<RequestMessage, ResponseMessage>(
         grpc.MethodType.DuplexStreaming,
-        __ServiceName,
+        Communication.Communication.ServiceName,
         "CreateStreaming",
         __Marshaller_Communication_RequestMessage,
         __Marshaller_Communication_ResponseMessage);

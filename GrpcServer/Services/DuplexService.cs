@@ -12,19 +12,13 @@ namespace GrpcServer.Services
     {
         private GeneralGrpcService<RequestMessage, ResponseMessage> _gs;
 
-        public DuplexService(ILoggerFactory loggerFactory, ServerGrpcSubscribers serverGrpcSubscribers, MessageProcessor messageProcessor)
-        {
+        public DuplexService(ILoggerFactory loggerFactory, ServerGrpcSubscribers serverGrpcSubscribers, MessageProcessor messageProcessor) =>        
             _gs = new GeneralGrpcService<RequestMessage, ResponseMessage>(loggerFactory, serverGrpcSubscribers, messageProcessor);
-        }
-
-        public override async Task CreateStreaming(IAsyncStreamReader<RequestMessage> requestStream, IServerStreamWriter<ResponseMessage> responseStream, ServerCallContext context)
-        {
+        
+        public override async Task CreateStreaming(IAsyncStreamReader<RequestMessage> requestStream, IServerStreamWriter<ResponseMessage> responseStream, ServerCallContext context) =>
             await _gs.CreateDuplexStreaming(requestStream, responseStream, context);
-        }
 
-        public void Dispose()
-        {
+        public void Dispose() =>
             _gs.Dispose();
-        }
     }
 }

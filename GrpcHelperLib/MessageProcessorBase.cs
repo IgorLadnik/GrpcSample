@@ -6,10 +6,8 @@ namespace GrpcHelperLib
     {
         protected ILogger Logger { get; set; }
 
-        public MessageProcessorBase(ILoggerFactory loggerFactory)
-        {
+        public MessageProcessorBase(ILoggerFactory loggerFactory) =>
             Logger = loggerFactory.CreateLogger<MessageProcessorBase<TRequest, TResponse>>();
-        }
 
         public abstract string GetClientId(TRequest message);
 

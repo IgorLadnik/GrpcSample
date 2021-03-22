@@ -1,7 +1,7 @@
 ﻿using System;
 using Grpc.Core;
-using Google.Protobuf.WellKnownTypes;
 using Google.Protobuf;
+using Google.Protobuf.WellKnownTypes;
 using GrpcHelperLib;
 using GrpcHelperLib.Communication;
 using GrpcHelperLib.CommunicationClient;

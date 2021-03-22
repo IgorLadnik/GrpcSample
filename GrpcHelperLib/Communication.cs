@@ -5,9 +5,13 @@ using pbr = Google.Protobuf.Reflection;
 
 namespace GrpcHelperLib.Communication 
 {
+    public static class Communication 
+    {
+        public const string ServiceName = "GrpcHelperLib.CommunicationService.Messaging";
+    }
 
-  /// <summary>Holder for reflection information generated from proto</summary>
-  public static partial class CommunicationReflection {
+    /// <summary>Holder for reflection information generated from proto</summary>
+    public static partial class CommunicationReflection {
 
     #region Descriptor
     /// <summary>File descriptor for proto</summary>
