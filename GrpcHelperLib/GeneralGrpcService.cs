@@ -55,7 +55,7 @@ namespace GrpcHelperLib
                 if (resultMessage == null)
                     continue;
 
-                await _serverGrpcSubscribers.BroadcastMessageAsync(resultMessage);
+                await _serverGrpcSubscribers.SendMessageAsync(resultMessage);
             } while (await requestStream.MoveNext(cts.Token));
 
             _serverGrpcSubscribers.RemoveSubscriber(subscriber);

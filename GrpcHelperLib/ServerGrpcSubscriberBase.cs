@@ -16,9 +16,6 @@ namespace GrpcHelperLib
         public ServerGrpcSubscribersBase(ILoggerFactory loggerFactory) =>
             Logger = loggerFactory.CreateLogger<ServerGrpcSubscribersBase>();
 
-        public async Task BroadcastMessageAsync(ResponseMessage message) =>
-            await BroadcastMessages(message);
-
         public void AddSubscriber(SubscribersModel subscriber)
         {
             bool added = Subscribers.TryAdd(subscriber.Id, subscriber);
@@ -42,7 +39,7 @@ namespace GrpcHelperLib
 
         public virtual bool SubscribersFilter(SubscribersModel subscriber, ResponseMessage message) => true;
         
-        private async Task BroadcastMessages(ResponseMessage message)
+        public async Task SendMessageAsync(ResponseMessage message)
         {
             foreach (var subscriber in Subscribers.Values)
             {
