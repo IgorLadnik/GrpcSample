@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using GrpcHelperLib;
+using DtoLib;
 
 namespace GrpcServer
 {

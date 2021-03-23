@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+	<EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -34,6 +35,7 @@
   
   
   <ItemGroup>
+    <ProjectReference Include="..\DtoLib\DtoLib.csproj" />
     <ProjectReference Include="..\GrpcHelperLib\GrpcHelperLib.csproj" />
   </ItemGroup>
 
