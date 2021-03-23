@@ -21,7 +21,7 @@ namespace GrpcClient
 
             var client = new Client();
             await client.Do($"localhost:{PORT}", pathCertificate,
-                response => Console.WriteLine(Encoding.UTF8.GetString(response.Payload.ToByteArray())), //onReceive
+                response => Console.WriteLine(response.Payload.ToStringUtf8()), //onReceive
                 () =>
                 {
                     Console.Write($"Connected to server.{nl}ClientId = ");
