@@ -8,7 +8,7 @@ using GrpcHelperLib.Communication;
 
 namespace GrpcHelperLib
 {
-    public abstract class GrpcClientBase
+    public abstract class GrpcClientBase : IDisposable
     {
         public string ClientId { get; protected set; }
 
@@ -16,22 +16,43 @@ namespace GrpcHelperLib
 
         public abstract RequestMessage CreateMessage(ByteString ob);
 
-        public abstract ByteString MessagePayload { get; }
+        public virtual ByteString ToByteString(object ob) => ob.ToByteString();
+
+        public virtual object ToObject(ByteString bs) => bs.ToObject();
+
+        private AsyncDuplexStreamingCall<RequestMessage, ResponseMessage> _duplex;
+        private Channel _channel;
+        private Action _onShuttingDown;
+
+        public Task SendAsync(params object[] obs) =>
+            Task.Run(async () =>
+            {
+                try
+                {
+                    await _duplex.RequestStream.WriteAsync(CreateMessage(ToByteString(obs)));
+                }
+                catch (Exception e)
+                {
+                    // Log error
+                }
+            });
 
         public async Task<GrpcClientBase> Start(string url, string pathCertificate, Action<ResponseMessage> onReceive, Action onConnection = null, Action onShuttingDown = null)
         {
-            Channel channel = new(url, string.IsNullOrEmpty(pathCertificate) ? ChannelCredentials.Insecure : new SslCredentials(File.ReadAllText(pathCertificate)));
-    
-            using var duplex = CreateDuplexClient(channel);
+            _onShuttingDown = onShuttingDown;
+
+            _channel = new(url, string.IsNullOrEmpty(pathCertificate) ? ChannelCredentials.Insecure : new SslCredentials(File.ReadAllText(pathCertificate)));  
+            _duplex = CreateDuplexClient(_channel);
+            
             onConnection?.Invoke();
 
             var responseTask = Task.Run(async () =>
             {
-                while (await duplex.ResponseStream.MoveNext(CancellationToken.None))
+                while (await _duplex.ResponseStream.MoveNext(CancellationToken.None))
                 {
                     try
                     {
-                        onReceive(duplex.ResponseStream.Current);
+                        onReceive(_duplex.ResponseStream.Current);
                     }
                     catch (Exception e) 
                     {
@@ -40,25 +61,18 @@ namespace GrpcHelperLib
                 }
             });
 
-            ByteString payload;
-            while ((payload = MessagePayload) != null)
-            {
-                try
-                {
-                    await duplex.RequestStream.WriteAsync(CreateMessage(payload));
-                }
-                catch (Exception e)
-                {
-                    // Log error
-                }
-            }
-
-            await duplex.RequestStream.CompleteAsync();
-
-            onShuttingDown?.Invoke();
-            await channel.ShutdownAsync();
-            
             return this;
+        }
+
+        public void Dispose()
+        {
+            if (_duplex != null) 
+            {
+                _duplex.RequestStream.CompleteAsync();
+                _onShuttingDown?.Invoke();
+                _channel?.ShutdownAsync().Wait();
+                _duplex?.Dispose();
+            }
         }
     }
 }

@@ -1,10 +1,11 @@
-﻿using System.IO;
+﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Google.Protobuf;
 using GrpcHelperLib;
 using GrpcHelperLib.Communication;
+using ModelsLib;
 
 namespace DtoLib
 {
@@ -17,14 +18,12 @@ namespace DtoLib
 
         public override ResponseMessage ProcessRequest(RequestMessage message) 
         {
+            var ob = message.Payload.ToObject<IList<Arg1>>();
+            Console.WriteLine(JsonConvert.SerializeObject(ob));
+
             var response = base.ProcessRequest(message);
 
-            using MemoryStream ms = new(message.Payload.ToByteArray());
-            ms.Seek(0, SeekOrigin.Begin);
-            BinaryFormatter bf = new();
-            var arg1s = bf.Deserialize(ms);
-            
-            response.Payload = message.Payload;
+            response.Payload = ((object)"OK").ToByteString();
             return response;
         }
     }

@@ -32,7 +32,7 @@ namespace GrpcHelperLib
             if (string.IsNullOrEmpty(strPayload))
                 return null;
 
-            Logger.LogInformation($"To be processed: {strPayload}");
+            //Logger.LogInformation($"To be processed: {strPayload}");
 
             // Request message processing should be placed here
 
