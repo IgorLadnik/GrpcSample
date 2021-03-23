@@ -11,8 +11,6 @@ namespace GrpcClient
 {
     public class Client : GrpcClientBase
     {
-        public string ClientId { get; }
-
         public Client()
         {
             ClientId = $"{Guid.NewGuid()}";

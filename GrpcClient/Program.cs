@@ -9,6 +9,8 @@ namespace GrpcClient
 
         static async Task<int> Main(string[] args)
         {
+            // TODO: Logger to be added
+
             Console.WriteLine("GrpcClient started.");
 
             var pathCertificate = args.Length > 0 && args[0].ToLower() == "tls"
@@ -19,8 +21,8 @@ namespace GrpcClient
             var orgTextColor = Console.ForegroundColor;
 
             Client client = new();
-            await client.Do($"localhost:{PORT}", pathCertificate,
-                response => Console.WriteLine(response.Payload.ToStringUtf8()), //onReceive
+            await client.Start($"localhost:{PORT}", pathCertificate,
+                response => Console.WriteLine(response.Payload.ToStringUtf8()), // onReceive
                 () =>
                 {
                     Console.Write($"Connected to server.{nl}ClientId = ");
