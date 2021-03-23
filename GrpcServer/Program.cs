@@ -22,11 +22,10 @@ namespace GrpcServer
                     .ConfigureKestrel(options =>
                     {
                         options.Limits.MinRequestBodyDataRate = null;
-                        options.Listen(IPAddress.Any, PORT,
-                        args?[0]?.ToLower() == "tls"
-                                ? listenOptions => listenOptions.ServerListenOptions("grpcServer.pfx", "1511")
-                                : null
-                        );
+                        if (args.Length > 0 && args[0].ToLower() == "tls")
+                            options.Listen(IPAddress.Any, PORT, listenOptions => listenOptions.ServerListenOptions("grpcServer.pfx", "1511"));
+                        else
+                            options.Listen(IPAddress.Any, PORT);
                     });
                 });
     }

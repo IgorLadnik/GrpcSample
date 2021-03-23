@@ -12,7 +12,7 @@ namespace GrpcClient
         {
             Console.WriteLine("GrpcClient started.");
 
-            string pathCertificate = args?[0]?.ToLower() == "tls"
+            string pathCertificate = args.Length > 0 && args[0].ToLower() == "tls"
                         ? @"..\..\..\Certs\certificate.crt"
                         : null;
 
