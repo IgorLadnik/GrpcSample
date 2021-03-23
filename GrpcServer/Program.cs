@@ -1,7 +1,7 @@
 using System.Net;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Hosting;
+using GrpcHelperLib;
 
 namespace GrpcServer
 {
@@ -24,11 +24,7 @@ namespace GrpcServer
                         options.Limits.MinRequestBodyDataRate = null;
                         options.Listen(IPAddress.Any, PORT
 #if TLS
-                        , listenOptions =>
-                        {
-                            listenOptions.UseHttps("grpcServer.pfx", "1511");
-                            listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
-                        }
+                        , listenOptions => listenOptions.ServerListenOptions("grpcServer.pfx", "1511")
 #endif                        
                         );
                     });

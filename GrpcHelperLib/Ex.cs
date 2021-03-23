@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.AspNetCore.Hosting;
 using Grpc.AspNetCore.Server;
 
 namespace GrpcHelperLib
@@ -12,5 +15,11 @@ namespace GrpcHelperLib
 
             return services.AddGrpc();
         }
-    }
+
+        public static void ServerListenOptions(this ListenOptions listenOptions, string pathCetificate, string password)
+        {
+            listenOptions.UseHttps(pathCetificate, password);
+            listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
+        }
+}
 }
