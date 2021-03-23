@@ -31,9 +31,9 @@ namespace GrpcHelperLib
             var httpContext = context.GetHttpContext();
             Logger.LogInformation($"Connection id: {httpContext.Connection.Id}");
 
-            CancellationTokenSource cancellationTokenSource = new(); //??
+            CancellationTokenSource cts = new(); //??
 
-            if (!await requestStream.MoveNext(cancellationTokenSource.Token))
+            if (!await requestStream.MoveNext(cts.Token))
                 return;
 
             var clientId = _messageProcessor.GetClientId(requestStream.Current);
@@ -56,7 +56,7 @@ namespace GrpcHelperLib
                     continue;
 
                 await _serverGrpcSubscribers.BroadcastMessageAsync(resultMessage);
-            } while (await requestStream.MoveNext(cancellationTokenSource.Token));
+            } while (await requestStream.MoveNext(cts.Token));
 
             _serverGrpcSubscribers.RemoveSubscriber(subscriber);
             Logger.LogInformation($"{clientId} disconnected");
