@@ -1,8 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using Grpc.Core;
 
 namespace GrpcClient
 {
@@ -14,19 +12,15 @@ namespace GrpcClient
         {
             Console.WriteLine("GrpcClient started.");
 
-            var channel = new Channel($"localhost:{PORT}",
-#if TLS
-                new SslCredentials(File.ReadAllText(@"..\..\..\Certs\certificate.crt"))
-#else
-                ChannelCredentials.Insecure
-#endif
-            );
+            string pathCertificate = args?[0]?.ToLower() == "tls"
+                        ? @"..\..\..\Certs\certificate.crt"
+                        : null;
+
             var nl = Environment.NewLine;
             var orgTextColor = Console.ForegroundColor;
 
             var client = new Client();
-            await client.Do(
-                channel, 
+            await client.Do($"localhost:{PORT}", pathCertificate,
                 response => Console.WriteLine(Encoding.UTF8.GetString(response.Payload.ToByteArray())), //onReceive
                 () =>
                 {

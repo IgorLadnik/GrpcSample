@@ -1,24 +1,13 @@
-﻿{
-    "profiles": {
-        "GrpcServer": {
-            "commandName": "Project",
-            "dotnetRunMessages": "true",
-            "launchBrowser": false,
-            "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
-            },
-            "Logging": {
-                "LogLevel": {
-                    "Default": "Information",
-                    "Microsoft.Hosting.Lifetime": "Information"
-                }
-            },
-            "AllowedHosts": "*",
-            "Kestrel": {
-                "EndpointDefaults": {
-                    "Protocols": "Http2"
-                }
-            }
-        }
+{
+  "profiles": {
+    "GrpcServer": {
+      "commandName": "Project",
+      "commandLineArgs": "TLS",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "AllowedHosts": "*",
+      "dotnetRunMessages": "true"
     }
+  }
 }

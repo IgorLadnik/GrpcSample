@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Text;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Google.Protobuf;
@@ -16,8 +16,10 @@ namespace GrpcHelperLib
 
         public abstract ByteString MessagePayload { get; }
 
-        public async Task<GrpcClientBase> Do(Channel channel, Action<ResponseMessage> onReceive, Action onConnection = null, Action onShuttingDown = null)
+        public async Task<GrpcClientBase> Do(string url, string pathCertificate, Action<ResponseMessage> onReceive, Action onConnection = null, Action onShuttingDown = null)
         {
+            var channel = new Channel(url, string.IsNullOrEmpty(pathCertificate) ? ChannelCredentials.Insecure : new SslCredentials(File.ReadAllText(pathCertificate)));
+    
             using var duplex = CreateDuplexClient(channel);
             onConnection?.Invoke();
 
