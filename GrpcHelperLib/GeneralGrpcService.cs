@@ -38,7 +38,7 @@ namespace GrpcHelperLib
 
             var clientId = _messageProcessor.GetClientId(requestStream.Current);
             Logger.LogInformation($"{clientId} connected");
-            var subscriber = new SubscribersModel
+            SubscribersModel subscriber = new()
             {
                 Subscriber = responseStream,
                 Id = $"{clientId}"

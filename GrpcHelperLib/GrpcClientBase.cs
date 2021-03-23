@@ -18,7 +18,7 @@ namespace GrpcHelperLib
 
         public async Task<GrpcClientBase> Do(string url, string pathCertificate, Action<ResponseMessage> onReceive, Action onConnection = null, Action onShuttingDown = null)
         {
-            var channel = new Channel(url, string.IsNullOrEmpty(pathCertificate) ? ChannelCredentials.Insecure : new SslCredentials(File.ReadAllText(pathCertificate)));
+            Channel channel = new(url, string.IsNullOrEmpty(pathCertificate) ? ChannelCredentials.Insecure : new SslCredentials(File.ReadAllText(pathCertificate)));
     
             using var duplex = CreateDuplexClient(channel);
             onConnection?.Invoke();

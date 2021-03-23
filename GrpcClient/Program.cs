@@ -18,7 +18,7 @@ namespace GrpcClient
             var nl = Environment.NewLine;
             var orgTextColor = Console.ForegroundColor;
 
-            var client = new Client();
+            Client client = new();
             await client.Do($"localhost:{PORT}", pathCertificate,
                 response => Console.WriteLine(response.Payload.ToStringUtf8()), //onReceive
                 () =>

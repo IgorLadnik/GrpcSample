@@ -8,8 +8,7 @@ namespace GrpcHelperLib
 {
     public class ServerGrpcSubscribersBase
     {
-        private readonly ConcurrentDictionary<string, SubscribersModel> Subscribers = 
-            new ConcurrentDictionary<string, SubscribersModel>();
+        private readonly ConcurrentDictionary<string, SubscribersModel> Subscribers = new();
 
         private ILogger Logger { get; set; }
 
