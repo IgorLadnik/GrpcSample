@@ -8,5 +8,7 @@ namespace RemoteImplementations
         {
             return 7;
         }
+
+        public string Echo(string text) => $"Echo: {text}";
     }
 }
