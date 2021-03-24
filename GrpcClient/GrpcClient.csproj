@@ -30,7 +30,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\GrpcHelperLib\GrpcHelperLib.csproj" />
+    <ProjectReference Include="..\Infrastructure\GrpcHelperLib\GrpcHelperLib.csproj" />
     <ProjectReference Include="..\RemoteCallable\RemoteInterfaces\RemoteInterfaces.csproj" />
   </ItemGroup>
 

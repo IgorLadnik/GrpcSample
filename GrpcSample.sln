@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrpcServer", "GrpcServer\Gr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrpcClient", "GrpcClient\GrpcClient.csproj", "{C537E744-4EA9-487D-8BFE-07CD10FF2EE7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrpcHelperLib", "GrpcHelperLib\GrpcHelperLib.csproj", "{2534A05B-FF9C-4D13-B7B7-3A144492FC69}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{6BD5D555-4324-4D74-9FF5-236AD2405CDC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RemoteCallable", "RemoteCallable", "{CD8FCE05-759B-4F4C-9708-321E8AFA9575}"
@@ -16,6 +14,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteInterfaces", "RemoteCallable\RemoteInterfaces\RemoteInterfaces.csproj", "{F886BBFF-8B29-4B3F-9F29-7D58E6D9BF2A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteImplementations", "RemoteCallable\RemoteImplementations\RemoteImplementations.csproj", "{2D68B81E-5434-47DC-A163-346B2E20D108}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{E19F617E-A534-43F4-AEE3-7C25EE8D04EC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrpcHelperLib", "Infrastructure\GrpcHelperLib\GrpcHelperLib.csproj", "{717A3C3B-23EA-4581-94BC-F84553A6E19C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsyncLockLib", "Infrastructure\AsyncLockLib\AsyncLockLib.csproj", "{8BA93F42-C150-4AE4-B2FA-E733C682D29B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +35,6 @@ Global
 		{C537E744-4EA9-487D-8BFE-07CD10FF2EE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C537E744-4EA9-487D-8BFE-07CD10FF2EE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C537E744-4EA9-487D-8BFE-07CD10FF2EE7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2534A05B-FF9C-4D13-B7B7-3A144492FC69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2534A05B-FF9C-4D13-B7B7-3A144492FC69}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2534A05B-FF9C-4D13-B7B7-3A144492FC69}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2534A05B-FF9C-4D13-B7B7-3A144492FC69}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6BD5D555-4324-4D74-9FF5-236AD2405CDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6BD5D555-4324-4D74-9FF5-236AD2405CDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BD5D555-4324-4D74-9FF5-236AD2405CDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -47,6 +47,14 @@ Global
 		{2D68B81E-5434-47DC-A163-346B2E20D108}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D68B81E-5434-47DC-A163-346B2E20D108}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D68B81E-5434-47DC-A163-346B2E20D108}.Release|Any CPU.Build.0 = Release|Any CPU
+		{717A3C3B-23EA-4581-94BC-F84553A6E19C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{717A3C3B-23EA-4581-94BC-F84553A6E19C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{717A3C3B-23EA-4581-94BC-F84553A6E19C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{717A3C3B-23EA-4581-94BC-F84553A6E19C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BA93F42-C150-4AE4-B2FA-E733C682D29B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BA93F42-C150-4AE4-B2FA-E733C682D29B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BA93F42-C150-4AE4-B2FA-E733C682D29B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BA93F42-C150-4AE4-B2FA-E733C682D29B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,6 +62,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{F886BBFF-8B29-4B3F-9F29-7D58E6D9BF2A} = {CD8FCE05-759B-4F4C-9708-321E8AFA9575}
 		{2D68B81E-5434-47DC-A163-346B2E20D108} = {CD8FCE05-759B-4F4C-9708-321E8AFA9575}
+		{717A3C3B-23EA-4581-94BC-F84553A6E19C} = {E19F617E-A534-43F4-AEE3-7C25EE8D04EC}
+		{8BA93F42-C150-4AE4-B2FA-E733C682D29B} = {E19F617E-A534-43F4-AEE3-7C25EE8D04EC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {08E9AC60-C2DF-40D6-9693-D1DA631036E9}

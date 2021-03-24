@@ -47,6 +47,11 @@ namespace GrpcClient
             return 0;
         }
 
+        //private async object RemoteMethodCall(GrpcClientBase client) 
+        //{
+        //    await client.SendAsync(IRemoteCall_Foo);
+        //}
+
         private static object[] IRemoteCall_Foo =>
             new object[]
             {
