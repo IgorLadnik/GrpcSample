@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using ModelsLib;
+using RemoteInterfaces;
+using RemoteImplementations;
 
 namespace ConsoleApp1
 {
@@ -17,7 +18,7 @@ namespace ConsoleApp1
                 new() { Id = "1", Arg2Props = new() { new() { Id = "1.0" }, new() { Id = "1.1" }, } },
             };
 
-            Class1 ob = new();
+            RemoteCall ob = new();
 
             List<long> ticks = new();
 

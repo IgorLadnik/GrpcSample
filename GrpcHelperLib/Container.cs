@@ -10,29 +10,29 @@ namespace GrpcHelperLib
 {
     public class Container
     {
-        private ConcurrentDictionary<string, System.Type> _dctPerCall = new();
+        private ConcurrentDictionary<string, Type> _dctPerCall = new();
         private ConcurrentDictionary<string, object> _dctSingleton = new();
 
         #region Register 
 
         // "impl" type should have default ctor!
-        public Container RegisterPerCall(System.Type @interface, System.Type impl)
+        public Container RegisterPerCall(Type @interface, Type impl)
         {
             _dctPerCall[@interface.Name] = impl;
             return this;
         }
 
-        public Container RegisterPerCall<TInteface, TImpl>() where TImpl : TInteface, new()
-        {
+        public Container RegisterPerCall<TInteface, TImpl>() where TImpl : TInteface, new() =>
             RegisterPerCall(typeof(TInteface), typeof(TImpl));
-            return this;
-        }
 
-        public Container RegisterSingleton(System.Type @interface, object ob)
+        public Container RegisterSingleton(Type @interface, object ob)
         {
             _dctSingleton[@interface.Name] = ob;
             return this;
         }
+
+        public Container RegisterSingleton<TInteface>(TInteface ob) =>
+            RegisterSingleton(typeof(TInteface), ob);
 
         #endregion // Register 
 
@@ -41,7 +41,7 @@ namespace GrpcHelperLib
         public object ResolvePerCall(string interafceName)
         {
             object ob = null;
-            if (_dctPerCall.TryGetValue(interafceName, out System.Type type))
+            if (_dctPerCall.TryGetValue(interafceName, out Type type))
                 ob = Activator.CreateInstance(type);
 
             return ob;

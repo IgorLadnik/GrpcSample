@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using GrpcHelperLib;
-using ModelsLib;
+using RemoteInterfaces;
+using RemoteImplementations;
 
 namespace GrpcServer
 {
@@ -9,7 +10,8 @@ namespace GrpcServer
         public MessageProcessor(ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
-            RegisterPerCall<IRemoteCall, RemoteCall>();
+            RegisterSingleton<IRemoteCall>(new RemoteCall());
+            //RegisterPerCall<IRemoteCall, RemoteCall>();
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using GrpcHelperLib;
-using ModelsLib;
+using RemoteInterfaces;
 
 namespace GrpcClient
 {
@@ -57,12 +57,5 @@ namespace GrpcClient
                     new() { Id = "1", Arg2Props = new() { new() { Id = "1.0" }, new() { Id = "1.1" }, } },
                  }
             };
-
-        //public static List<Arg1> GetTestObjects() =>
-        //    new List<Arg1>
-        //    {
-        //        new() { Id = "0", Arg2Props = new() { new() { Id = "0.0" }, new() { Id = "0.1" }, } },
-        //        new() { Id = "1", Arg2Props = new() { new() { Id = "1.0" }, new() { Id = "1.1" }, } },
-        //    };
     }
 }

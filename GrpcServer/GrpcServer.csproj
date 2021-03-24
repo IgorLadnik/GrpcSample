@@ -36,7 +36,8 @@
   
   <ItemGroup>
     <ProjectReference Include="..\GrpcHelperLib\GrpcHelperLib.csproj" />
-    <ProjectReference Include="..\ModelsLib\ModelsLib.csproj" />
+    <ProjectReference Include="..\RemoteCallable\RemoteImplementations\RemoteImplementations.csproj" />
+    <ProjectReference Include="..\RemoteCallable\RemoteInterfaces\RemoteInterfaces.csproj" />
   </ItemGroup>
 
 </Project>
