@@ -3,18 +3,30 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Google.Protobuf;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using GrpcHelperLib.Communication;
+using GrpcHelperLib.CommunicationClient;
 
 namespace GrpcHelperLib
 {
-    public abstract class GrpcClientBase : IDisposable
+    public class GrpcClientBase : IDisposable
     {
-        public string ClientId { get; protected set; }
+        public string ClientId { get; set; }
 
-        public abstract AsyncDuplexStreamingCall<RequestMessage, ResponseMessage> CreateDuplexClient(Channel channel);
+        public virtual AsyncDuplexStreamingCall<RequestMessage, ResponseMessage> CreateDuplexClient(Channel channel) =>
+             new Messaging.MessagingClient(channel).CreateStreaming();
 
-        public abstract RequestMessage CreateMessage(ByteString ob);
+        public virtual RequestMessage CreateMessage(ByteString payload) =>
+            new()
+            {
+                ClientId = ClientId,
+                MessageId = $"{Guid.NewGuid()}",
+                Type = MessageType.Ordinary,
+                Time = Timestamp.FromDateTime(DateTime.UtcNow),
+                Response = ResponseType.Required,
+                Payload = payload
+            };
 
         public virtual ByteString ToByteString(object ob) => ob.ToByteString();
 

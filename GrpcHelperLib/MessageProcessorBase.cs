@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Text;
 using Microsoft.Extensions.Logging;
 using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
 using GrpcHelperLib.Communication;
+using System.Linq;
 
 namespace GrpcHelperLib
 {
-    public class MessageProcessorBase
+    public class MessageProcessorBase : Container
     {
         protected ILogger Logger { get; set; }
 
@@ -16,15 +18,24 @@ namespace GrpcHelperLib
 
         public string GetClientId(RequestMessage message) => message.ClientId;
 
-        public virtual ResponseMessage ProcessRequest(RequestMessage message) =>
-            new ResponseMessage
+        public virtual ResponseMessage ProcessRequest(RequestMessage message)
+        {
+            //Console.WriteLine(JsonConvert.SerializeObject(message));
+            var result = CallMethod(message);
+            ResponseMessage response = new()
             {
                 ClientId = message.ClientId,
                 MessageId = message.MessageId,
                 Type = message.Type,
                 Time = Timestamp.FromDateTime(DateTime.UtcNow),
                 Status = MessageStatus.Processed,
+                Payload = result.ToByteString()
             };
+
+            //Console.WriteLine(JsonConvert.SerializeObject(response));
+            return response;
+        }
+
 
         public ResponseMessage Process(RequestMessage message)
         {
@@ -42,7 +53,7 @@ namespace GrpcHelperLib
             {
                 responseMessage = ProcessRequest(message);
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
                 return new ResponseMessage
                 {
@@ -55,7 +66,7 @@ namespace GrpcHelperLib
                 };
             }
 
-            if (message.Response == ResponseType.Required && responseMessage != null) 
+            if (message.Response == ResponseType.Required && responseMessage != null)
             {
                 responseMessage.Status = MessageStatus.Processed;
                 responseMessage.Time = Timestamp.FromDateTime(DateTime.UtcNow);

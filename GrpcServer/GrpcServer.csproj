@@ -35,8 +35,8 @@
   
   
   <ItemGroup>
-    <ProjectReference Include="..\DtoLib\DtoLib.csproj" />
     <ProjectReference Include="..\GrpcHelperLib\GrpcHelperLib.csproj" />
+    <ProjectReference Include="..\ModelsLib\ModelsLib.csproj" />
   </ItemGroup>
 
 </Project>
