@@ -11,6 +11,6 @@ namespace GrpcServer
         {
         }
 
-        public override bool SubscribersFilter(SubscribersModel subscriber, ResponseMessage message) => true;
+        //public override bool SubscribersFilter(SubscribersModel subscriber, ResponseMessage message) => true;
     }
 }

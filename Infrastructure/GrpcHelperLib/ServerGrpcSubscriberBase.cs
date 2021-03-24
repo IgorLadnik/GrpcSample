@@ -36,8 +36,10 @@ namespace GrpcHelperLib
             }
         }
 
-        public virtual bool SubscribersFilter(SubscribersModel subscriber, ResponseMessage message) => true;
-        
+        public virtual bool SubscribersFilter(SubscribersModel subscriber, ResponseMessage message) =>
+            subscriber.Id == message.ClientId;
+
+
         public async Task SendMessageAsync(ResponseMessage message)
         {
             foreach (var subscriber in Subscribers.Values)
