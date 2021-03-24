@@ -39,18 +39,19 @@ namespace GrpcClient
                 () => Console.WriteLine("Shutting down...")
             );
 
-            Timer timer = new(async _ => await client.SendAsync(IRemoteCall_Foo), null, 0, 5000);
+            Timer timer = new(async _ =>
+            {
+                await client.SendAsync(IRemoteCall_Foo);
+
+                var result = await client.RemoteCallAsync(IRemoteCall_Foo);
+                Console.WriteLine($"   {result}");
+            }, null, 0, 5000);
 
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
 
             return 0;
         }
-
-        //private async object RemoteMethodCall(GrpcClientBase client) 
-        //{
-        //    await client.SendAsync(IRemoteCall_Foo);
-        //}
 
         private static object[] IRemoteCall_Foo =>
             new object[]

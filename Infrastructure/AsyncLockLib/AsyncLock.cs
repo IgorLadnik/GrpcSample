@@ -11,10 +11,7 @@ namespace AsyncLockLib
     {
         private readonly Task<T> _task;
 
-        public TaskWrapper(Task<T> task)
-        {
-            _task = task;
-        }
+        public TaskWrapper(Task<T> task) => _task = task;
 
         public TaskAwaiter<T> GetAwaiter() => _task.GetAwaiter();
     }
@@ -49,15 +46,11 @@ namespace AsyncLockLib
         {
             private readonly SemaphoreSlim _semaphore;
 
-            public Releaser(SemaphoreSlim semaphore)
-            {
+            public Releaser(SemaphoreSlim semaphore) =>
                 _semaphore = semaphore;
-            }
 
-            public void Dispose()
-            {
+            public void Dispose() =>
                 _semaphore.Release();
-            }
         }
     }
 }

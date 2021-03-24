@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,6 +13,9 @@ namespace GrpcHelperLib
 {
     public class GrpcClientBase : IDisposable
     {
+        private ConcurrentDictionary<string, AutoResetEvent> _dctEv = new();
+        private ConcurrentDictionary<string, ResponseMessage> _dctResult = new();
+
         public string ClientId { get; set; }
 
         public virtual AsyncDuplexStreamingCall<RequestMessage, ResponseMessage> CreateDuplexClient(Channel channel) =>
@@ -36,18 +40,49 @@ namespace GrpcHelperLib
         private Channel _channel;
         private Action _onShuttingDown;
 
-        public Task SendAsync(params object[] obs) =>
+        public Task<string> SendAsync(params object[] obs) =>
             Task.Run(async () =>
             {
                 try
                 {
-                    await _duplex.RequestStream.WriteAsync(CreateMessage(ToByteString(obs)));
+                    var message = CreateMessage(ToByteString(obs));
+                    await _duplex.RequestStream.WriteAsync(message);
+                    return message.MessageId;
                 }
                 catch (Exception e)
                 {
                     // Log error
+                    return null;
                 }
             });
+
+        public Task<object> RemoteCallAsync(params object[] obs) =>
+            Task.Run(async () =>
+            {
+                AutoResetEvent ev = new(false);
+                var messageId = await SendAsync(obs);
+                if (string.IsNullOrEmpty(messageId))
+                    return null;
+
+                _dctEv[messageId] = ev;
+                ev.WaitOne();
+
+                if (!_dctResult.TryRemove(messageId, out ResponseMessage responseMessage))
+                    return null;
+
+                return responseMessage.Payload.ToObject();
+            });
+
+        private bool OnReceive(ResponseMessage responseMessage) 
+        {
+            var messageId = responseMessage.MessageId;
+            if (!_dctEv.TryRemove(messageId, out AutoResetEvent ev))
+                return false;
+
+            _dctResult[messageId] = responseMessage;
+            ev.Set();
+            return true;
+        }
 
         public async Task<GrpcClientBase> Start(string url, string pathCertificate, Action<ResponseMessage> onReceive, Action onConnection = null, Action onShuttingDown = null)
         {
@@ -62,9 +97,11 @@ namespace GrpcHelperLib
             {
                 while (await _duplex.ResponseStream.MoveNext(CancellationToken.None))
                 {
+                    var responseMessage = _duplex.ResponseStream.Current;
                     try
                     {
-                        onReceive(_duplex.ResponseStream.Current);
+                        if (!OnReceive(responseMessage))
+                            onReceive(responseMessage);
                     }
                     catch (Exception e) 
                     {
