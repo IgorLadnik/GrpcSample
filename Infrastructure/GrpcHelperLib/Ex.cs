@@ -25,9 +25,11 @@ namespace GrpcHelperLib
             listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
         }
 
+        #region Binary serialization 
+
         public static ByteString ToByteString(this object ob) 
         {
-            MemoryStream ms = new();           
+            using MemoryStream ms = new();           
             BinaryFormatter bf = new();
             bf.Serialize(ms, ob);
             ms.Position = 0;
@@ -36,7 +38,7 @@ namespace GrpcHelperLib
 
         public static object ToObject(this ByteString bs)
         {
-            MemoryStream ms = new(bs.ToByteArray());
+            using MemoryStream ms = new(bs.ToByteArray());
             ms.Seek(0, SeekOrigin.Begin);
             BinaryFormatter bf = new();
             return bf.Deserialize(ms);
@@ -44,10 +46,12 @@ namespace GrpcHelperLib
 
         public static T ToObject<T>(this ByteString bs)
         {
-            MemoryStream ms = new(bs.ToByteArray());
+            using MemoryStream ms = new(bs.ToByteArray());
             ms.Seek(0, SeekOrigin.Begin);
             BinaryFormatter bf = new();
             return (T)((bf.Deserialize(ms) as object[])?[0]);
         }
+
+        #endregion // Binary serialization 
     }
 }
