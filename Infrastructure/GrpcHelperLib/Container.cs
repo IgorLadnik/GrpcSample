@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GrpcHelperLib.Communication;
 
 namespace GrpcHelperLib
 {
     public class Container
     {
-        private ConcurrentDictionary<string, Type> _dctPerCall = new();
-        private ConcurrentDictionary<string, object> _dctSingleton = new();
+        class Descriptor 
+        {
+            public Type type;
+            public object ob;
+            public bool isPerSession = false;
+        }
+
+        private ConcurrentDictionary<string, Descriptor> _dct = new();
 
         #region Register 
 
@@ -20,7 +23,7 @@ namespace GrpcHelperLib
         // "impl" type should have default ctor!
         public Container Register(Type @interface, Type impl)
         {
-            _dctPerCall[@interface.Name] = impl;
+            _dct[@interface.Name] = new() { type = impl };
             return this;
         }
 
@@ -33,7 +36,7 @@ namespace GrpcHelperLib
 
         public Container Register(Type @interface, object ob)
         {
-            _dctSingleton[@interface.Name] = ob;
+            _dct[@interface.Name] = new() { ob = ob };
             return this;
         }
 
@@ -46,13 +49,16 @@ namespace GrpcHelperLib
 
         public object Resolve(string interafceName)
         {
-            if (_dctSingleton.TryGetValue(interafceName, out object ob))
-                return ob;
+            if (!_dct.TryGetValue(interafceName, out Descriptor descriptor))
+                return null;
 
-            if (_dctPerCall.TryGetValue(interafceName, out Type type))
-                ob = Activator.CreateInstance(type);
+            if (descriptor.ob != null)
+                return descriptor.ob;
 
-            return ob;
+            if (descriptor.type != null)
+                return Activator.CreateInstance(descriptor.type);
+
+            return null;
         }
 
         public virtual object CallMethod(RequestMessage message)
