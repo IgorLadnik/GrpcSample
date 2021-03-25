@@ -12,6 +12,8 @@ namespace GrpcServer
         {
             RegisterSingleton<IRemoteCall>(new RemoteCall());
             //RegisterPerCall<IRemoteCall, RemoteCall>();
+
+            RegisterSingleton<IRemoteCall1>(new RemoteCall1());
         }
     }
 }

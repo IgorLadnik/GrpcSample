@@ -59,13 +59,24 @@ namespace GrpcHelperLib
         {
             var obs = (object[])message.Payload.ToObject();
             var interfaceName = $"{obs[0]}";
+            var methodName = $"{obs[1]}";
             var localOb = ResolveSingleton(interfaceName);
 
             if (localOb == null)
                 localOb = ResolvePerCall(interfaceName);
 
-            var methodInfo = localOb?.GetType().GetMethod($"{obs[1]}");
-            return methodInfo?.Invoke(localOb, obs.Skip(2).ToArray());
+            if (localOb == null)
+                return null;
+
+            var methodAgrs = obs.Skip(2).ToArray();
+            var callDirect = localOb as ICallDirect;
+            if (callDirect != null)
+                return callDirect.Call(methodName, methodAgrs);
+            else
+            {
+                var methodInfo = localOb?.GetType().GetMethod(methodName);
+                return methodInfo?.Invoke(localOb, methodAgrs);
+            }
         }
 
     }

@@ -55,6 +55,21 @@ namespace GrpcClient
 
                 var echo = await client.RemoteCallAsync("IRemoteCall", "Echo", "some text");
                 Console.WriteLine($"   {echo}");
+
+
+                result = await client.RemoteCallAsync("IRemoteCall1", "Foo",
+                         "my name",
+                         new Arg1[]
+                         {
+                            new() { Id = "0", Arg2Props = new() { new() { Id = "0.0" }, new() { Id = "0.1" }, } },
+                            new() { Id = "1", Arg2Props = new() { new() { Id = "1.0" }, new() { Id = "1.1" }, } },
+                         }
+                    );
+                Console.WriteLine($"   {result}");
+
+                echo = await client.RemoteCallAsync("IRemoteCall1", "Echo", "some text");
+                Console.WriteLine($"   {echo}");
+
             }, null, 0, 5000);
 
             Console.WriteLine("Press any key to exit...");
