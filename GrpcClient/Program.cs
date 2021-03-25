@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using GrpcHelperLib;
@@ -43,6 +44,9 @@ namespace GrpcClient
             {
                 await client.SendAsync(IRemoteCall_Foo);
 
+                // Call with reflection
+                Stopwatch sw1 = new();
+                sw1.Start();
                 var result = await client.RemoteCallAsync("IRemoteCall", "Foo",
                          "my name",
                          new Arg1[]
@@ -51,12 +55,16 @@ namespace GrpcClient
                             new() { Id = "1", Arg2Props = new() { new() { Id = "1.0" }, new() { Id = "1.1" }, } },
                          }
                     );
-                Console.WriteLine($"   {result}");
-
                 var echo = await client.RemoteCallAsync("IRemoteCall", "Echo", "some text");
+                sw1.Stop();
+                var ticks1 = sw1.ElapsedTicks;
+
+                Console.WriteLine($"   {result}");
                 Console.WriteLine($"   {echo}");
 
-
+                // Direct call
+                Stopwatch sw2 = new();
+                sw2.Start();
                 result = await client.RemoteCallAsync("IRemoteCall1", "Foo",
                          "my name",
                          new Arg1[]
@@ -65,11 +73,14 @@ namespace GrpcClient
                             new() { Id = "1", Arg2Props = new() { new() { Id = "1.0" }, new() { Id = "1.1" }, } },
                          }
                     );
-                Console.WriteLine($"   {result}");
-
                 echo = await client.RemoteCallAsync("IRemoteCall1", "Echo", "some text");
+                sw2.Stop();
+                var ticks2 = sw2.ElapsedTicks;
+
+                Console.WriteLine($"   {result}");
                 Console.WriteLine($"   {echo}");
 
+                Console.WriteLine($"Reclected call: {ticks1}\nDirect call:    {ticks2}\nRatio: {((float)ticks1 / ticks2).ToString("f1")}");
             }, null, 0, 5000);
 
             Console.WriteLine("Press any key to exit...");
