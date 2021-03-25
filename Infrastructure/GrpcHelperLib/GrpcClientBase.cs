@@ -21,14 +21,14 @@ namespace GrpcHelperLib
         public virtual AsyncDuplexStreamingCall<RequestMessage, ResponseMessage> CreateDuplexClient(Channel channel) =>
              new Messaging.MessagingClient(channel).CreateStreaming();
 
-        public virtual RequestMessage CreateMessage(ByteString payload) =>
+        public virtual RequestMessage CreateMessage(ByteString payload, bool isResponseRequied) =>
             new()
             {
                 ClientId = ClientId,
                 MessageId = $"{Guid.NewGuid()}",
                 Type = MessageType.Ordinary,
                 Time = Timestamp.FromDateTime(DateTime.UtcNow),
-                Response = ResponseType.Required,
+                Response = isResponseRequied ? ResponseType.Required : ResponseType.NotRequired,
                 Payload = payload
             };
 
@@ -40,27 +40,18 @@ namespace GrpcHelperLib
         private Channel _channel;
         private Action _onShuttingDown;
 
-        public Task<string> SendAsync(params object[] obs) =>
-            Task.Run(async () =>
-            {
-                try
-                {
-                    var message = CreateMessage(ToByteString(obs));
-                    await _duplex.RequestStream.WriteAsync(message);
-                    return message.MessageId;
-                }
-                catch (Exception e)
-                {
-                    // Log error
-                    return null;
-                }
-            });
+        public Task<string> SendAsync(params object[] obs) => InnerSendAsync(true, obs);
+        public Task<string> SendOneWayAsync(params object[] obs) => InnerSendAsync(false, obs);
 
-        public Task<object> RemoteCallAsync(params object[] obs) =>
+        public Task<object> RemoteMethodCallAsync(params object[] obs) => InnerRemoteMethodCallAsync(true, obs);
+
+        public Task<object> RemoteMethodCallOneWayAsync(params object[] obs) => InnerRemoteMethodCallAsync(false, obs);
+
+        private Task<object> InnerRemoteMethodCallAsync(bool isResponseRequired, params object[] obs) =>
             Task.Run(async () =>
             {
                 AutoResetEvent ev = new(false);
-                var messageId = await SendAsync(obs);
+                var messageId = await InnerSendAsync(isResponseRequired, obs);
                 if (string.IsNullOrEmpty(messageId))
                     return null;
 
@@ -73,6 +64,29 @@ namespace GrpcHelperLib
                 return responseMessage.Payload.ToObject();
             });
 
+        private Task<string> InnerSendAsync(bool isResponseRequired, params object[] obs) =>
+            Task.Run(async () =>
+            {
+                if (obs == null || obs.Length < 2 ||
+                    string.IsNullOrWhiteSpace((string)obs[0]) || string.IsNullOrWhiteSpace((string)obs[1]))
+                {
+                    // Log error
+                    return null;
+                }
+
+                try
+                {
+                    var message = CreateMessage(ToByteString(obs), isResponseRequired);
+                    await _duplex.RequestStream.WriteAsync(message);
+                    return message.MessageId;
+                }
+                catch (Exception e)
+                {
+                    // Log error
+                    return null;
+                }
+            });
+        
         private bool OnReceive(ResponseMessage responseMessage) 
         {
             var messageId = responseMessage.MessageId;

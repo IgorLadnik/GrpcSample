@@ -47,7 +47,7 @@ namespace GrpcClient
                 // Call with reflection
                 Stopwatch sw1 = new();
                 sw1.Start();
-                var result = await client.RemoteCallAsync("IRemoteCall", "Foo",
+                var result = await client.RemoteMethodCallAsync("IRemoteCall", "Foo",
                          "my name",
                          new Arg1[]
                          {
@@ -55,7 +55,7 @@ namespace GrpcClient
                             new() { Id = "1", Arg2Props = new() { new() { Id = "1.0" }, new() { Id = "1.1" }, } },
                          }
                     );
-                var echo = await client.RemoteCallAsync("IRemoteCall", "Echo", "some text");
+                var echo = await client.RemoteMethodCallAsync("IRemoteCall", "Echo", "some text");
                 sw1.Stop();
                 var ticks1 = sw1.ElapsedTicks;
 
@@ -65,7 +65,7 @@ namespace GrpcClient
                 // Direct call
                 Stopwatch sw2 = new();
                 sw2.Start();
-                result = await client.RemoteCallAsync("IRemoteCall1", "Foo",
+                result = await client.RemoteMethodCallAsync("IRemoteCall1", "Foo",
                          "my name",
                          new Arg1[]
                          {
@@ -73,7 +73,7 @@ namespace GrpcClient
                             new() { Id = "1", Arg2Props = new() { new() { Id = "1.0" }, new() { Id = "1.1" }, } },
                          }
                     );
-                echo = await client.RemoteCallAsync("IRemoteCall1", "Echo", "some text");
+                echo = await client.RemoteMethodCallAsync("IRemoteCall1", "Echo", "some text");
                 sw2.Stop();
                 var ticks2 = sw2.ElapsedTicks;
 
