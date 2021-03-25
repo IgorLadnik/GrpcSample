@@ -18,27 +18,27 @@ namespace GrpcHelperLib
         #region RegisterPerCall
 
         // "impl" type should have default ctor!
-        public Container RegisterPerCall(Type @interface, Type impl)
+        public Container Register(Type @interface, Type impl)
         {
             _dctPerCall[@interface.Name] = impl;
             return this;
         }
 
-        public Container RegisterPerCall<TInteface, TImpl>() where TImpl : TInteface, new() =>
-            RegisterPerCall(typeof(TInteface), typeof(TImpl));
+        public Container Register<TInteface, TImpl>() where TImpl : TInteface, new() =>
+            Register(typeof(TInteface), typeof(TImpl));
 
         #endregion // RegisterPerCall 
 
         #region RegisterSingleton
 
-        public Container RegisterSingleton(Type @interface, object ob)
+        public Container Register(Type @interface, object ob)
         {
             _dctSingleton[@interface.Name] = ob;
             return this;
         }
 
-        public Container RegisterSingleton<TInteface>(TInteface ob) =>
-            RegisterSingleton(typeof(TInteface), ob);
+        public Container Register<TInteface>(TInteface ob) =>
+            Register(typeof(TInteface), ob);
 
         #endregion // RegisterSingleton 
 

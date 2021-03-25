@@ -10,11 +10,11 @@ namespace GrpcServer
         public MessageProcessor(ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
-            //RegisterSingleton<IRemoteCall>(new RemoteCall());
-            //RegisterSingleton<IRemoteCall1>(new RemoteCall1());
+            //Register<IRemoteCall>(new RemoteCall());
+            //Register<IRemoteCall1>(new RemoteCall1());
 
-            RegisterPerCall<IRemoteCall, RemoteCall>();
-            RegisterPerCall<IRemoteCall1, RemoteCall1>();
+            Register<IRemoteCall, RemoteCall>();
+            Register<IRemoteCall1, RemoteCall1>();
         }
     }
 }
