@@ -15,12 +15,16 @@ namespace RemoteImplementations
 
     public class RemoteCall1 : IRemoteCall1, ICallDirect
     {
-        public static IRemoteCall1 Factory() =>
-            new RemoteCall1();
+        public int Foo(string name, Arg1[] arg1s)
+        {
+            return 1;
+        }
+
+        public string Echo(string text) => $"Echo1: {text}";
 
         public object Call(string methodName, params object[] args)
         {
-            switch (methodName) 
+            switch (methodName)
             {
                 case "Foo":
                     return Foo((string)args[0], (Arg1[])args[1]);
@@ -31,12 +35,5 @@ namespace RemoteImplementations
 
             return null;
         }
-
-        public int Foo(string name, Arg1[] arg1s)
-        {
-            return 1;
-        }
-
-        public string Echo(string text) => $"Echo1: {text}";
     }
 }

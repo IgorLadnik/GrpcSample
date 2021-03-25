@@ -15,6 +15,8 @@ namespace GrpcHelperLib
 
         #region Register 
 
+        #region RegisterPerCall
+
         // "impl" type should have default ctor!
         public Container RegisterPerCall(Type @interface, Type impl)
         {
@@ -25,6 +27,10 @@ namespace GrpcHelperLib
         public Container RegisterPerCall<TInteface, TImpl>() where TImpl : TInteface, new() =>
             RegisterPerCall(typeof(TInteface), typeof(TImpl));
 
+        #endregion // RegisterPerCall 
+
+        #region RegisterSingleton
+
         public Container RegisterSingleton(Type @interface, object ob)
         {
             _dctSingleton[@interface.Name] = ob;
@@ -34,37 +40,27 @@ namespace GrpcHelperLib
         public Container RegisterSingleton<TInteface>(TInteface ob) =>
             RegisterSingleton(typeof(TInteface), ob);
 
+        #endregion // RegisterSingleton 
+
         #endregion // Register 
 
-        #region Resolve 
-
-        public object ResolvePerCall(string interafceName)
+        public object Resolve(string interafceName)
         {
-            object ob = null;
+            if (_dctSingleton.TryGetValue(interafceName, out object ob))
+                return ob;
+
             if (_dctPerCall.TryGetValue(interafceName, out Type type))
                 ob = Activator.CreateInstance(type);
 
             return ob;
         }
 
-        public object ResolveSingleton(string interafceName)
-        {
-            _dctSingleton.TryGetValue(interafceName, out object ob);
-            return ob;
-        }
-
-        #endregion // Resolve 
-
         public virtual object CallMethod(RequestMessage message)
         {
             var obs = (object[])message.Payload.ToObject();
             var interfaceName = $"{obs[0]}";
             var methodName = $"{obs[1]}";
-            var localOb = ResolveSingleton(interfaceName);
-
-            if (localOb == null)
-                localOb = ResolvePerCall(interfaceName);
-
+            var localOb = Resolve(interfaceName);
             if (localOb == null)
                 return null;
 
