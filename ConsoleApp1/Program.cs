@@ -12,13 +12,13 @@ namespace ConsoleApp1
         {
             Console.WriteLine("Hello World!");
 
-            List<Arg1> lstArg1 = new()
-            {
-                new() { Id = "0", Arg2Props = new() { new() { Id = "0.0" }, new() { Id = "0.1" }, } },
-                new() { Id = "1", Arg2Props = new() { new() { Id = "1.0" }, new() { Id = "1.1" }, } },
-            };
+            //List<Arg1> lstArg1 = new()
+            //{
+            //    new() { Id = "0", Arg2Props = new() { new() { Id = "0.0" }, new() { Id = "0.1" }, } },
+            //    new() { Id = "1", Arg2Props = new() { new() { Id = "1.0" }, new() { Id = "1.1" }, } },
+            //};
 
-            RemoteCall ob = new();
+            //RemoteCall ob = new();
 
             List<long> ticks = new();
 

@@ -1,31 +1,35 @@
-﻿using GrpcHelperLib;
+﻿using System;
+using GrpcHelperLib;
 using RemoteInterfaces;
 
 namespace RemoteImplementations
 {
-    public class RemoteCall : IRemoteCall
+    public class RemoteCall1 : IRemoteCall1
     {
         public int Foo(string name, Arg1[] arg1s)
         {
-            return 7;
+            Console.WriteLine("*** RemoteCall1.Foo()");
+            return 111;
         }
 
         public string Echo(string text) => $"Echo: {text}";
     }
 
-    public class RemoteCall1 : IRemoteCall1, ICallDirect
+    public class RemoteCall2 : IRemoteCall2, ICallDirect
     {
         private static int objectsCount = 0;
 
         private int _id; 
 
-        public RemoteCall1()
+        public RemoteCall2()
         {
             _id = ++objectsCount;
+            Console.WriteLine($"    *** RemoteCall2.Ctor() -> {_id}");
         }
 
         public int Foo(string name, Arg1[] arg1s)
         {
+            Console.WriteLine($"    *** RemoteCall2.Foo() -> {_id}");
             return _id;
         }
 
