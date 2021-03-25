@@ -15,9 +15,18 @@ namespace RemoteImplementations
 
     public class RemoteCall1 : IRemoteCall1, ICallDirect
     {
+        private static int objectsCount = 0;
+
+        private int _id; 
+
+        public RemoteCall1()
+        {
+            _id = ++objectsCount;
+        }
+
         public int Foo(string name, Arg1[] arg1s)
         {
-            return 1;
+            return _id;
         }
 
         public string Echo(string text) => $"Echo1: {text}";
