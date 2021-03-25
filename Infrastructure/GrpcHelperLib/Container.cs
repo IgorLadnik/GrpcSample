@@ -12,27 +12,28 @@ namespace GrpcHelperLib
             public Type type;
             public object ob;
             public bool isPerSession = false;
+            public ConcurrentDictionary<string, object> dctSession;
         }
 
         private ConcurrentDictionary<string, Descriptor> _dct = new();
 
         #region Register 
 
-        #region RegisterPerCall
+        #region Register per call
 
         // "impl" type should have default ctor!
-        public Container Register(Type @interface, Type impl)
+        public Container Register(Type @interface, Type impl, bool isPerSession = false)
         {
-            _dct[@interface.Name] = new() { type = impl };
+            _dct[@interface.Name] = new() { type = impl, isPerSession = isPerSession };
             return this;
         }
 
-        public Container Register<TInteface, TImpl>() where TImpl : TInteface, new() =>
-            Register(typeof(TInteface), typeof(TImpl));
+        public Container Register<TInteface, TImpl>(bool isPerSession = false) where TImpl : TInteface, new() =>
+            Register(typeof(TInteface), typeof(TImpl), isPerSession);
 
-        #endregion // RegisterPerCall 
+        #endregion // Register per call 
 
-        #region RegisterSingleton
+        #region Register singleton
 
         public Container Register(Type @interface, object ob)
         {
@@ -43,20 +44,37 @@ namespace GrpcHelperLib
         public Container Register<TInteface>(TInteface ob) =>
             Register(typeof(TInteface), ob);
 
-        #endregion // RegisterSingleton 
+        #endregion // Register singleton 
 
         #endregion // Register 
 
-        public object Resolve(string interafceName)
+        public object Resolve(string interafceName, string clientId = null)
         {
             if (!_dct.TryGetValue(interafceName, out Descriptor descriptor))
                 return null;
 
             if (descriptor.ob != null)
+                // Singleton
                 return descriptor.ob;
 
-            if (descriptor.type != null)
-                return Activator.CreateInstance(descriptor.type);
+            if (descriptor.type != null) 
+            {
+                if (!descriptor.isPerSession || string.IsNullOrEmpty(clientId))
+                    // Per Call
+                    return Activator.CreateInstance(descriptor.type);
+
+                // Per Session
+                object ob;
+                if (descriptor.dctSession == null)
+                    descriptor.dctSession = new();
+
+                if (descriptor.dctSession.TryGetValue(clientId, out ob))
+                    return ob;
+
+                descriptor.dctSession[clientId] = ob = Activator.CreateInstance(descriptor.type);
+
+                return ob;
+            }
 
             return null;
         }
@@ -66,7 +84,7 @@ namespace GrpcHelperLib
             var obs = (object[])message.Payload.ToObject();
             var interfaceName = $"{obs[0]}";
             var methodName = $"{obs[1]}";
-            var localOb = Resolve(interfaceName);
+            var localOb = Resolve(interfaceName, message.ClientId);
             if (localOb == null)
                 return null;
 

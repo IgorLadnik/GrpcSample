@@ -13,8 +13,8 @@ namespace GrpcServer
             //Register<IRemoteCall>(new RemoteCall());
             //Register<IRemoteCall1>(new RemoteCall1());
 
-            Register<IRemoteCall, RemoteCall>();
-            Register<IRemoteCall1, RemoteCall1>();
+            Register<IRemoteCall, RemoteCall>(true);
+            Register<IRemoteCall1, RemoteCall1>(true);
         }
     }
 }
