@@ -49,7 +49,7 @@ namespace GrpcHelperLib.Communication
             "aW9uLlJlcXVlc3RNZXNzYWdlGh4uQ29tbXVuaWNhdGlvbi5SZXNwb25zZU1l",
             "c3NhZ2UoATABYgZwcm90bzM="));
       descriptor = pbr.FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr.FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, },
+          new pbr.FileDescriptor[] { Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, },
           new pbr.GeneratedClrTypeInfo(new[] {typeof(MessageType), typeof(MessageStatus), typeof(ResponseType), }, null, new pbr.GeneratedClrTypeInfo[] {
             new pbr.GeneratedClrTypeInfo(typeof(RequestMessage), RequestMessage.Parser, new[]{ "ClientId", "MessageId", "Type", "Time", "Status", "Payload", "Response" }, null, null, null, null),
             new pbr.GeneratedClrTypeInfo(typeof(ResponseMessage), ResponseMessage.Parser, new[]{ "ClientId", "MessageId", "Type", "Time", "Status", "Payload" }, null, null, null, null)
@@ -162,9 +162,9 @@ namespace GrpcHelperLib.Communication
 
     /// <summary>Field number for the "time" field.</summary>
     public const int TimeFieldNumber = 4;
-    private global::Google.Protobuf.WellKnownTypes.Timestamp time_;
+    private Google.Protobuf.WellKnownTypes.Timestamp time_;
     [DebuggerNonUserCode]
-    public global::Google.Protobuf.WellKnownTypes.Timestamp Time {
+    public Google.Protobuf.WellKnownTypes.Timestamp Time {
       get { return time_; }
       set {
         time_ = value;
@@ -370,7 +370,7 @@ namespace GrpcHelperLib.Communication
       }
       if (other.time_ != null) {
         if (time_ == null) {
-          Time = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+          Time = new Google.Protobuf.WellKnownTypes.Timestamp();
         }
         Time.MergeFrom(other.Time);
       }
@@ -456,7 +456,7 @@ namespace GrpcHelperLib.Communication
           }
           case 34: {
             if (time_ == null) {
-              Time = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+              Time = new Google.Protobuf.WellKnownTypes.Timestamp();
             }
             input.ReadMessage(Time);
             break;
@@ -558,9 +558,9 @@ namespace GrpcHelperLib.Communication
 
     /// <summary>Field number for the "time" field.</summary>
     public const int TimeFieldNumber = 4;
-    private global::Google.Protobuf.WellKnownTypes.Timestamp time_;
+    private Google.Protobuf.WellKnownTypes.Timestamp time_;
     [DebuggerNonUserCode]
-    public global::Google.Protobuf.WellKnownTypes.Timestamp Time {
+    public Google.Protobuf.WellKnownTypes.Timestamp Time {
       get { return time_; }
       set {
         time_ = value;
@@ -742,7 +742,7 @@ namespace GrpcHelperLib.Communication
       }
       if (other.time_ != null) {
         if (time_ == null) {
-          Time = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+          Time = new Google.Protobuf.WellKnownTypes.Timestamp();
         }
         Time.MergeFrom(other.Time);
       }
@@ -821,7 +821,7 @@ namespace GrpcHelperLib.Communication
           }
           case 34: {
             if (time_ == null) {
-              Time = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+              Time = new Google.Protobuf.WellKnownTypes.Timestamp();
             }
             input.ReadMessage(Time);
             break;
