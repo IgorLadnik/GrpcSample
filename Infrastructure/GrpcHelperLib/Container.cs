@@ -1,37 +1,72 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Linq;
+using System.Threading;
 using GrpcHelperLib.Communication;
 
 namespace GrpcHelperLib
 {
-    public class Container
+    public class Container : IDisposable
     {
         class Descriptor 
         {
             public Type type;
             public object ob;
             public bool isPerSession = false;
-            public ConcurrentDictionary<string, object> dctSession;
+            public ConcurrentDictionary<string, PerSessionDescriptor> dctSession;
         }
 
-        private ConcurrentDictionary<string, Descriptor> _dct = new();
+        class PerSessionDescriptor
+        {
+            public object ob;
+
+            private long _lastActivationInTicks;
+            public long lastActivationInTicks
+            {
+                get => Interlocked.Read(ref _lastActivationInTicks);
+                set => Interlocked.Exchange(ref _lastActivationInTicks, value);
+            }
+        }
+
+        private readonly ConcurrentDictionary<string, Descriptor> _dct = new();
+        private Timer _timer;
 
         #region Register 
 
-        #region Register per call
+        #region Register per call and per session
 
         // "impl" type should have default ctor!
-        public Container Register(Type @interface, Type impl, bool isPerSession = false)
+        public Container Register(Type @interface, Type impl, bool isPerSession = false, int sessionLifeTimeInMin = -1)
         {
             _dct[@interface.Name] = new() { type = impl, isPerSession = isPerSession };
+
+            if (isPerSession && sessionLifeTimeInMin > 0)
+            {
+                var sessionLifeTime = TimeSpan.FromMinutes(sessionLifeTimeInMin);
+                _timer = new(_ =>
+                {
+                    var now = DateTime.UtcNow;
+                    foreach (var dict in _dct.Values?.Where(d => d.isPerSession)?.Select(d => d.dctSession))
+                    {
+                        if (dict == null || dict.Count == 0)
+                            continue;
+
+                        foreach (var clientId in dict.Keys.ToArray())
+                            if (now - new DateTime(dict[clientId].lastActivationInTicks) > sessionLifeTime)
+                                dict.TryRemove(clientId, out PerSessionDescriptor psd);
+                    }
+
+                },
+                null, TimeSpan.Zero, TimeSpan.FromMinutes(sessionLifeTimeInMin));
+            }
+
             return this;
         }
 
-        public Container Register<TInteface, TImpl>(bool isPerSession = false) where TImpl : TInteface, new() =>
-            Register(typeof(TInteface), typeof(TImpl), isPerSession);
+        public Container Register<TInteface, TImpl>(bool isPerSession = false, int sessionLifeTimeInMin = -1) where TImpl : TInteface, new() =>
+            Register(typeof(TInteface), typeof(TImpl), isPerSession, sessionLifeTimeInMin);
 
-        #endregion // Register per call 
+        #endregion // Register per call and per session
 
         #region Register singleton
 
@@ -68,12 +103,19 @@ namespace GrpcHelperLib
                 if (descriptor.dctSession == null)
                     descriptor.dctSession = new();
 
-                if (descriptor.dctSession.TryGetValue(clientId, out ob))
-                    return ob;
+                if (descriptor.dctSession.TryGetValue(clientId, out PerSessionDescriptor perSessionDescriptor)) 
+                {
+                    perSessionDescriptor.lastActivationInTicks = DateTime.UtcNow.Ticks;
+                    return perSessionDescriptor.ob;
+                }
 
-                descriptor.dctSession[clientId] = ob = Activator.CreateInstance(descriptor.type);
+                descriptor.dctSession[clientId] = perSessionDescriptor = new()
+                {
+                    ob = Activator.CreateInstance(descriptor.type),
+                    lastActivationInTicks = DateTime.UtcNow.Ticks,
+                };
 
-                return ob;
+                return perSessionDescriptor.ob;
             }
 
             return null;
@@ -99,5 +141,9 @@ namespace GrpcHelperLib
             }
         }
 
+        public void Dispose()
+        {
+            _timer?.Dispose();
+        }
     }
 }

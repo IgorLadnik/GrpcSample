@@ -27,6 +27,8 @@ namespace RemoteImplementations
             Console.WriteLine($"    *** RemoteCall2.Ctor() -> {_id}");
         }
 
+        #region IRemoteCall2 implementation
+
         public int Foo(string name, Arg1[] arg1s)
         {
             Console.WriteLine($"    *** RemoteCall2.Foo() -> {_id}");
@@ -34,6 +36,8 @@ namespace RemoteImplementations
         }
 
         public string Echo(string text) => $"Echo1: {text}";
+
+        #endregion // IRemoteCall2 implementation
 
         public object Call(string methodName, params object[] args)
         {

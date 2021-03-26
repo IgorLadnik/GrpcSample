@@ -15,8 +15,8 @@ namespace GrpcServer
             //Register<IRemoteCall2>(new RemoteCall2());
 
             // Per Session
-            Register<IRemoteCall1, RemoteCall1>(true);
-            Register<IRemoteCall2, RemoteCall2>(true);
+            Register<IRemoteCall1, RemoteCall1>(true, 1);
+            Register<IRemoteCall2, RemoteCall2>(true, 1);
         }
     }
 }

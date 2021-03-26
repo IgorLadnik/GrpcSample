@@ -65,6 +65,7 @@ namespace GrpcHelperLib
         public void Dispose()
         {
             Logger.LogInformation("Cleaning up");
+            _messageProcessor?.Dispose();
         }
     }
 }
