@@ -28,7 +28,7 @@ namespace GrpcHelperLib
             }
         }
 
-        private readonly ConcurrentDictionary<string, Descriptor> _dct = new();
+        private readonly ConcurrentDictionary<string, Descriptor> _dctInterface = new();
         private Timer _timer;
 
         #region Register 
@@ -38,7 +38,7 @@ namespace GrpcHelperLib
         // "impl" type should have default ctor!
         public Container Register(Type @interface, Type impl, bool isPerSession = false, int sessionLifeTimeInMin = -1)
         {
-            _dct[@interface.Name] = new() { type = impl, isPerSession = isPerSession };
+            _dctInterface[@interface.Name] = new() { type = impl, isPerSession = isPerSession };
 
             if (isPerSession && sessionLifeTimeInMin > 0)
             {
@@ -46,7 +46,7 @@ namespace GrpcHelperLib
                 _timer = new(_ =>
                 {
                     var now = DateTime.UtcNow;
-                    foreach (var dict in _dct.Values?.Where(d => d.isPerSession)?.Select(d => d.dctSession))
+                    foreach (var dict in _dctInterface.Values?.Where(d => d.isPerSession)?.Select(d => d.dctSession))
                     {
                         if (dict == null || dict.Count == 0)
                             continue;
@@ -72,7 +72,7 @@ namespace GrpcHelperLib
 
         public Container Register(Type @interface, object ob)
         {
-            _dct[@interface.Name] = new() { ob = ob };
+            _dctInterface[@interface.Name] = new() { ob = ob };
             return this;
         }
 
@@ -85,7 +85,7 @@ namespace GrpcHelperLib
 
         public object Resolve(string interafceName, string clientId = null)
         {
-            if (!_dct.TryGetValue(interafceName, out Descriptor descriptor))
+            if (!_dctInterface.TryGetValue(interafceName, out Descriptor descriptor))
                 return null;
 
             if (descriptor.ob != null)
@@ -151,16 +151,17 @@ namespace GrpcHelperLib
             var methodName = $"{obs[1]}";
             var interfaceName = $"{obs[0]}";
 
-            if (methodName != Ex.deleteSession ||
-                !_dct.TryGetValue(interfaceName, out Descriptor descriptor) || 
-                !descriptor.isPerSession)
-                    return false;
-
-            var clientIdToBeDeleted = descriptor.dctSession.Keys.Where(k => k == message.ClientId)?.FirstOrDefault();
-            if (string.IsNullOrWhiteSpace(clientIdToBeDeleted))
+            if (methodName != Ex.deleteSession)
                 return false;
 
-            return descriptor.dctSession.TryRemove(clientIdToBeDeleted, out PerSessionDescriptor psd);
+            foreach (var k in _dctInterface.Keys)
+            {
+                var descriptor = _dctInterface[k];
+                if (descriptor.isPerSession)
+                    descriptor.dctSession?.TryRemove(message.ClientId, out PerSessionDescriptor psd);
+            }
+
+            return true;
         }
 
         public void Dispose()

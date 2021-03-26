@@ -107,8 +107,7 @@ namespace GrpcHelperLib
                     return null;
                 }
             });
-
-        public void CloseSessionIfExists(string interfaceName) => SendOneWay(interfaceName, Ex.deleteSession);
+       
         private static bool CheckArgs(object[] obs) =>
                 obs != null && obs.Length >= 2 &&
                 !string.IsNullOrWhiteSpace((string)obs[0]) && !string.IsNullOrWhiteSpace((string)obs[1]);
@@ -157,6 +156,9 @@ namespace GrpcHelperLib
         {
             if (_duplex != null) 
             {
+                // Delete all sessions for this client, if any
+                SendOneWay(Ex.allInterfaces, Ex.deleteSession);
+
                 _onShuttingDown?.Invoke();
                 _duplex.RequestStream.CompleteAsync();
                 _channel?.ShutdownAsync().Wait();

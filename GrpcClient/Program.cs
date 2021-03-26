@@ -40,13 +40,7 @@ namespace GrpcClient
                         $"You will get response if your message will contain question mark '?'.{nl}" +
                         $"Enter empty message to quit.{nl}");
                 },
-                () => // onShuttingDown
-                {
-                    client.CloseSessionIfExists("IRemoteCall1");
-                    client.CloseSessionIfExists("IRemoteCall2");
-                    Console.WriteLine("Shutting down...");
-                }
-            );
+                () => Console.WriteLine("Shutting down...")); // onShuttingDown
 
             using Timer timer = new(async _ =>
             {

@@ -1,16 +1,16 @@
-﻿using System;
+﻿using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.Hosting;
 using Grpc.AspNetCore.Server;
 using Google.Protobuf;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace GrpcHelperLib
 {
     public static class Ex
     {
+        public const string allInterfaces = "*";
         public const string deleteSession = "*_delete_session";
 
         public static IGrpcServerBuilder AddGrpcHelper(this IServiceCollection services) 
