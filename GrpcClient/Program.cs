@@ -9,6 +9,7 @@ namespace GrpcClient
 {
     class Program
     {
+        const string HOST = "localhost";
         const int PORT = 19019;
 
         static async Task<int> Main(string[] args)
@@ -21,13 +22,15 @@ namespace GrpcClient
                         ? @"..\..\..\Certs\certificate.crt"
                         : null;
 
+            var url = $"{HOST}:{PORT}";
+
             var nl = Environment.NewLine;
             var orgTextColor = Console.ForegroundColor;
 
             using GrpcClientBase client = new() { ClientId = $"{Guid.NewGuid()}" };
-            await client.Start($"localhost:{PORT}", pathCertificate,
+            await client.Start(url, pathCertificate,
                 response => Console.WriteLine($"\ncallback: {response.Payload.ToObject()}"), // onReceive
-                () =>
+                () => // onConnection
                 {
                     Console.Write($"Connected to server.{nl}ClientId = ");
                     Console.ForegroundColor = ConsoleColor.Cyan;
@@ -37,7 +40,12 @@ namespace GrpcClient
                         $"You will get response if your message will contain question mark '?'.{nl}" +
                         $"Enter empty message to quit.{nl}");
                 },
-                () => Console.WriteLine("Shutting down...")
+                () => // onShuttingDown
+                {
+                    client.CloseSessionIfExists("IRemoteCall1");
+                    client.CloseSessionIfExists("IRemoteCall2");
+                    Console.WriteLine("Shutting down...");
+                }
             );
 
             using Timer timer = new(async _ =>
@@ -79,6 +87,8 @@ namespace GrpcClient
                 }
 
                 Console.WriteLine($"Reflected call: {ticks1}\nDirect call:    {ticks2}\nRatio: {((float)ticks1 / ticks2).ToString("f1")}");
+
+                //client.SendOneWay("IRemoteCall1", "_delete_session");
             }, 
             null, 0, 5000);
 

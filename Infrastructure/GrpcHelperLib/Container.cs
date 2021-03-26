@@ -123,9 +123,13 @@ namespace GrpcHelperLib
 
         public virtual object CallMethod(RequestMessage message)
         {
+            if (DeleteSessionIfRequested(message))
+                return null;
+
             var obs = (object[])message.Payload.ToObject();
             var interfaceName = $"{obs[0]}";
             var methodName = $"{obs[1]}";
+
             var localOb = Resolve(interfaceName, message.ClientId);
             if (localOb == null)
                 return null;
@@ -139,6 +143,24 @@ namespace GrpcHelperLib
                 var methodInfo = localOb?.GetType().GetMethod(methodName);
                 return methodInfo?.Invoke(localOb, methodAgrs);
             }
+        }
+
+        private bool DeleteSessionIfRequested(RequestMessage message) 
+        {
+            var obs = (object[])message.Payload.ToObject();
+            var methodName = $"{obs[1]}";
+            var interfaceName = $"{obs[0]}";
+
+            if (methodName != Ex.deleteSession ||
+                !_dct.TryGetValue(interfaceName, out Descriptor descriptor) || 
+                !descriptor.isPerSession)
+                    return false;
+
+            var clientIdToBeDeleted = descriptor.dctSession.Keys.Where(k => k == message.ClientId)?.FirstOrDefault();
+            if (string.IsNullOrWhiteSpace(clientIdToBeDeleted))
+                return false;
+
+            return descriptor.dctSession.TryRemove(clientIdToBeDeleted, out PerSessionDescriptor psd);
         }
 
         public void Dispose()

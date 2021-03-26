@@ -11,6 +11,8 @@ namespace GrpcHelperLib
 {
     public static class Ex
     {
+        public const string deleteSession = "*_delete_session";
+
         public static IGrpcServerBuilder AddGrpcHelper(this IServiceCollection services) 
         {
             services.AddSingleton<ServerGrpcSubscribersBase>();
