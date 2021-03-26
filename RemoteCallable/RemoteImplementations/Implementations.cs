@@ -12,7 +12,7 @@ namespace RemoteImplementations
             return 111;
         }
 
-        public string Echo(string text) => $"Echo: {text}";
+        public string Echo(string text) => $"Echo1: {text}";
     }
 
     public class RemoteCall2 : IRemoteCall2, ICallDirect
@@ -35,7 +35,7 @@ namespace RemoteImplementations
             return _id;
         }
 
-        public string Echo(string text) => $"Echo1: {text}";
+        public string Echo(string text) => $"Echo2: {text}";
 
         #endregion // IRemoteCall2 implementation
 

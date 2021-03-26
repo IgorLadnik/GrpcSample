@@ -8,6 +8,8 @@ namespace GrpcHelperLib
 {
     public class Container : IDisposable
     {
+        #region Internal descriptors classes
+
         class Descriptor 
         {
             public Type type;
@@ -27,6 +29,8 @@ namespace GrpcHelperLib
                 set => Interlocked.Exchange(ref _lastActivationInTicks, value);
             }
         }
+
+        #endregion // Internal descriptors classes
 
         private readonly ConcurrentDictionary<string, Descriptor> _dctInterface = new();
         private Timer _timer;
@@ -83,6 +87,8 @@ namespace GrpcHelperLib
 
         #endregion // Register 
 
+        #region Resolve & call methods
+
         public object Resolve(string interafceName, string clientId = null)
         {
             if (!_dctInterface.TryGetValue(interafceName, out Descriptor descriptor))
@@ -99,7 +105,6 @@ namespace GrpcHelperLib
                     return Activator.CreateInstance(descriptor.type);
 
                 // Per Session
-                object ob;
                 if (descriptor.dctSession == null)
                     descriptor.dctSession = new();
 
@@ -163,6 +168,8 @@ namespace GrpcHelperLib
 
             return true;
         }
+
+        #endregion // Resolve & call methods
 
         public void Dispose()
         {

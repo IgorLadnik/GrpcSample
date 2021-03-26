@@ -28,6 +28,7 @@ namespace GrpcHelperLib
                 MessageId = $"{Guid.NewGuid()}",
                 Type = MessageType.Ordinary,
                 Time = Timestamp.FromDateTime(DateTime.UtcNow),
+                Status = MessageStatus.Created,
                 Response = isResponseRequied ? ResponseType.Required : ResponseType.NotRequired,
                 Payload = payload
             };
