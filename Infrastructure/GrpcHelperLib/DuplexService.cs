@@ -9,15 +9,15 @@ namespace GrpcHelperLib
 {
     public class DuplexServiceBase : Messaging.MessagingBase, IDisposable
     {
-        private GeneralGrpcService _gs;
+        private GeneralGrpcService _service;
 
         protected DuplexServiceBase(ILoggerFactory loggerFactory, ServerGrpcSubscribersBase serverGrpcSubscribers, MessageProcessorBase messageProcessor) =>        
-            _gs = new(loggerFactory, serverGrpcSubscribers, messageProcessor);
+            _service = new(loggerFactory, serverGrpcSubscribers, messageProcessor);
         
         public override async Task CreateStreaming(IAsyncStreamReader<RequestMessage> requestStream, IServerStreamWriter<ResponseMessage> responseStream, ServerCallContext context) =>
-            await _gs.CreateDuplexStreaming(requestStream, responseStream, context);
+            await _service.CreateDuplexStreaming(requestStream, responseStream, context);
 
         public void Dispose() =>
-            _gs.Dispose();
+            _service.Dispose();
     }
 }

@@ -2,6 +2,8 @@
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading;
+using System.Text;
+using Microsoft.Extensions.Logging;
 using GrpcHelperLib.Communication;
 
 namespace GrpcHelperLib
@@ -34,6 +36,10 @@ namespace GrpcHelperLib
 
         private readonly ConcurrentDictionary<string, Descriptor> _dctInterface = new();
         private Timer _timer;
+        private readonly ILogger _logger;
+
+        protected Container(ILoggerFactory loggerFactory) =>
+            _logger = loggerFactory.CreateLogger<Container>();
 
         #region Register 
 
@@ -42,6 +48,7 @@ namespace GrpcHelperLib
         // "impl" type should have default ctor!
         public Container Register(Type @interface, Type impl, bool isPerSession = false, int sessionLifeTimeInMin = -1)
         {
+            _logger.LogInformation($"About to register interface '{@interface.Name}' with type '{impl.Name}', isPerSession = {isPerSession}, sessionLifeTimeInMin = {sessionLifeTimeInMin}");
             _dctInterface[@interface.Name] = new() { type = impl, isPerSession = isPerSession };
 
             if (isPerSession && sessionLifeTimeInMin > 0)
@@ -64,6 +71,7 @@ namespace GrpcHelperLib
                 null, TimeSpan.Zero, TimeSpan.FromMinutes(sessionLifeTimeInMin));
             }
 
+            _logger.LogInformation($"Registered interface '{@interface.Name}' with type '{impl.Name}', isPerSession = {isPerSession}, sessionLifeTimeInMin = {sessionLifeTimeInMin}");
             return this;
         }
 
@@ -77,6 +85,7 @@ namespace GrpcHelperLib
         public Container Register(Type @interface, object ob)
         {
             _dctInterface[@interface.Name] = new() { ob = ob };
+            _logger.LogInformation($"Registered interface '{@interface.Name}' as singleton, type '{ob.GetType().Name}'");
             return this;
         }
 
@@ -89,7 +98,7 @@ namespace GrpcHelperLib
 
         #region Resolve & call methods
 
-        public object Resolve(string interafceName, string clientId = null)
+        private object Resolve(string interafceName, string clientId = null)
         {
             if (!_dctInterface.TryGetValue(interafceName, out Descriptor descriptor))
                 return null;
@@ -141,13 +150,22 @@ namespace GrpcHelperLib
 
             var methodAgrs = obs.Skip(2).ToArray();
             var callDirect = localOb as ICallDirect;
+            object retOb = null;
             if (callDirect != null)
-                return callDirect.Call(methodName, methodAgrs);
+            {
+                _logger.LogInformation($"Calling method '{methodName}()' of interface '{interfaceName}' - direct call");
+                retOb = callDirect.Call(methodName, methodAgrs);
+                _logger.LogInformation($"Called method '{methodName}()' of interface '{interfaceName}' - call with reflection");
+            }
             else
             {
+                _logger.LogInformation($"Calling method '{methodName}()' of interface '{interfaceName}' - call with reflection");
                 var methodInfo = localOb?.GetType().GetMethod(methodName);
-                return methodInfo?.Invoke(localOb, methodAgrs);
+                retOb = methodInfo?.Invoke(localOb, methodAgrs);
+                _logger.LogInformation($"Called method '{methodName}()' of interface '{interfaceName}' - call with reflection");
             }
+
+            return retOb;
         }
 
         private bool DeleteSessionIfRequested(RequestMessage message) 
@@ -159,13 +177,17 @@ namespace GrpcHelperLib
             if (methodName != Ex.deleteSession)
                 return false;
 
+            StringBuilder sb = new();
             foreach (var k in _dctInterface.Keys)
             {
                 var descriptor = _dctInterface[k];
-                if (descriptor.isPerSession)
-                     descriptor.dctSession?.TryRemove(message.ClientId, out PerSessionDescriptor psd);
+                if (descriptor.isPerSession &&
+                    descriptor.dctSession.TryRemove(message.ClientId, out PerSessionDescriptor psd))
+                        sb.Append($"'{k}', ");
             }
 
+            var tempStr = sb.ToString().Substring(0, sb.Length - 2);
+            _logger.LogInformation($"Sessions for client '{message.ClientId}' have been deleted for interfaces {tempStr}");
             return true;
         }
 

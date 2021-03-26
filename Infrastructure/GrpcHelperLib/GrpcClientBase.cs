@@ -41,13 +41,6 @@ namespace GrpcHelperLib
         private Channel _channel;
         private Action _onShuttingDown;
 
-        //public Task<string> SendAsync(params object[] obs) => InnerSendAsync(true, obs);
-        //public Task<string> SendOneWayAsync(params object[] obs) => InnerSendAsync(false, obs);
-
-        //public Task<object> RemoteMethodCallAsync(params object[] obs) => InnerRemoteMethodCallAsync(true, obs);
-
-        //public Task<object> RemoteMethodCallOneWayAsync(params object[] obs) => InnerRemoteMethodCallAsync(false, obs);
-
         public Task<object> RemoteMethodCallAsync(params object[] obs) =>
             Task.Run(async () =>
             {

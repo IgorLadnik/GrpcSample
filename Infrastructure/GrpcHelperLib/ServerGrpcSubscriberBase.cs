@@ -10,17 +10,17 @@ namespace GrpcHelperLib
     {
         private readonly ConcurrentDictionary<string, SubscribersModel> Subscribers = new();
 
-        private ILogger Logger { get; set; }
+        protected readonly ILogger _logger;
 
         public ServerGrpcSubscribersBase(ILoggerFactory loggerFactory) =>
-            Logger = loggerFactory.CreateLogger<ServerGrpcSubscribersBase>();
+            _logger = loggerFactory.CreateLogger<ServerGrpcSubscribersBase>();
 
         public void AddSubscriber(SubscribersModel subscriber)
         {
             bool added = Subscribers.TryAdd(subscriber.Id, subscriber);
-            Logger.LogInformation($"New subscriber added: {subscriber.Id}");
+            _logger.LogInformation($"New subscriber added: '{subscriber.Id}'");
             if (!added)
-                Logger.LogInformation($"could not add subscriber: {subscriber.Id}");
+                _logger.LogInformation($"Could not add subscriber: '{subscriber.Id}'");
         }
 
         public void RemoveSubscriber(SubscribersModel subscriber)
@@ -28,11 +28,11 @@ namespace GrpcHelperLib
             try
             {
                 Subscribers.TryRemove(subscriber.Id, out SubscribersModel item);
-                Logger.LogInformation($"Force Remove: {item.Id} - no longer works");
+                _logger.LogInformation($"Force Remove: subscriber '{item.Id}' no longer works");
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, $"Could not remove {subscriber.Id}");
+                _logger.LogError(ex, $"Could not remove subscriber '{subscriber.Id}'");
             }
         }
 
@@ -56,15 +56,16 @@ namespace GrpcHelperLib
             {
                 if (SubscribersFilter(subscriber, message))
                 {
-                    //Logger.LogInformation($"Sending: {message}");
+                    _logger.LogInformation($"Sending: message '{message}'");
                     await subscriber.Subscriber.WriteAsync(message);
+                    _logger.LogInformation($"Message '{message.MessageId}' has been sent");
                 }
 
                 return null;
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "Could not send");
+                _logger.LogError(ex, $"Filure to send message '{message.MessageId}'");
                 return subscriber;
             }
         }

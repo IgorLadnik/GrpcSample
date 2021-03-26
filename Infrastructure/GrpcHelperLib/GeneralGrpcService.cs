@@ -10,8 +10,9 @@ namespace GrpcHelperLib
     {
         private readonly ServerGrpcSubscribersBase _serverGrpcSubscribers;
         private readonly MessageProcessorBase _messageProcessor;
+        private CancellationTokenSource _cts = new();
 
-        protected ILogger Logger { get; set; }
+        protected ILogger _logger;
 
         public GeneralGrpcService(
             ILoggerFactory loggerFactory, 
@@ -20,7 +21,7 @@ namespace GrpcHelperLib
         {
             _serverGrpcSubscribers = serverGrpcSubscribers;
             _messageProcessor = messageProcessor;
-            Logger = loggerFactory.CreateLogger<GeneralGrpcService>();
+            _logger = loggerFactory.CreateLogger<GeneralGrpcService>();
         }
 
         public async Task CreateDuplexStreaming(
@@ -29,15 +30,13 @@ namespace GrpcHelperLib
             ServerCallContext context)
         {
             var httpContext = context.GetHttpContext();
-            Logger.LogInformation($"Connection id: {httpContext.Connection.Id}");
+            _logger.LogInformation($"Connection id: '{httpContext.Connection.Id}'");
 
-            CancellationTokenSource cts = new(); //??
-
-            if (!await requestStream.MoveNext(cts.Token))
+            if (!await requestStream.MoveNext(_cts.Token))
                 return;
 
             var clientId = _messageProcessor.GetClientId(requestStream.Current);
-            Logger.LogInformation($"{clientId} connected");
+            _logger.LogInformation($"Client '{clientId}' connected");
             SubscribersModel subscriber = new()
             {
                 Subscriber = responseStream,
@@ -56,15 +55,17 @@ namespace GrpcHelperLib
                     continue;
 
                 await _serverGrpcSubscribers.SendMessageAsync(resultMessage);
-            } while (await requestStream.MoveNext(cts.Token));
+            } while (await requestStream.MoveNext(_cts.Token));
 
             _serverGrpcSubscribers.RemoveSubscriber(subscriber);
-            Logger.LogInformation($"{clientId} disconnected");
+            _logger.LogInformation($"Client '{clientId}' disconnected");
         }
 
         public void Dispose()
         {
-            Logger.LogInformation("Cleaning up");
+            _cts.Cancel();
+            _cts.Dispose();
+            _logger.LogInformation("GeneralGrpcService is cleaning up");
             _messageProcessor?.Dispose();
         }
     }

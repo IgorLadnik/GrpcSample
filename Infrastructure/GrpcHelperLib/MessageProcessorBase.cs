@@ -11,16 +11,16 @@ namespace GrpcHelperLib
 {
     public class MessageProcessorBase : Container
     {
-        protected ILogger Logger { get; set; }
+        protected readonly ILogger _logger;
 
-        public MessageProcessorBase(ILoggerFactory loggerFactory) =>
-            Logger = loggerFactory.CreateLogger<MessageProcessorBase>();
+        public MessageProcessorBase(ILoggerFactory loggerFactory)
+            : base(loggerFactory) =>
+            _logger = loggerFactory.CreateLogger<MessageProcessorBase>();
 
         public string GetClientId(RequestMessage message) => message.ClientId;
 
         public virtual ResponseMessage ProcessRequest(RequestMessage message)
         {
-            //Console.WriteLine(JsonConvert.SerializeObject(message));
             var result = CallMethod(message);
             ResponseMessage response = new()
             {
@@ -32,7 +32,6 @@ namespace GrpcHelperLib
                 Payload = result.ToByteString()
             };
 
-            //Console.WriteLine(JsonConvert.SerializeObject(response));
             return response;
         }
 
@@ -43,7 +42,6 @@ namespace GrpcHelperLib
             if (string.IsNullOrEmpty(strPayload))
                 return null;
 
-            //Logger.LogInformation($"To be processed: {strPayload}");
 
             // Request message processing should be placed here
 
@@ -51,10 +49,13 @@ namespace GrpcHelperLib
 
             try
             {
+                _logger.LogInformation($"Message '{message.MessageId}' to be processed");
                 responseMessage = ProcessRequest(message);
+                _logger.LogInformation($"Message '{message.MessageId}' has been processed");
             }
             catch (Exception e)
             {
+                _logger.LogError(e, $"Could not process message '{message.MessageId}'");
                 return new ResponseMessage
                 {
                     ClientId = message.ClientId,
@@ -70,6 +71,7 @@ namespace GrpcHelperLib
             {
                 responseMessage.Status = MessageStatus.Processed;
                 responseMessage.Time = Timestamp.FromDateTime(DateTime.UtcNow);
+                _logger.LogInformation($"Response on message '{message.MessageId}' generated");
                 return responseMessage;
             }
 
