@@ -163,7 +163,7 @@ namespace GrpcHelperLib
             {
                 var descriptor = _dctInterface[k];
                 if (descriptor.isPerSession)
-                    descriptor.dctSession?.TryRemove(message.ClientId, out PerSessionDescriptor psd);
+                     descriptor.dctSession?.TryRemove(message.ClientId, out PerSessionDescriptor psd);
             }
 
             return true;
