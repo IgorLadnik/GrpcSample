@@ -80,27 +80,7 @@ namespace GrpcHelperLib
                 }
             });
 
-        public void SendOneWay(params object[] obs) =>
-            Task.Run(() =>
-            {
-                if (!CheckArgs(obs))
-                {
-                    // Log error
-                    return null;
-                }
-
-                try
-                {
-                    var message = CreateMessage(ToByteString(obs), false);
-                    _duplex.RequestStream.WriteAsync(message);
-                    return message.MessageId;
-                }
-                catch (Exception e)
-                {
-                    // Log error
-                    return null;
-                }
-            });
+        public void SendOneWay(params object[] obs) => SendAsync(obs);
        
         private static bool CheckArgs(object[] obs) =>
                 obs != null && obs.Length >= 2 &&

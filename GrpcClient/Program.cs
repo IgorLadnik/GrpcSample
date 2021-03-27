@@ -47,10 +47,22 @@ namespace GrpcClient
                 Console.WriteLine();
 
                 // Send (call method one way)
-                client.SendOneWay(IRemoteCall_Foo_Args(1));
-                
+                {
+                    Stopwatch sw = new();
+                    sw.Start();
+                    client.SendOneWay(IRemoteCall_Foo_Args(1));
+                    sw.Stop();
+                    Console.WriteLine($"Send one way duration:    {sw.ElapsedTicks}");
+                }
+
                 // Send (call method with response in a callback "onReceive()")
-                await client.SendAsync(IRemoteCall_Foo_Args(2));
+                {
+                    Stopwatch sw = new();
+                    sw.Start();
+                    await client.SendAsync(IRemoteCall_Foo_Args(2));
+                    sw.Stop();
+                    Console.WriteLine($"Send with await duration: {sw.ElapsedTicks}");
+                }
 
                 long ticks1, ticks2;
 
