@@ -24,43 +24,28 @@ namespace GrpcClient
             var logger = loggerFactory.CreateLogger<Program>();
 
             logger.LogInformation("GrpcClient started.");
-            //Console.WriteLine("GrpcClient started.");
 
             var pathCertificate = args.Length > 0 && args[0].ToLower() == "tls"
                         ? @"..\..\..\Certs\certificate.crt"
                         : null;
 
             var url = $"{HOST}:{PORT}";
-
-            var nl = Environment.NewLine;
-            var orgTextColor = Console.ForegroundColor;
-           
+          
             using GrpcClient client = new(loggerFactory);
             await client.Start(url, pathCertificate,
-                response => Console.WriteLine($"\ncallback: {response.Payload.ToObject()}"), // onReceive
-                () => // onConnection
-                {
-                    Console.Write($"Connected to server.{nl}ClientId = ");
-                    Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.Write($"{client.ClientId}");
-                    Console.ForegroundColor = orgTextColor;
-                    Console.WriteLine($".{nl}Enter string message to server.{nl}" +
-                        $"You will get response if your message will contain question mark '?'.{nl}" +
-                        $"Enter empty message to quit.{nl}");
-                },
-                () => Console.WriteLine("Shutting down...")); // onShuttingDown
+                response => logger.LogInformation($"callback: {response.Payload.ToObject()}"),   // onReceive
+                () => logger.LogInformation($"Connected to server. ClientId = {client.ClientId}"), // onConnection
+                () => logger.LogInformation("Shutting down...")); // onShuttingDown
 
             using Timer timer = new(async _ =>
             {
-                Console.WriteLine();
-
                 // Send (call method one way)
                 {
                     Stopwatch sw = new();
                     sw.Start();
                     client.SendOneWay(IRemoteCall_Foo_Args(1));
                     sw.Stop();
-                    Console.WriteLine($"Send one way duration:    {sw.ElapsedTicks}");
+                    logger.LogInformation($"Send one way duration:    {sw.ElapsedTicks}");
                 }
 
                 // Send (call method with response in a callback "onReceive()")
@@ -69,7 +54,7 @@ namespace GrpcClient
                     sw.Start();
                     await client.SendAsync(IRemoteCall_Foo_Args(2));
                     sw.Stop();
-                    Console.WriteLine($"Send with await duration: {sw.ElapsedTicks}");
+                    logger.LogInformation($"Send with await duration: {sw.ElapsedTicks}");
                 }
 
                 long ticks1, ticks2;
@@ -84,8 +69,7 @@ namespace GrpcClient
                     sw.Stop();
                     ticks1 = sw.ElapsedTicks;
 
-                    Console.WriteLine($"   {result}");
-                    Console.WriteLine($"   {echo}");
+                    logger.LogInformation($"{result}, {echo}");
                 }
 
                 // Direct call
@@ -97,15 +81,16 @@ namespace GrpcClient
                     sw.Stop();
                     ticks2 = sw.ElapsedTicks;
 
-                    Console.WriteLine($"   {result}");
-                    Console.WriteLine($"   {echo}");
+                    logger.LogInformation($"{result}, {echo}");
                 }
 
                 //var result1 = await task1;
                 //var result2 = await task2;
-                //Console.WriteLine($"   {await task1} {await task2}");
+                //logger.LogInformation(($"{await task1} {await task2}");
 
-                Console.WriteLine($"Reflected calls: {ticks1}\nDirect calls:    {ticks2}\nRatio: {((float)ticks1 / ticks2).ToString("f1")}");
+                logger.LogInformation($"Reflected calls: {ticks1}");
+                logger.LogInformation($"Direct calls:    {ticks2}");
+                logger.LogInformation($"Ratio: {((float)ticks1 / ticks2).ToString("f1")}");
 
                 //client.SendOneWay("IRemoteCall1", "_delete_session");
             }, 
