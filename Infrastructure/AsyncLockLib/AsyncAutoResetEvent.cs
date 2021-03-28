@@ -7,7 +7,7 @@ namespace AsyncLockLib
 {
     public class AsyncAutoResetEvent
     {
-        private readonly Queue<TaskCompletionSource<bool>> _waits = new Queue<TaskCompletionSource<bool>>();
+        private readonly Queue<TaskCompletionSource<bool>> _waits = new();
         private bool _signaled;
 
         public Task WaitAsync()
@@ -20,7 +20,7 @@ namespace AsyncLockLib
                     return Task.FromResult(true);
                 }
 
-                var tcs = new TaskCompletionSource<bool>();
+                TaskCompletionSource<bool> tcs = new();
                 _waits.Enqueue(tcs);
                 return tcs.Task;
             }
