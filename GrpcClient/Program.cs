@@ -53,37 +53,37 @@ namespace GrpcClient
             {
                 Console.WriteLine();
 
-                //// Send (call method one way)
-                //{
-                //    Stopwatch sw = new();
-                //    sw.Start();
-                //    client.SendOneWay(IRemoteCall_Foo_Args(1));
-                //    sw.Stop();
-                //    Console.WriteLine($"Send one way duration:    {sw.ElapsedTicks}");
-                //}
+                // Send (call method one way)
+                {
+                    Stopwatch sw = new();
+                    sw.Start();
+                    client.SendOneWay(IRemoteCall_Foo_Args(1));
+                    sw.Stop();
+                    Console.WriteLine($"Send one way duration:    {sw.ElapsedTicks}");
+                }
 
-                //// Send (call method with response in a callback "onReceive()")
-                //{
-                //    Stopwatch sw = new();
-                //    sw.Start();
-                //    await client.SendAsync(IRemoteCall_Foo_Args(2));
-                //    sw.Stop();
-                //    Console.WriteLine($"Send with await duration: {sw.ElapsedTicks}");
-                //}
+                // Send (call method with response in a callback "onReceive()")
+                {
+                    Stopwatch sw = new();
+                    sw.Start();
+                    await client.SendAsync(IRemoteCall_Foo_Args(2));
+                    sw.Stop();
+                    Console.WriteLine($"Send with await duration: {sw.ElapsedTicks}");
+                }
 
                 long ticks1, ticks2;
-                Task<object> task1, task2; 
+                //Task<object> task1, task2; 
 
                 // Call with reflection
                 {
                     Stopwatch sw = new();
                     sw.Start();
-                    task1 = client.RemoteMethodCallAsync(IRemoteCall_Foo_Args(1));
+                    var result = await client.RemoteMethodCallAsync(IRemoteCall_Foo_Args(1));
                     var echo = await client.RemoteMethodCallAsync("IRemoteCall1", "Echo", "some text - 1");
                     sw.Stop();
                     ticks1 = sw.ElapsedTicks;
 
-                    //Console.WriteLine($"   {result}");
+                    Console.WriteLine($"   {result}");
                     Console.WriteLine($"   {echo}");
                 }
 
@@ -91,19 +91,20 @@ namespace GrpcClient
                 {
                     Stopwatch sw = new();
                     sw.Start();
-                    task2 = client.RemoteMethodCallAsync(IRemoteCall_Foo_Args(2));
+                    var result = await client.RemoteMethodCallAsync(IRemoteCall_Foo_Args(2));
                     var echo = await client.RemoteMethodCallAsync("IRemoteCall2", "Echo", "some text - 2");
                     sw.Stop();
                     ticks2 = sw.ElapsedTicks;
 
-                    //Console.WriteLine($"   {result}");
+                    Console.WriteLine($"   {result}");
                     Console.WriteLine($"   {echo}");
                 }
 
-                var result1 = await task1;
-                var result2 = await task2;
+                //var result1 = await task1;
+                //var result2 = await task2;
+                //Console.WriteLine($"   {await task1} {await task2}");
 
-                Console.WriteLine($"Reflected call: {ticks1}\nDirect call:    {ticks2}\nRatio: {((float)ticks1 / ticks2).ToString("f1")}");
+                Console.WriteLine($"Reflected calls: {ticks1}\nDirect calls:    {ticks2}\nRatio: {((float)ticks1 / ticks2).ToString("f1")}");
 
                 //client.SendOneWay("IRemoteCall1", "_delete_session");
             }, 

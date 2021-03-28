@@ -16,7 +16,9 @@ namespace GrpcHelperLib
     {
         private ConcurrentDictionary<string, AutoResetEvent> _dctEv = new();
         private ConcurrentDictionary<string, ResponseMessage> _dctResult = new();
+        private ConcurrentQueue<RequestMessage> _que = new();
         private ILogger _logger;
+        private AsyncLock _lock = new();
 
         public GrpcClientBase(ILoggerFactory loggerFactory)
         {
@@ -92,18 +94,30 @@ namespace GrpcHelperLib
                     return null;
                 }
 
-                try
-                {
-                    var message = CreateMessage(obs.ToByteString(), true);
-                    await _duplex.RequestStream.WriteAsync(message);
-                    return message.MessageId;
-                }
-                catch (Exception e)
-                {
-                    _logger?.LogError(e, "Error in SendAsync()");
-                    return null;
-                }
+                return await ProcessQueue(CreateMessage(obs.ToByteString(), true));
             });
+
+        private async Task<string> ProcessQueue(RequestMessage requestMessage) 
+        {
+            _que.Enqueue(requestMessage);
+            var retVal = requestMessage.MessageId;
+
+            using (await _lock.LockAsync())
+                while (_que.TryDequeue(out RequestMessage message))
+                {
+                    try
+                    {
+                        await _duplex.RequestStream.WriteAsync(message);
+                    }
+                    catch (Exception e)
+                    {
+                        retVal = null;
+                        _logger?.LogError(e, "Error in ProcessQueue()");
+                    }
+                }
+
+            return retVal;
+        }
 
         public void SendOneWay(params object[] obs) => SendAsync(obs);
 
