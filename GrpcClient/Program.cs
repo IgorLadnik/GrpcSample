@@ -33,8 +33,8 @@ namespace GrpcClient
                         : null;
 
             var url = $"{HOST}:{PORT}";
-          
-            using GrpcClient client = new(loggerFactory);
+
+            using GrpcClient client = new(loggerFactory); // ({ ClientId = $"{DateTime.UtcNow.Millisecond}" };
             await client.Start(url, pathCertificate,
                 response => logger.LogInformation($"callback: {response.Payload.ToObject()}"),   // onReceive
                 () => logger.LogInformation($"Connected to server. ClientId = {client.ClientId}"), // onConnection
