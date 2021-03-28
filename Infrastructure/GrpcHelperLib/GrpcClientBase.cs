@@ -150,11 +150,7 @@ namespace GrpcHelperLib
             return true;
         }
 
-        public virtual bool CheckResponse(ResponseMessage responseMessage) 
-        {
-            var ob = responseMessage.Payload.ToObject(); //??
-            return true;
-        }
+        public virtual bool CheckResponse(ResponseMessage responseMessage) => true; 
 
         public void Dispose()
         {

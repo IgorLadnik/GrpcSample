@@ -36,13 +36,12 @@ namespace GrpcHelperLib
             return response;
         }
 
-
         public ResponseMessage Process(RequestMessage message)
         {
             ResponseMessage responseMessage = null;
             try
             {
-                if (CheckMessage(message))
+                if (CheckRequest(message))
                 {
                     _logger.LogInformation($"Message '{message.MessageId}' has been processed");
 
@@ -78,7 +77,7 @@ namespace GrpcHelperLib
             return null;
         }
 
-        public virtual bool CheckMessage(RequestMessage requestMessage) =>
+        public virtual bool CheckRequest(RequestMessage requestMessage) =>
             requestMessage.Payload.ToArrayOfObjects().CheckArgs();
     }
 }
