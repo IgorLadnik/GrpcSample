@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace GrpcHelperLib
+namespace AsyncLockLib
 {
     public struct TaskWrapper<T>
     {
@@ -38,7 +38,7 @@ namespace GrpcHelperLib
             return new TaskWrapper<IDisposable>(waitTask.IsCompleted
                     ? _releaserTask
                     : waitTask.ContinueWith(
-                        (_, r) =>
+                        (_, r) => 
                             (IDisposable)r, _releaser,
                             CancellationToken.None,
                             TaskContinuationOptions.ExecuteSynchronously,

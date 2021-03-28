@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -13,6 +13,9 @@
   <!-- PROTO: The following section was added manually -->
   <ItemGroup>
 	<Protobuf Include="..\Protos\*.proto" GrpcServices="GrpcHelperLib" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AsyncLockLib\AsyncLockLib.csproj" />
   </ItemGroup>
 
 </Project>

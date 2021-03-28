@@ -9,12 +9,13 @@ using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using GrpcHelperLib.Communication;
 using GrpcHelperLib.CommunicationClient;
+using AsyncLockLib;
 
 namespace GrpcHelperLib
 {
     public class GrpcClientBase : IDisposable
     {
-        private ConcurrentDictionary<string, AutoResetEvent> _dctEv = new();
+        private ConcurrentDictionary<string, AsyncAutoResetEvent> _dctEv = new();
         private ConcurrentDictionary<string, ResponseMessage> _dctResult = new();
         private ConcurrentQueue<RequestMessage> _que = new();
         private ILogger _logger;
@@ -75,9 +76,8 @@ namespace GrpcHelperLib
                 if (string.IsNullOrEmpty(messageId))
                     return null;
 
-                AutoResetEvent ev = _dctEv[messageId] = new(false);
-                ev.WaitOne();
-                ev.Dispose();
+                AsyncAutoResetEvent ev = _dctEv[messageId] = new();
+                await ev.WaitAsync();
 
                 if (!_dctResult.TryRemove(messageId, out ResponseMessage responseMessage))
                     return null;
@@ -142,7 +142,7 @@ namespace GrpcHelperLib
             }
 
             var messageId = responseMessage.MessageId;
-            if (!_dctEv.TryRemove(messageId, out AutoResetEvent ev))
+            if (!_dctEv.TryRemove(messageId, out AsyncAutoResetEvent ev))
                 return false;
 
             _dctResult[messageId] = responseMessage;
