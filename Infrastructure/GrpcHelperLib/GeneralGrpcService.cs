@@ -35,7 +35,7 @@ namespace GrpcHelperLib
             if (!await requestStream.MoveNext(_cts.Token))
                 return;
 
-            var clientId = _messageProcessor.GetClientId(requestStream.Current);
+            var clientId = requestStream.Current.ClientId;
             _logger.LogInformation($"Client '{clientId}' connected");
             SubscribersModel subscriber = new()
             {

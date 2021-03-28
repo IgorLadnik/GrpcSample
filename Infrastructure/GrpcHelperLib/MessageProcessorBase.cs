@@ -17,16 +17,17 @@ namespace GrpcHelperLib
             : base(loggerFactory) =>
             _logger = loggerFactory.CreateLogger<MessageProcessorBase>();
 
-        public string GetClientId(RequestMessage message) => message.ClientId;
-
-        public virtual ResponseMessage ProcessRequest(RequestMessage message)
+        public virtual ResponseMessage ProcessRequest(RequestMessage requestMessage)
         {
-            var result = CallMethod(message);
+            if (DeleteSessionIfRequested(requestMessage))
+                return null;
+
+            var result = CallMethod(requestMessage);
             ResponseMessage response = new()
             {
-                ClientId = message.ClientId,
-                MessageId = message.MessageId,
-                Type = message.Type,
+                ClientId = requestMessage.ClientId,
+                MessageId = requestMessage.MessageId,
+                Type = requestMessage.Type,
                 Time = Timestamp.FromDateTime(DateTime.UtcNow),
                 Status = MessageStatus.Processed,
                 Payload = result.ToByteString()
@@ -38,20 +39,19 @@ namespace GrpcHelperLib
 
         public ResponseMessage Process(RequestMessage message)
         {
-            var strPayload = Encoding.UTF8.GetString(message.Payload.ToByteArray());
-            if (string.IsNullOrEmpty(strPayload))
-                return null;
-
-
-            // Request message processing should be placed here
-
-            ResponseMessage responseMessage;
-
+            ResponseMessage responseMessage = null;
             try
             {
-                _logger.LogInformation($"Message '{message.MessageId}' to be processed");
-                responseMessage = ProcessRequest(message);
-                _logger.LogInformation($"Message '{message.MessageId}' has been processed");
+                if (CheckMessage(message))
+                {
+                    _logger.LogInformation($"Message '{message.MessageId}' has been processed");
+
+                    responseMessage = ProcessRequest(message);
+
+                    _logger.LogInformation($"Message '{message.MessageId}' has been processed");
+                }
+                else
+                    _logger.LogError($"Message '{message?.MessageId}' failed to pass check");
             }
             catch (Exception e)
             {
@@ -77,6 +77,9 @@ namespace GrpcHelperLib
 
             return null;
         }
+
+        public virtual bool CheckMessage(RequestMessage requestMessage) =>
+            requestMessage.Payload.ToArrayOfObjects().CheckArgs();
     }
 }
 

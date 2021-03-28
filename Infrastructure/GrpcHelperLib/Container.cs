@@ -66,7 +66,6 @@ namespace GrpcHelperLib
                             if (now - new DateTime(dict[clientId].lastActivationInTicks) > sessionLifeTime)
                                 dict.TryRemove(clientId, out PerSessionDescriptor psd);
                     }
-
                 },
                 null, TimeSpan.Zero, TimeSpan.FromMinutes(sessionLifeTimeInMin));
             }
@@ -135,16 +134,13 @@ namespace GrpcHelperLib
             return null;
         }
 
-        public virtual object CallMethod(RequestMessage message)
+        public virtual object CallMethod(RequestMessage requestMessage)
         {
-            if (DeleteSessionIfRequested(message))
-                return null;
-
-            var obs = (object[])message.Payload.ToObject();
+            var obs = requestMessage.Payload.ToArrayOfObjects();
             var interfaceName = $"{obs[0]}";
             var methodName = $"{obs[1]}";
 
-            var localOb = Resolve(interfaceName, message.ClientId);
+            var localOb = Resolve(interfaceName, requestMessage.ClientId);
             if (localOb == null)
                 return null;
 
@@ -168,9 +164,9 @@ namespace GrpcHelperLib
             return retOb;
         }
 
-        private bool DeleteSessionIfRequested(RequestMessage message) 
+        protected bool DeleteSessionIfRequested(RequestMessage requestMessage) 
         {
-            var obs = (object[])message.Payload.ToObject();
+            var obs = requestMessage.Payload.ToArrayOfObjects();
             var methodName = $"{obs[1]}";
             var interfaceName = $"{obs[0]}";
 
@@ -182,12 +178,12 @@ namespace GrpcHelperLib
             {
                 var descriptor = _dctInterface[k];
                 if (descriptor.isPerSession &&
-                    descriptor.dctSession.TryRemove(message.ClientId, out PerSessionDescriptor psd))
+                    descriptor.dctSession.TryRemove(requestMessage.ClientId, out PerSessionDescriptor psd))
                         sb.Append($"'{k}', ");
             }
 
             var tempStr = sb.ToString().Substring(0, sb.Length - 2);
-            _logger.LogInformation($"Sessions for client '{message.ClientId}' have been deleted for interfaces {tempStr}");
+            _logger.LogInformation($"Sessions for client '{requestMessage.ClientId}' have been deleted for interfaces {tempStr}");
             return true;
         }
 

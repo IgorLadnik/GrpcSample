@@ -46,14 +46,20 @@ namespace GrpcHelperLib
             return bf.Deserialize(ms);
         }
 
-        public static T ToObject<T>(this ByteString bs)
-        {
-            using MemoryStream ms = new(bs.ToByteArray());
-            ms.Seek(0, SeekOrigin.Begin);
-            BinaryFormatter bf = new();
-            return (T)((bf.Deserialize(ms) as object[])?[0]);
-        }
+        public static object[] ToArrayOfObjects(this ByteString bs) => bs.ToObject() as object[];
+
+        //public static T ToObject<T>(this ByteString bs)
+        //{
+        //    using MemoryStream ms = new(bs.ToByteArray());
+        //    ms.Seek(0, SeekOrigin.Begin);
+        //    BinaryFormatter bf = new();
+        //    return (T)((bf.Deserialize(ms) as object[])?[0]);
+        //}
 
         #endregion // Binary serialization 
+
+        public static bool CheckArgs(this object[] obs) =>
+            obs != null && obs.Length >= 2 &&
+            !string.IsNullOrWhiteSpace((string)obs[0]) && !string.IsNullOrWhiteSpace((string)obs[1]);
     }
 }
