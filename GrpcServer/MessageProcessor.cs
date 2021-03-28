@@ -2,6 +2,7 @@
 using GrpcHelperLib;
 using RemoteInterfaces;
 using RemoteImplementations;
+using GrpcHelperLib.Communication;
 
 namespace GrpcServer
 {
@@ -18,5 +19,7 @@ namespace GrpcServer
             Register<IRemoteCall1, RemoteCall1>(true, 1);
             Register<IRemoteCall2, RemoteCall2>(true, 1);
         }
+
+        public override bool CheckRequest(RequestMessage requestMessage) => base.CheckRequest(requestMessage); // illustration
     }
 }

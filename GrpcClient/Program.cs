@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using GrpcHelperLib;
 using RemoteInterfaces;
+using GrpcHelperLib.Communication;
 
 namespace GrpcClient
 {
@@ -34,7 +35,7 @@ namespace GrpcClient
             var nl = Environment.NewLine;
             var orgTextColor = Console.ForegroundColor;
            
-            using GrpcClientBase client = new(loggerFactory);
+            using GrpcClient client = new(loggerFactory);
             await client.Start(url, pathCertificate,
                 response => Console.WriteLine($"\ncallback: {response.Payload.ToObject()}"), // onReceive
                 () => // onConnection
@@ -127,5 +128,15 @@ namespace GrpcClient
                     new() { Id = "1", Arg2Props = new() { new() { Id = "1.0" }, new() { Id = "1.1" }, } },
                  }
             };
+    }
+
+    class GrpcClient : GrpcClientBase 
+    {
+        public GrpcClient(ILoggerFactory loggerFactory)
+            : base(loggerFactory)
+        { 
+        }
+
+        public override bool CheckResponse(ResponseMessage responseMessage) => base.CheckResponse(responseMessage); // illustration   
     }
 }
