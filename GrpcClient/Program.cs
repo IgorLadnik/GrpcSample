@@ -16,11 +16,14 @@ namespace GrpcClient
 
         static async Task<int> Main(string[] args)
         {
-            var loggerFactory = LoggerFactory.Create(builder =>
-                builder.AddFilter("Microsoft", LogLevel.Warning)
-                       .AddFilter("System", LogLevel.Warning)
-                       .AddFilter("GrpcClient.Program", LogLevel.Debug)
-                       .AddConsole());
+            using ILoggerFactory loggerFactory =
+                LoggerFactory.Create(builder =>
+                    builder.AddSimpleConsole(options =>
+                    {
+                        options.IncludeScopes = false;
+                        options.SingleLine = true;
+                        options.TimestampFormat = "hh:mm:ss ";
+                    }));
             var logger = loggerFactory.CreateLogger<Program>();
 
             logger.LogInformation("GrpcClient started.");

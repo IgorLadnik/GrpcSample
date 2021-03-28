@@ -5,11 +5,14 @@ using RemoteInterfaces;
 
 namespace RemoteImplementations
 {
-    public class RemoteCall1 : IRemoteCall1
+    public class RemoteCall1 : IRemoteCall1, ILog
     {
+        private ILogger _logger;
+        public ILoggerFactory LoggerFactory { set => _logger = value?.CreateLogger<RemoteCall2>(); }
+
         public int Foo(string name, Arg1[] arg1s)
         {
-            Console.WriteLine("*** RemoteCall1.Foo()");
+            _logger?.LogInformation("*** RemoteCall1.Foo()");
             return 111;
         }
 
