@@ -37,9 +37,13 @@ namespace GrpcHelperLib
         private readonly ConcurrentDictionary<string, Descriptor> _dctInterface = new();
         private Timer _timer;
         private readonly ILogger _logger;
+        private readonly ILoggerFactory _loggerFactory;
 
-        protected Container(ILoggerFactory loggerFactory) =>
+        protected Container(ILoggerFactory loggerFactory)
+        {
+            _loggerFactory = loggerFactory;
             _logger = loggerFactory.CreateLogger<Container>();
+        }
 
         #region Register 
 
@@ -83,7 +87,7 @@ namespace GrpcHelperLib
 
         public Container Register(Type @interface, object ob)
         {
-            _dctInterface[@interface.Name] = new() { ob = ob };
+            _dctInterface[@interface.Name] = new() { ob = AssignLoggerIfSupported(ob) };
             _logger.LogInformation($"Registered interface '{@interface.Name}' as singleton, type '{ob.GetType().Name}'");
             return this;
         }
@@ -110,7 +114,7 @@ namespace GrpcHelperLib
             {
                 if (!descriptor.isPerSession || string.IsNullOrEmpty(clientId))
                     // Per Call
-                    return Activator.CreateInstance(descriptor.type);
+                    return CreateInstanceWithLoggerIfSupported(descriptor.type);
 
                 // Per Session
                 if (descriptor.dctSession == null)
@@ -124,7 +128,7 @@ namespace GrpcHelperLib
 
                 descriptor.dctSession[clientId] = perSessionDescriptor = new()
                 {
-                    ob = Activator.CreateInstance(descriptor.type),
+                    ob = CreateInstanceWithLoggerIfSupported(descriptor.type),
                     lastActivationInTicks = DateTime.UtcNow.Ticks,
                 };
 
@@ -132,6 +136,17 @@ namespace GrpcHelperLib
             }
 
             return null;
+        }
+
+        private object CreateInstanceWithLoggerIfSupported(Type type) =>
+            AssignLoggerIfSupported(Activator.CreateInstance(type));
+
+        private object AssignLoggerIfSupported(object ob)
+        {
+            var log = ob as ILog;
+            if (log != null)
+                log.LoggerFactory = _loggerFactory;
+            return ob;
         }
 
         public virtual object CallMethod(RequestMessage requestMessage)
@@ -145,12 +160,12 @@ namespace GrpcHelperLib
                 return null;
 
             var methodAgrs = obs.Skip(2).ToArray();
-            var callDirect = localOb as ICallDirect;
+            var directCall = localOb as IDirectCall;
             object retOb = null;
-            if (callDirect != null)
+            if (directCall != null)
             {
                 _logger.LogInformation($"Calling method '{methodName}()' of interface '{interfaceName}' - direct call");
-                retOb = callDirect.Call(methodName, methodAgrs);
+                retOb = directCall.DirectCall(methodName, methodAgrs);
                 _logger.LogInformation($"Called method '{methodName}()' of interface '{interfaceName}' - call with reflection");
             }
             else
