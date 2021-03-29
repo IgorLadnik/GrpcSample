@@ -33,5 +33,9 @@
     <ProjectReference Include="..\Infrastructure\GrpcHelperLib\GrpcHelperLib.csproj" />
     <ProjectReference Include="..\RemoteCallable\RemoteInterfaces\RemoteInterfaces.csproj" />
   </ItemGroup>
+  
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="mkdir &quot;$(TargetDir)Certs&quot;&#xD;&#xA;copy &quot;$(ProjectDir)Certs\*&quot; &quot;$(TargetDir)Certs\*&quot;" />
+  </Target>
 
 </Project>

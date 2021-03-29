@@ -1,0 +1,17 @@
+One of the major problems of trnaferring from .NET Framework to .NET Core / .NET 5 is replacement of adequate WCF.
+Most sources suggest gRPC based solutions.
+Besides the fact the gRPC implies usage of HTTP/2 communication protocol (and therefore does not provide support for TCP connection),
+usually solution requires in each case writing .proto schema following by ad hoc code generation [...].
+Perhaps such an approach ensures the best possible performance combining effective Protobuf serialization with gRPC fast data tranferring.
+But in many practical cases it is much more important to have a relatively simple and uniform mechanism to alleviate problem of many WCF interafces replacement.
+One of such approaches is implemented and discussed in this article. 
+ 
+Main Features
+
+Interface shared between server and client with its actual implementation on the server,
+Concurrency modes similar to WCF, namely Singleton, Per Call and Per Session,
+Pseudo-synchronic Remote Method Call (RMC) using async / await paradigm or asyncronic RMC with a separate callback,
+One-way RMC,
+Usage of TLS for channel encryption,
+A single "black box" DLL sutable for usage in ASP.NET server and .NET client
+Minimum additional code on both server and client sides.

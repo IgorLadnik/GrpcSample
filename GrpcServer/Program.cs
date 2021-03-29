@@ -7,7 +7,7 @@ namespace GrpcServer
 {
     public class Program
     {
-        const int PORT = 19019;
+        const int defaultPort = 19061;
 
         public static void Main(string[] args)
         {
@@ -22,10 +22,12 @@ namespace GrpcServer
                     .ConfigureKestrel(options =>
                     {
                         options.Limits.MinRequestBodyDataRate = null;
+                        var port = args.Length > 1 && !string.IsNullOrWhiteSpace(args[1]) ? int.Parse(args[1]) : defaultPort;
                         if (args.Length > 0 && args[0].ToLower() == "tls")
-                            options.Listen(IPAddress.Any, PORT, listenOptions => listenOptions.ServerListenOptions("grpcServer.pfx", "1511"));
+                            options.Listen(IPAddress.Any, port, listenOptions => 
+                                listenOptions.ServerListenOptions("Certs/grpcServer.pfx", "1511"));
                         else
-                            options.Listen(IPAddress.Any, PORT);
+                            options.Listen(IPAddress.Any, port);
                     });
                 });
     }

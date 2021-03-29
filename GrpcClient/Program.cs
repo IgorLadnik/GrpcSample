@@ -11,8 +11,8 @@ namespace GrpcClient
 {
     class Program
     {
-        const string HOST = "localhost";
-        const int PORT = 19019;
+        const string defaultHost = "localhost";
+        const int defaultPort = 19061;
 
         static async Task<int> Main(string[] args)
         {
@@ -28,15 +28,13 @@ namespace GrpcClient
 
             logger.LogInformation("GrpcClient started.");
 
-            var pathCertificate = args.Length > 0 && args[0].ToLower() == "tls"
-                        ? @"..\..\..\Certs\certificate.crt"
-                        : null;
+            var pathCertificate = args.Length > 0 && args[0].ToLower() == "tls" ? "Certs/certificate.crt" : null;
 
-            var url = $"{HOST}:{PORT}";
+            var url = args.Length > 1 && !string.IsNullOrWhiteSpace(args[1]) ? args[1] : $"{defaultHost}:{defaultPort}";
 
             using GrpcClient client = new(loggerFactory); // ({ ClientId = $"{DateTime.UtcNow.Millisecond}" };
             await client.Start(url, pathCertificate,
-                response => logger.LogInformation($"callback: {response.Payload.ToObject()}"),   // onReceive
+                response => logger.LogInformation($"callback: {response.Payload.ToObject()}"),     // onReceive
                 () => logger.LogInformation($"Connected to server. ClientId = {client.ClientId}"), // onConnection
                 () => logger.LogInformation("Shutting down...")); // onShuttingDown
 
