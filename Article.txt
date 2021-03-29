@@ -7,7 +7,7 @@ Usage of gRPC requires for each interface writing a .proto schema following by d
 
 In many practical cases a requirement for a uniform and relatively simple mechanism for Remote Procedure Call (RPC) in general and replacement of WCF in particular 
 prevails over performance maximization.
-This work presents one possible approach for RPC implementation in .NET Core / .NET 5 using gRPC with a single method for a duplex data streaming
+This work presents one possible approach for RPC implementation in .NET Core / .NET 5 using gRPC with a single method for duplex data streaming.
 
 One of such approaches is implemented and discussed in this article. 
  
